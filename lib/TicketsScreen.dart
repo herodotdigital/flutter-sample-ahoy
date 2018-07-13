@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ahoy_sample/AhoyCell.dart';
 import 'package:ahoy_sample/AhoyCellMockData.dart';
 import 'package:ahoy_sample/AhoyStyles.dart';
+import 'package:ahoy_sample/AhoyWidgets.dart';
 
 class TicketsScreen extends StatelessWidget {
   @override Widget build(BuildContext context) {
-    return new CupertinoPageScaffold(
-      navigationBar: new CupertinoNavigationBar(leading: Icon(CupertinoIcons.back),),
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(leading: Icon(CupertinoIcons.back),),
       child: SafeArea(
         child: TicketList(),
         ),
@@ -15,52 +15,32 @@ class TicketsScreen extends StatelessWidget {
   }
 }
 
-class TicketList extends StatefulWidget {
-  TicketList({Key key}) : super(key: key);
-
-  @override State<StatefulWidget> createState() {
-      return _TicketListState();
-    }
-}
-
-class _TicketListState extends State<TicketList> {
+class TicketList extends StatelessWidget {
+  
   @override Widget build(BuildContext context) {
-    return new Material(
+    return Material(
         child: ListView(
-        children: _getListData(),
-      )
-    );
+        children: _allCells(),
+    ));
   }
 
-  _getListData() {
+  _allCells() {
       List<Widget> widgets = [];
       widgets.add(_headerFor("Now", "12 March"));
-      for (var item in AhoyCellMockData.now()) {
-        widgets.add(AhoyCell(item));
-      }
+      widgets.addAll(AhoyCellMockData.nowCells());
       widgets.add(_headerFor("Later", ""));
-      for (var item in AhoyCellMockData.later()) {
-        widgets.add(AhoyCell(item));
-      }
+      widgets.addAll(AhoyCellMockData.laterCells());
       return widgets;
     }
 
   _headerFor(String title, String date) {
     return Container(
       margin: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-      child: Row(
-      children: <Widget>[
+      child: Row(children: <Widget>[
         Text(title, style: AhoyStyles.titleStyle,),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Text(date, style: AhoyStyles.headerDetailsStyle,)
-            ],
-          ),
-        )
-      ],
-    ),
+        AhoyWidgets.flexibleSpace(),
+        Text(date, style: AhoyStyles.headerDetailsStyle,),
+      ],),
     );
   }
 }

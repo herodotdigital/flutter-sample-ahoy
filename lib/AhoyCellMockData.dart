@@ -2,7 +2,21 @@
 import 'package:ahoy_sample/AhoyCell.dart';
 
 class AhoyCellMockData {
-  static List<AhoyCellData> now() {
+  static List<AhoyCell> nowCells() {
+    return _asCells(_now());
+  }
+
+  static List<AhoyCell> laterCells() {
+    return _asCells(_later());
+  }
+
+  static List<AhoyCell> _asCells(List<AhoyCellData> input) {
+    return input.map(
+      (data){ return AhoyCell(data); }
+    ).toList();
+  }
+
+  static List<AhoyCellData> _now() {
     return [
       const AhoyCellData(
         title: "wro - waw",
@@ -26,7 +40,7 @@ class AhoyCellMockData {
       ),
     ];
   }
-  static List<AhoyCellData> later() {
+  static List<AhoyCellData> _later() {
     return [
       const AhoyCellData(
         title: "waw - bcn",

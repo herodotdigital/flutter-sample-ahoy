@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ahoy_sample/AhoyStyles.dart';
+import 'package:ahoy_sample/AhoyWidgets.dart';
 
 class AhoyCellData {
   final String title;
@@ -39,7 +40,7 @@ class AhoyCell extends StatelessWidget {
           _subtitle(data.subtitle),
           Row(children: <Widget>[
             _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
-            _flexibleSpace(),
+            AhoyWidgets.flexibleSpace(),
             _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
           ],),
         ],),
@@ -64,10 +65,6 @@ class AhoyCell extends StatelessWidget {
     return Container(alignment: Alignment.topRight,
       child:Text(text, style: valueStyle,),
     );
-  }
-
-  Widget _flexibleSpace() {
-    return Expanded(child:Container());
   }
 
   Widget _background(Widget child) {
