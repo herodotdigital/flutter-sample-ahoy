@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/AhoyCell.dart';
+import 'package:ahoy_sample/AhoyCellMockData.dart';
+import 'package:ahoy_sample/AhoyStyles.dart';
 
 class TicketsScreen extends StatelessWidget {
   @override Widget build(BuildContext context) {
@@ -30,13 +32,35 @@ class _TicketListState extends State<TicketList> {
     );
   }
 
-_getListData() {
-    List<AhoyCellData> data = [AhoyCellData(),AhoyCellData()];
-    List<Widget> widgets = [];
-    for (var item in data) {
-      AhoyCell cell = AhoyCell();
-      widgets.add(cell);
+  _getListData() {
+      List<Widget> widgets = [];
+      widgets.add(_headerFor("Now", "12 March"));
+      for (var item in AhoyCellMockData.now()) {
+        widgets.add(AhoyCell(item));
+      }
+      widgets.add(_headerFor("Later", ""));
+      for (var item in AhoyCellMockData.later()) {
+        widgets.add(AhoyCell(item));
+      }
+      return widgets;
     }
-    return widgets;
+
+  _headerFor(String title, String date) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+      child: Row(
+      children: <Widget>[
+        Text(title, style: AhoyStyles.titleStyle,),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Text(date, style: AhoyStyles.headerDetailsStyle,)
+            ],
+          ),
+        )
+      ],
+    ),
+    );
   }
 }

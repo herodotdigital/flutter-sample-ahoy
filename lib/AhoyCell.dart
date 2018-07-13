@@ -1,54 +1,45 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ahoy_sample/AhoyStyles.dart';
 
 class AhoyCellData {
-  String title = "wro - waw";
-  String subtitle = "Wrocław City Airport";
-  String icon = "assets/images/planeGray.png";
-  String topRightText = "in 30 mins";
-  String bottomRightCaption = "Gate closes:";
-  String bottomRightValue = "8:05 PM";
-  String bottomLeftCaption = "Departure:";
-  String bottomLeftValue = "8:35 PM";
+  final String title;
+  final String subtitle;
+  final String iconName;
+  final String topRightText;
+  final String bottomRightCaption;
+  final String bottomRightValue;
+  final String bottomLeftCaption;
+  final String bottomLeftValue;
+
+  const AhoyCellData({
+    this.title,
+    this.subtitle,
+    this.iconName,
+    this.topRightText,
+    this.bottomRightCaption,
+    this.bottomRightValue,
+    this.bottomLeftCaption,
+    this.bottomLeftValue,
+    });
 }
 
-class AhoyCell extends StatefulWidget {
-  @override _AhoyCellState createState() {
-    return _AhoyCellState();
-  }
-}
+class AhoyCell extends StatelessWidget {
+  final AhoyCellData data;
 
-class _AhoyCellState extends State<AhoyCell> {
+  AhoyCell(this.data)
+
   @override Widget build(BuildContext context) {
-    final data = AhoyCellData();
-    final accentColor = Color.fromRGBO(211, 86, 165, 1.0);
-    final grey = Color.fromRGBO(155, 155, 155, 1.0);
-    final dark = Color.fromRGBO(74, 74, 74, 1.0);
     final double scale = 2.0;
-
-    final baseTextStyle = TextStyle(
-      fontFamily: 'OpenSans',
-      fontWeight: FontWeight.w400,
-      fontSize: 6.0 * scale,
-    );
-    final titleStyle = baseTextStyle.copyWith(
-      color: accentColor,
-      fontSize: 9.0 * scale,
-      fontWeight: FontWeight.w600
-    );
-    final subtitleStyle = baseTextStyle.copyWith(
-      color: grey,
-      fontSize: 7.0 * scale,
-    );
-    final captionStyle = baseTextStyle.copyWith(
-      color: dark
-    );
-    final valueStyle = baseTextStyle.copyWith(
-      color:grey
-    );
-    final accentedValueStyle = baseTextStyle.copyWith(
-      color: accentColor
-    );
+    final accentColor = AhoyStyles.accentColor;
+    final grey = AhoyStyles.grey;
+    final dark = AhoyStyles.dark;
+    final baseTextStyle = AhoyStyles.baseTextStyle;
+    final titleStyle = AhoyStyles.titleStyle;
+    final subtitleStyle = AhoyStyles.subtitleStyle;
+    final captionStyle = AhoyStyles.captionStyle;
+    final valueStyle = AhoyStyles.valueStyle;
+    final accentedValueStyle = AhoyStyles.accentedValueStyle;
 
     return Container(
       // height: 55.5*2,
@@ -73,7 +64,7 @@ class _AhoyCellState extends State<AhoyCell> {
           Container(
             alignment: FractionalOffset.topLeft,
             child:new Image(
-              image: new AssetImage(data.icon),
+              image: new AssetImage(data.iconName),
               height: 24.0,
               width: 24.0,
             ),
@@ -89,12 +80,18 @@ class _AhoyCellState extends State<AhoyCell> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Row(children: <Widget>[
-                    Text(data.bottomLeftCaption, style: captionStyle,),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0.0, 0.0, 4.0, 0.0),
+                      child: Text(data.bottomLeftCaption, style: captionStyle,),
+                    ),
                     Text(data.bottomLeftValue, style: valueStyle,),
                   ],),
                   Row(children: <Widget>[
-                    Text(data.bottomRightCaption, style: captionStyle,),
-                    Text(data.bottomRightValue, style: valueStyle,),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0.0, 0.0, 4.0, 0.0),
+                      child: Text(data.bottomRightCaption, style: captionStyle,),
+                    ),
+                    Text(data.bottomRightValue, style: accentedValueStyle,),
                   ],)
                 ],
               ),
