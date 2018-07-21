@@ -49,8 +49,8 @@ class AhoyCell extends StatelessWidget {
   }
 
   _bottomText(String caption, String value, bool accented) {
-    final captionStyle = AhoyStyles.captionStyle;
-    final style = accented == true ? AhoyStyles.accentedValueStyle : AhoyStyles.valueStyle;
+    final captionStyle = AhoyStyles.list.captionStyle;
+    final style = accented == true ? AhoyStyles.list.accentedValueStyle : AhoyStyles.list.valueStyle;
     return Row(children: <Widget>[
       Container(
         margin: EdgeInsets.fromLTRB(0.0, 0.0, 4.0, 0.0),
@@ -61,7 +61,7 @@ class AhoyCell extends StatelessWidget {
   }
 
   _topRightText(String text) {
-    final valueStyle = AhoyStyles.valueStyle;
+    final valueStyle = AhoyStyles.list.valueStyle;
     return Container(alignment: Alignment.topRight,
       child:Text(text, style: valueStyle,),
     );
@@ -102,12 +102,12 @@ class AhoyCell extends StatelessWidget {
   }
   
   Widget _title(String text) {
-    final titleStyle = AhoyStyles.titleStyle;
+    final titleStyle = AhoyStyles.list.titleStyle;
     return Text(text.toUpperCase(), style: titleStyle,);
   }
 
   Widget _subtitle(String text) {
-    final subtitleStyle = AhoyStyles.subtitleStyle;
+    final subtitleStyle = AhoyStyles.list.subtitleStyle;
     return Container(
       margin: EdgeInsets.only(top: 7.0, bottom: 16.0,),
       child: Text(text, style: subtitleStyle,),

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Bridge.dart';
 import 'package:ahoy_sample/TicketDetailsData.dart';
 import 'package:ahoy_sample/AhoyStyles.dart';
+import 'package:ahoy_sample/AhoyWidgets.dart';
 
 class TicketDetailsScreen extends StatelessWidget {
   final TicketDetailsData detailsData;
@@ -14,7 +15,7 @@ class TicketDetailsScreen extends StatelessWidget {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: _backButton(),
-        middle: Text(navbarTitle),
+        middle: Text(navbarTitle,),
         ),
       child: SafeArea(
         child: TicketDetails(detailsData),
@@ -48,14 +49,14 @@ class TicketDetails extends StatelessWidget {
   _referenceRow() {
     return Row(children: <Widget>[
       Column(children: <Widget>[
-        Text(captions.bookingReference),
-        Text(data.bookingReferenceValue),
+        Text(captions.bookingReference, style: AhoyStyles.details.headerStyle),
+        Text(data.bookingReferenceValue, style: AhoyStyles.details.valueStyle,),
       ],),
+      AhoyWidgets.flexibleSpace(),
       Column(children: <Widget>[
-        Text(captions.ticketNumber),
-        Text(data.ticketNumberValue),
+        Text(captions.ticketNumber, style: AhoyStyles.details.headerStyle,),
+        Text(data.ticketNumberValue, style: AhoyStyles.details.valueStyle,),
       ],),
     ],);
   }
-
 }

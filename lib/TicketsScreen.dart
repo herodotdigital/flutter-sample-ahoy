@@ -75,9 +75,9 @@ class _TicketListState extends State<TicketList> with WidgetsBindingObserver {
     return Container(
       margin: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
       child: Row(children: <Widget>[
-        Text(title, style: AhoyStyles.titleStyle,),
+        Text(title, style: AhoyStyles.list.titleStyle,),
         AhoyWidgets.flexibleSpace(),
-        Text(date, style: AhoyStyles.headerDetailsStyle,),
+        Text(date, style: AhoyStyles.list.headerDetailsStyle,),
       ],),
     );
   }
