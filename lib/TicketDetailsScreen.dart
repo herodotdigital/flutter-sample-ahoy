@@ -39,6 +39,8 @@ class TicketDetailsScreen extends StatelessWidget {
 class TicketDetails extends StatelessWidget {
   final captions = TicketDetailsLocalization.createEng();
   final TicketDetailsData data;
+  final margin = 6.0 * 2.0;
+  final verticalMargin = 14.0 * 2.0;
 
   TicketDetails(this.data);
 
@@ -50,28 +52,36 @@ class TicketDetails extends StatelessWidget {
   }
 
   _referenceRow() {
-    return Row(children: <Widget>[
-      Column(children: <Widget>[
-        Text(captions.bookingReference, style: AhoyStyles.details.headerStyle),
-        Text(data.bookingReferenceValue, style: AhoyStyles.details.valueStyle,),
-      ],),
-      AhoyWidgets.flexibleSpace(),
-      Column(children: <Widget>[
-        Text(captions.ticketNumber, style: AhoyStyles.details.headerStyle,),
-        Text(data.ticketNumberValue, style: AhoyStyles.details.valueStyle,),
-      ],),
-    ],);
+    return Container(margin: EdgeInsets.symmetric(horizontal: 16 * 2.0),child:
+      Row(children: <Widget>[
+        Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(captions.bookingReference, style: AhoyStyles.details.headerStyle),
+            Text(data.bookingReferenceValue, style: AhoyStyles.details.valueStyle,),
+          ],
+        ),
+        AhoyWidgets.flexibleSpace(),
+        Column(crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Text(captions.ticketNumber, style: AhoyStyles.details.headerStyle,),
+            Text(data.ticketNumberValue, style: AhoyStyles.details.valueStyle,),
+          ],
+        ),
+      ],)
+    );
   }
 
   Widget _flightDetails() {
-    return Row(
-      children: <Widget>[
-      Expanded(flex: 63,child: _flightDetailsLeft(),),
-      _flightDetailsVerticalLine(),
-      Expanded(flex: 107,child: _flightDetailsRight(),),
-      // _flightDetailsLeft(),
-      // _flightDetailsRight(),
-    ],);
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Expanded(flex: 63,child: _flightDetailsLeft(),),
+          _flightDetailsVerticalLine(),
+          Expanded(flex: 107,child: _flightDetailsRight(),),
+        ],
+      ),
+    );
   }
 
   Widget _textPairView(String header, String value, TextPairVariant variant, CrossAxisAlignment alignment) {
@@ -103,13 +113,18 @@ class TicketDetails extends StatelessWidget {
   Widget _flightDetailsLeft() {
     final alignment = CrossAxisAlignment.end;
     final variant = TextPairVariant.accented;
-    final top = _textPairView(data.departureTime, data.departureDate, variant, alignment);
     final center = Text(data.travelTime, style: AhoyStyles.details.headerStyle,);
-    final bottom = _textPairView(data.arrivalTime, data.arrivalDate, variant, alignment);
+    final top = Padding(padding: EdgeInsets.only(right: margin), child: 
+      _textPairView(data.departureTime, data.departureDate, variant, alignment)
+    );
+    final bottom = Padding(padding: EdgeInsets.only(right: margin), child: 
+      _textPairView(data.arrivalTime, data.arrivalDate, variant, alignment)
+    );
 
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         top,
         center,
@@ -133,17 +148,44 @@ class TicketDetails extends StatelessWidget {
     final seat = _textPairView(captions.seat, data.seatValue, smallVariant, alignment);
     final terminal = _textPairView(captions.terminal, data.terminalValue, smallVariant, alignment);
     final gate = _textPairView(captions.gate, data.gateValue, smallVariant, alignment);
+    final departure = Padding(padding: EdgeInsets.only(left: margin), child: 
+          _textPairView(data.departureLocationTitle, data.departureLocationSubtitle, normalVariant, alignment),
+        );
+    final arrival = Padding(padding: EdgeInsets.only(left: margin), child: 
+          _textPairView(data.arrivalLocationTitle, data.arrivalLocationSubtitle, normalVariant, alignment),
+        );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _textPairView(data.departureLocationTitle, data.departureLocationSubtitle, normalVariant, alignment),
+        departure,
+        Container(height: verticalMargin,),
         _uniformFilledRow([flightNumber, seat]),
+        Container(height: verticalMargin,),
         _uniformFilledRow([terminal, gate]),
-        _textPairView(data.arrivalLocationTitle, data.arrivalLocationSubtitle, normalVariant, alignment),
+        Container(height: verticalMargin,),
+        arrival,
       ],
     );
   }
   Widget _flightDetailsVerticalLine() {
-    return Center(child:Text("|"));
+    // Image.asset('assets/images/oval6.png');
+    return Column(children: <Widget>[
+      Container(height: 5.0 * 2.0,),
+      Image.asset('assets/images/oval6.png', width: 9.0 * 2,),
+      Expanded(child: Container(color: Color.fromRGBO(155, 155, 155, 1.0), width: 1.5 * 2.0,),),
+      Image.asset('assets/images/oval6.png', width: 9.0 * 2,),
+      Container(height: 5.0 * 2.0,),
+    ],);
+  }
+
+  Widget _icon(String imageName) {
+    return Container(
+      alignment: FractionalOffset.topLeft,
+      child:new Image(
+        image: new AssetImage(imageName),
+        height: 24.0,
+        width: 24.0,
+      ),
+    );
   }
 }

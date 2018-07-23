@@ -19,7 +19,7 @@ class AhoyWidgets {
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Colors.black12,
-            blurRadius: 5.0,
+            blurRadius: 15.0,
             offset: Offset(4.5, 4.5)
           ),
         ],
