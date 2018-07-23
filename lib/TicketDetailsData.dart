@@ -5,6 +5,8 @@ class TicketDetailsLocalization {
   final String seat;
   final String terminal;
   final String gate;
+  final String showEntireBooking;
+  final String showBoardingPass;
 
   const TicketDetailsLocalization({
     this.bookingReference,
@@ -13,6 +15,8 @@ class TicketDetailsLocalization {
     this.seat,
     this.terminal,
     this.gate,
+    this.showEntireBooking,
+    this.showBoardingPass,
   });
 
   static TicketDetailsLocalization createEng() {
@@ -23,6 +27,8 @@ class TicketDetailsLocalization {
       seat: "Seat",
       terminal: "Terminal",
       gate: "Gate",
+      showEntireBooking: "Show entire booking",
+      showBoardingPass: "Show boarding pass",
     );
   }
 }

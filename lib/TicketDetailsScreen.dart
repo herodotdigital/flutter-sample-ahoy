@@ -45,9 +45,16 @@ class TicketDetails extends StatelessWidget {
   TicketDetails(this.data);
 
   @override Widget build(BuildContext context) {
+    final textBooking = captions.showEntireBooking.toUpperCase(); 
+    final textBoarding = captions.showBoardingPass.toUpperCase(); 
     return Column(children: <Widget>[
       _referenceRow(),
-      AhoyWidgets.cellWithShadow(_flightDetails())
+      AhoyWidgets.cellWithShadow(_flightDetails()),
+      Spacer(flex: 1,),
+      _bottomButton(accented: false, text: textBooking),
+      Container(height: margin,),
+      _bottomButton(accented: true, text: textBoarding),
+      Container(height: 16.0 * 2,),
     ],);
   }
 
@@ -186,6 +193,32 @@ class TicketDetails extends StatelessWidget {
         height: 24.0,
         width: 24.0,
       ),
+    );
+  }
+
+  Widget _bottomButton({bool accented, String text}) {
+    final style = accented ? AhoyStyles.details.buttonTitleOnAccentStyle : AhoyStyles.details.buttonTitleOnBackgroundStyle;
+    final backgroundColor = accented ? AhoyColors.accentColor : AhoyColors.backgroundColor;
+    final label = Text(text, style: style,);
+    // return AhoyWidgets.cellWithShadow();
+    return Container(
+      height: 22.5*2,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 0.0,
+      ),
+      decoration: new BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15.0,
+            offset: Offset(4.5, 4.5)
+          ),
+        ],
+      ),
+      child: Center(child:label),
     );
   }
 }
