@@ -20,7 +20,9 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/images/
+    - assets/images/hotelGray.png
+    - assets/images/oval6.png
+    - assets/images/planeGray.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
