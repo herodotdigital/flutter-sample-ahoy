@@ -72,10 +72,12 @@ class _StyleDetailsScreen extends _BaseStyle {
       color: _BaseStyle.dark,
     );
     this.titleStyle = subtitleStyle.copyWith(
-      fontSize: 8.0 * _BaseStyle.scale
+      fontSize: 8.0 * _BaseStyle.scale,
+      color: _BaseStyle.dark,
     );
     this.accentedTitleStyle = titleStyle.copyWith(
       color: _BaseStyle.accentColor,
+      fontWeight: FontWeight.w600,
     );
   }
 }
