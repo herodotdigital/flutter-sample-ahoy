@@ -13,24 +13,10 @@ class TicketDetailsScreen extends StatelessWidget {
   TicketDetailsScreen(this.detailsData);
 
   @override Widget build(BuildContext context) {
-    final navbarTitle = "${detailsData.departureLocationTitle} - ${detailsData.arrivalLocationTitle}";
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        leading: _backButton(),
-        middle: Text(navbarTitle,),
-        ),
       child: SafeArea(
         child: TicketDetails(detailsData),
         ),
-    );
-  }
-
-  _backButton() {
-    return CupertinoButton(
-      child: Icon(CupertinoIcons.back),
-      onPressed: (){
-        Bridge().dismiss();
-      },
     );
   }
 }
@@ -48,14 +34,41 @@ class TicketDetails extends StatelessWidget {
     final textBooking = captions.showEntireBooking.toUpperCase(); 
     final textBoarding = captions.showBoardingPass.toUpperCase(); 
     return Column(children: <Widget>[
+      _navBar(),
+      Container(height: 12.0 * 2.0,),
       _referenceRow(),
+      Container(height: 10.0 * 2.0,),
       AhoyWidgets.cellWithShadow(_flightDetails()),
       Spacer(flex: 1,),
       _bottomButton(accented: false, text: textBooking),
       Container(height: margin,),
       _bottomButton(accented: true, text: textBoarding),
-      Container(height: 16.0 * 2,),
+      Container(height: 16.0 * 2.0,),
     ],);
+  }
+
+  _navBar() {
+    final navbarTitle = "${data.departureLocationTitle} - ${data.arrivalLocationTitle}";
+    return Container(margin: EdgeInsets.symmetric(horizontal: 1.0 * 2), child: 
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          _barButton('assets/images/close.png'),
+          Text(navbarTitle, style: AhoyStyles.details.navbarStyle,),
+          _barButton('assets/images/pinFullCopy.png'),
+        ],
+      ),
+    );
+  }
+
+  _barButton(String imagePath) {
+    // return _icon(imagePath);
+    return CupertinoButton(
+      padding: EdgeInsets.all(0.0),
+      minSize: 28.0*2.0,
+      child: _icon(imagePath),
+      onPressed: (){},
+    );
   }
 
   _referenceRow() {
@@ -175,7 +188,6 @@ class TicketDetails extends StatelessWidget {
     );
   }
   Widget _flightDetailsVerticalLine() {
-    // Image.asset('assets/images/oval6.png');
     return Column(children: <Widget>[
       Container(height: 5.0 * 2.0,),
       Image.asset('assets/images/oval6.png', width: 9.0 * 2,),
@@ -200,25 +212,34 @@ class TicketDetails extends StatelessWidget {
     final style = accented ? AhoyStyles.details.buttonTitleOnAccentStyle : AhoyStyles.details.buttonTitleOnBackgroundStyle;
     final backgroundColor = accented ? AhoyColors.accentColor : AhoyColors.backgroundColor;
     final label = Text(text, style: style,);
-    // return AhoyWidgets.cellWithShadow();
+    final decoration = BoxDecoration(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(10.0),
+      boxShadow: <BoxShadow>[
+        BoxShadow(
+          color: Colors.black12,
+          blurRadius: 15.0,
+          offset: Offset(4.5, 4.5)
+        ),
+      ],
+    );
+    final height = 22.5 * 2.0;
+    final margin = const EdgeInsets.symmetric(
+      horizontal: 16.0,
+      vertical: 0.0,
+    );
     return Container(
-      height: 22.5*2,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-        vertical: 0.0,
-      ),
-      decoration: new BoxDecoration(
+      height: height,
+      margin: margin,
+      decoration: decoration,
+      child: CupertinoButton(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(10.0),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 15.0,
-            offset: Offset(4.5, 4.5)
-          ),
-        ],
-      ),
-      child: Center(child:label),
+        child: Center(child:label),
+        onPressed: (){
+          Bridge().dismiss();
+        },
+        ),
     );
   }
 }

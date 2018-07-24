@@ -60,6 +60,7 @@ class _StyleDetailsScreen {
   TextStyle accentedTitleStyle;
   TextStyle buttonTitleOnBackgroundStyle;
   TextStyle buttonTitleOnAccentStyle;
+  TextStyle navbarStyle;
 
   _StyleDetailsScreen() {
     this.headerStyle = TextStyle(
@@ -90,6 +91,12 @@ class _StyleDetailsScreen {
     );
     this.buttonTitleOnAccentStyle = buttonTitleOnBackgroundStyle.copyWith(
       color: AhoyColors.backgroundColor,
+    );
+    this.navbarStyle = TextStyle(
+      fontFamily: 'OpenSans',
+      fontWeight: FontWeight.w600,
+      fontSize: 9.0 * AhoyColors.scale,
+      color: AhoyColors.dark,
     );
   }
 }
