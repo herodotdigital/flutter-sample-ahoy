@@ -40,11 +40,29 @@ class TicketDetails extends StatelessWidget {
       Container(height: 10.0 * 2.0,),
       AhoyWidgets.cellWithShadow(_flightDetails()),
       Spacer(flex: 1,),
-      _bottomButton(accented: false, text: textBooking),
+      _bottomButton(accented: false, text: textBooking, onTap: _handleShowBooking),
       Container(height: margin,),
-      _bottomButton(accented: true, text: textBoarding),
+      _bottomButton(accented: true, text: textBoarding, onTap: _handleShowBoarding),
       Container(height: 16.0 * 2.0,),
     ],);
+  }
+
+  _handleClose() {
+    print("Handle Close button tap.");
+    // Navigator.of(context).pop();
+  }
+
+  _handleGps() {
+    print("Handle GPS button tap.");
+    Bridge().dismiss();
+  }
+
+  _handleShowBooking() {
+    print("Handle Booking button tap.");
+  }
+
+  _handleShowBoarding() {
+    print("Handle Boarding button tap.");
   }
 
   _navBar() {
@@ -53,21 +71,21 @@ class TicketDetails extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          _barButton('assets/images/close.png'),
+          _barButton('assets/images/close.png', _handleClose),
           Text(navbarTitle, style: AhoyStyles.details.navbarStyle,),
-          _barButton('assets/images/pinFullCopy.png'),
+          _barButton('assets/images/pinFullCopy.png', _handleGps),
         ],
       ),
     );
   }
 
-  _barButton(String imagePath) {
+  _barButton(String imagePath, Function func) {
     // return _icon(imagePath);
     return CupertinoButton(
       padding: EdgeInsets.all(0.0),
       minSize: 28.0*2.0,
       child: _icon(imagePath),
-      onPressed: (){},
+      onPressed: func,
     );
   }
 
@@ -208,7 +226,7 @@ class TicketDetails extends StatelessWidget {
     );
   }
 
-  Widget _bottomButton({bool accented, String text}) {
+  Widget _bottomButton({bool accented, String text, Function onTap}) {
     final style = accented ? AhoyStyles.details.buttonTitleOnAccentStyle : AhoyStyles.details.buttonTitleOnBackgroundStyle;
     final backgroundColor = accented ? AhoyColors.accentColor : AhoyColors.backgroundColor;
     final label = Text(text, style: style,);
@@ -236,9 +254,7 @@ class TicketDetails extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(10.0),
         child: Center(child:label),
-        onPressed: (){
-          Bridge().dismiss();
-        },
+        onPressed: onTap,
         ),
     );
   }
