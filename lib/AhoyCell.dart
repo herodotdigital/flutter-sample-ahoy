@@ -4,33 +4,18 @@ import 'package:ahoy_sample/AhoyStyles.dart';
 import 'package:ahoy_sample/AhoyWidgets.dart';
 import 'package:ahoy_sample/TicketDetailsData.dart';
 import 'package:ahoy_sample/TicketDetailsScreen.dart';
-
-class AhoyCellData {
-  final String title;
-  final String subtitle;
-  final String iconName;
-  final String topRightText;
-  final String bottomRightCaption;
-  final String bottomRightValue;
-  final String bottomLeftCaption;
-  final String bottomLeftValue;
-
-  const AhoyCellData({
-    this.title,
-    this.subtitle,
-    this.iconName,
-    this.topRightText,
-    this.bottomRightCaption,
-    this.bottomRightValue,
-    this.bottomLeftCaption,
-    this.bottomLeftValue,
-    });
-}
+import 'package:ahoy_sample/UI/AhoyCellData.dart';
 
 class AhoyCell extends StatelessWidget {
   final AhoyCellData data;
 
   AhoyCell(this.data);
+
+  static List<AhoyCell> forData(List<AhoyCellData> input) {
+    return input.map(
+      (data){ return AhoyCell(data); }
+    ).toList();
+  }
 
   @override Widget build(BuildContext context) {
     return GestureDetector(

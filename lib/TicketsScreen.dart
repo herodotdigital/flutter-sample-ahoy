@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ahoy_sample/AhoyCellMockData.dart';
 import 'package:ahoy_sample/AhoyStyles.dart';
 import 'package:ahoy_sample/AhoyWidgets.dart';
 import 'package:ahoy_sample/Bridge.dart';
+import 'package:ahoy_sample/Services/TripProvider.dart';
+import 'package:ahoy_sample/UI/AhoyCellFactory.dart';
 
 class TicketsScreen extends StatelessWidget {
   @override Widget build(BuildContext context) {
@@ -32,6 +33,7 @@ class TicketList extends StatefulWidget {
 class _TicketListState extends State<TicketList> with WidgetsBindingObserver {
   
   bool isLoaded = false;
+  final tripProvider = TripProvider();
 
   @override void initState() {
     super.initState();
@@ -65,9 +67,9 @@ class _TicketListState extends State<TicketList> with WidgetsBindingObserver {
   _allCells() {
       List<Widget> widgets = [];
       widgets.add(_headerFor("Now", "12 March"));
-      widgets.addAll(AhoyCellMockData.nowCells());
+      widgets.addAll(AhoyCellFactory.fromTrips(tripProvider.tripsNow()));
       widgets.add(_headerFor("Later", ""));
-      widgets.addAll(AhoyCellMockData.laterCells());
+      widgets.addAll(AhoyCellFactory.fromTrips(tripProvider.tripsLater()));
       return widgets;
     }
 
