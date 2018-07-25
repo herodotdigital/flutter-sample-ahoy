@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ahoy_sample/AhoyStyles.dart';
 import 'package:ahoy_sample/AhoyWidgets.dart';
+import 'package:ahoy_sample/TicketDetailsData.dart';
+import 'package:ahoy_sample/TicketDetailsScreen.dart';
 
 class AhoyCellData {
   final String title;
@@ -31,20 +33,27 @@ class AhoyCell extends StatelessWidget {
   AhoyCell(this.data);
 
   @override Widget build(BuildContext context) {
-    return _background(
-      Stack(children: <Widget>[
-        _icon(data.iconName),
-        _topRightText(data.topRightText),
-        Column(children: <Widget>[
-          _title(data.title),
-          _subtitle(data.subtitle),
-          Row(children: <Widget>[
-            _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
-            AhoyWidgets.flexibleSpace(),
-            _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+    return GestureDetector(
+      onTap: () => Navigator.of(context).push(
+        CupertinoPageRoute<void>(
+          builder: (BuildContext context) => TicketDetailsScreen(TicketDetailsData.stub()),
+        )
+      ),
+      child: _background(
+        Stack(children: <Widget>[
+          _icon(data.iconName),
+          _topRightText(data.topRightText),
+          Column(children: <Widget>[
+            _title(data.title),
+            _subtitle(data.subtitle),
+            Row(children: <Widget>[
+              _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
+              AhoyWidgets.flexibleSpace(),
+              _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+            ],),
           ],),
-        ],),
-      ],),      
+        ],),      
+      ),
     );
   }
 
@@ -69,7 +78,6 @@ class AhoyCell extends StatelessWidget {
 
   Widget _background(Widget child) {
     return Container(
-      // height: 55.5*2,
       margin: const EdgeInsets.symmetric(
         horizontal: 16.0,
         vertical: 9.0,

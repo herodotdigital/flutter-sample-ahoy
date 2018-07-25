@@ -34,7 +34,7 @@ class TicketDetails extends StatelessWidget {
     final textBooking = captions.showEntireBooking.toUpperCase(); 
     final textBoarding = captions.showBoardingPass.toUpperCase(); 
     return Column(children: <Widget>[
-      _navBar(),
+      _navBar(context),
       Container(height: 12.0 * 2.0,),
       _referenceRow(),
       Container(height: 10.0 * 2.0,),
@@ -45,11 +45,6 @@ class TicketDetails extends StatelessWidget {
       _bottomButton(accented: true, text: textBoarding, onTap: _handleShowBoarding),
       Container(height: 16.0 * 2.0,),
     ],);
-  }
-
-  _handleClose() {
-    print("Handle Close button tap.");
-    // Navigator.of(context).pop();
   }
 
   _handleGps() {
@@ -65,13 +60,15 @@ class TicketDetails extends StatelessWidget {
     print("Handle Boarding button tap.");
   }
 
-  _navBar() {
+  _navBar(BuildContext context) {
     final navbarTitle = "${data.departureLocationTitle} - ${data.arrivalLocationTitle}";
     return Container(margin: EdgeInsets.symmetric(horizontal: 1.0 * 2), child: 
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          _barButton('assets/images/close.png', _handleClose),
+          _barButton('assets/images/close.png', (){
+            Navigator.pop(context); 
+          }),
           Text(navbarTitle, style: AhoyStyles.details.navbarStyle,),
           _barButton('assets/images/pinFullCopy.png', _handleGps),
         ],

@@ -14,7 +14,6 @@ class AhoyApp extends MaterialApp {
   AhoyApp() : super(
     title: "Ahoy Sample",
     theme: new ThemeData(primarySwatch: Colors.blue),
-    // home: new TicketsScreen(),
-    home: TicketDetailsScreen(TicketDetailsData.stub()),
+    home: new TicketsScreen(),
   );
 }
