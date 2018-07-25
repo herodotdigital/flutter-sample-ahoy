@@ -3,14 +3,20 @@ import 'package:ahoy_sample/Models/Flight.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
 
 class TripStubs {
+  static int nextId = 1;
   static Trip stubTodayTrip() {
     return Trip(
+      id: nextId++,
       flight: Flight(
         gateClose: _today(8, 5),
         departureTime: _today(8, 15),
         arrivalTime: _today(8, 35),
-        from: Airport(code: "wro", fullName: "Wroclaw"),
-        to: Airport(code: "waw", fullName: "Warsaw"),
+        flightNumber: "FR8406",
+        seat: "13C",
+        terminal: "A",
+        gate: "12",
+        from: Airport(code: "wro", fullName: "Wroclaw City Airport"),
+        to: Airport(code: "waw", fullName: "Warsaw Chopin Airport"),
       ),
       booking: Booking(
         checkIn: _today(13, 0),
@@ -27,6 +33,10 @@ class TripStubs {
         gateClose: _createTime(hour: 8, minute: 5, daysLater: 30),
         departureTime: _createTime(hour: 8, minute: 15, daysLater: 30),
         arrivalTime: _createTime(hour: 8, minute: 35, daysLater: 30),
+        flightNumber: "FR8305",
+        seat: "15A",
+        terminal: "B",
+        gate: "9",
         from: Airport(code: "waw", fullName: "Warsaw"),
         to: Airport(code: "bcn", fullName: "Barcelona"),
       ),

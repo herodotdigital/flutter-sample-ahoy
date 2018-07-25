@@ -1,7 +1,9 @@
 import 'package:ahoy_sample/Models/Flight.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
+import 'package:ahoy_sample/Helpers/DateHelper.dart';
 
 class AhoyCellData {
+  int tripId = 0;
   String title;
   String subtitle;
   String iconName;
@@ -22,41 +24,32 @@ class AhoyCellData {
     this.bottomLeftValue,
     });
 
-    AhoyCellData.withFlight(Flight flight) {
+    AhoyCellData.withFlight(Flight flight, int tripId) {
+      this.tripId = tripId;
       this.title = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
       this.subtitle = flight.from.fullName;
       this.iconName = "assets/images/planeGray.png";
-      this.topRightText = _when(flight.departureTime);
+      this.topRightText = DateHelper.when(flight.departureTime);
       this.bottomRightCaption = _FlightCaptions.gateClose;
-      this.bottomRightValue = _clock(flight.gateClose);
+      this.bottomRightValue = DateHelper.clock(flight.gateClose);
       this.bottomLeftCaption = _FlightCaptions.departure;
-      this.bottomLeftValue = _clock(flight.departureTime);
+      this.bottomLeftValue = DateHelper.clock(flight.departureTime);
     }
 
-    AhoyCellData.withBooking(Booking booking) {
+    AhoyCellData.withBooking(Booking booking, int tripId) {
+      this.tripId = tripId;
       this.title = _howLong(booking);
       this.subtitle = "${booking.location}, ${booking.name}";
       this.iconName = "assets/images/hotelGray.png";
-      this.topRightText = _when(booking.checkIn);
+      this.topRightText = DateHelper.when(booking.checkIn);
       this.bottomRightCaption = _BookingCaptions.checkIn;
-      this.bottomRightValue = _clock(booking.checkIn);
+      this.bottomRightValue = DateHelper.clock(booking.checkIn);
       this.bottomLeftCaption = "";
       this.bottomLeftValue = "";
     }
 
-    String _when(DateTime time) {
-      // TODO: proper implementation
-      return "in 30 mins";
-    }
-
-    String _clock(DateTime time) {
-      // TODO: proper implementation using Intl package
-      return "${time.hour}:${time.minute}";
-    }
-
     String _howLong(Booking booking) {
-      // TODO: fix edge cases
-      final days = booking.checkOut.difference(booking.checkIn).inDays;
+      final days = DateHelper.howManyDays(booking.checkIn, booking.checkOut);
       return "$days ${_BookingCaptions.nightStay}";
     }
 }

@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ahoy_sample/AhoyStyles.dart';
 import 'package:ahoy_sample/AhoyWidgets.dart';
-import 'package:ahoy_sample/TicketDetailsData.dart';
+import 'package:ahoy_sample/UI/TicketDetailsDataFactory.dart';
 import 'package:ahoy_sample/TicketDetailsScreen.dart';
 import 'package:ahoy_sample/UI/AhoyCellData.dart';
+import 'package:ahoy_sample/Services/TripProvider.dart';
 
 class AhoyCell extends StatelessWidget {
   final AhoyCellData data;
@@ -21,7 +22,7 @@ class AhoyCell extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         CupertinoPageRoute<void>(
-          builder: (BuildContext context) => TicketDetailsScreen(TicketDetailsData.stub()),
+          builder: (BuildContext context) => _createDetailsScreen(),
         )
       ),
       child: _background(
@@ -40,6 +41,12 @@ class AhoyCell extends StatelessWidget {
         ],),      
       ),
     );
+  }
+
+  TicketDetailsScreen _createDetailsScreen() {
+    final trip = TripProvider().tripForId(this.data.tripId);
+    final data = TicketDetailsDataFactory.fromTrip(trip);
+    return TicketDetailsScreen(data);
   }
 
   _bottomText(String caption, String value, bool accented) {

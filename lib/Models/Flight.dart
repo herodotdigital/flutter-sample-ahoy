@@ -4,6 +4,10 @@ class Flight {
   DateTime gateClose;
   DateTime departureTime;
   DateTime arrivalTime;
+  String flightNumber;
+  String seat;
+  String terminal;
+  String gate;
 
   Flight({
     this.from,
@@ -11,6 +15,10 @@ class Flight {
     this.gateClose,
     this.departureTime,
     this.arrivalTime,
+    this.flightNumber,
+    this.seat,
+    this.terminal,
+    this.gate,
   });
 }
 

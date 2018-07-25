@@ -7,8 +7,8 @@ class AhoyCellFactory {
     return AhoyCell.forData(
       trips.expand((trip){
         return [
-          AhoyCellData.withFlight(trip.flight),
-          AhoyCellData.withBooking(trip.booking),
+          AhoyCellData.withFlight(trip.flight, trip.id),
+          AhoyCellData.withBooking(trip.booking, trip.id),
         ];
       }).toList()
     );
