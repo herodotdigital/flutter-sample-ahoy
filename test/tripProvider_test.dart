@@ -15,7 +15,8 @@ main() {
 
   test("Call data should be instantinated from a flight", (){
     final exampleTrip = TripStubs.stubTodayTrip();
-    final flightCell = AhoyCellData.withFlight(exampleTrip.flight);
+    final flightCell = AhoyCellData.withFlight(exampleTrip.flight, 13);
+    expect(flightCell.tripId, 13);
     expect(flightCell.title, isNotNull);
     expect(flightCell.subtitle, isNotNull);
     expect(flightCell.iconName, isNotNull);
@@ -28,7 +29,8 @@ main() {
 
   test("Call data should be instantinated from a booking", (){
     final exampleTrip = TripStubs.stubTodayTrip();
-    final bookingCell = AhoyCellData.withBooking(exampleTrip.booking);
+    final bookingCell = AhoyCellData.withBooking(exampleTrip.booking, 26);
+    expect(bookingCell.tripId, 26);
     expect(bookingCell.title, isNotNull);
     expect(bookingCell.subtitle, isNotNull);
     expect(bookingCell.iconName, isNotNull);
