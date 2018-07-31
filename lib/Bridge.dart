@@ -1,13 +1,22 @@
+import 'dart:async';
 import 'package:flutter/services.dart';
 
 class Bridge {
-  static BasicMessageChannel channel = BasicMessageChannel("mainChannel", new StandardMessageCodec());
+  static const channel = const MethodChannel('methodChannel');
 
-  void viewReady() {
-    channel.send("ViewReady");
+  void viewReady() async {
+    try {
+      channel.invokeMethod("ViewReady");
+    } on PlatformException catch (e) {
+      print("Error invoking method ViewReady: ${e.message}");
+    }
   }
 
-  void dismiss() {
-    channel.send("Dismiss");
+  void dismiss() async {
+    try {
+      channel.invokeMethod("Dismiss");
+    } on PlatformException catch (e) {
+      print("Error invoking method Dismiss: ${e.message}");
+    }
   }
 }
