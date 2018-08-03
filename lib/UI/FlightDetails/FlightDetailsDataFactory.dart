@@ -1,11 +1,11 @@
 import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
-import 'TicketDetailsData.dart';
+import 'FlightDetailsData.dart';
 
-class TicketDetailsDataFactory {
-  static TicketDetailsData fromTrip(Trip trip) {
+class FlightDetailsDataFactory {
+  static FlightDetailsData fromTrip(Trip trip) {
     final flight = trip.flight;
-    return TicketDetailsData(
+    return FlightDetailsData(
       bookingReferenceValue: "NLJP6T (BA)", // TODO: move this to proper model class
       ticketNumberValue: "125-5328235118", // TODO: move this to proper model class
       departureTime: DateHelper.clock(flight.departureTime),

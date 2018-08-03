@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
 import '../Shared/AhoyStyles.dart';
 import '../Shared/AhoyWidgets.dart';
-import '../FlightDetails/TicketDetailsDataFactory.dart';
-import '../FlightDetails/TicketDetailsScreen.dart';
+import '../FlightDetails/FlightDetailsDataFactory.dart';
+import '../FlightDetails/FlightDetailsScreen.dart';
 import 'TripCellData.dart';
 
 class TripCell extends StatelessWidget {
@@ -43,10 +43,10 @@ class TripCell extends StatelessWidget {
     );
   }
 
-  TicketDetailsScreen _createDetailsScreen() {
+  FlightDetailsScreen _createDetailsScreen() {
     final trip = TripProvider().tripForId(this.data.tripId);
-    final data = TicketDetailsDataFactory.fromTrip(trip);
-    return TicketDetailsScreen(data);
+    final data = FlightDetailsDataFactory.fromTrip(trip);
+    return FlightDetailsScreen(data);
   }
 
   _bottomText(String caption, String value, bool accented) {

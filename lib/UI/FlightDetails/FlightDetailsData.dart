@@ -1,4 +1,4 @@
-class TicketDetailsLocalization {
+class FlightDetailsLocalization {
   final String bookingReference;
   final String ticketNumber;
   final String flightNumber;
@@ -8,7 +8,7 @@ class TicketDetailsLocalization {
   final String showEntireBooking;
   final String showBoardingPass;
 
-  const TicketDetailsLocalization({
+  const FlightDetailsLocalization({
     this.bookingReference,
     this.ticketNumber,
     this.flightNumber,
@@ -19,8 +19,8 @@ class TicketDetailsLocalization {
     this.showBoardingPass,
   });
 
-  static TicketDetailsLocalization createEng() {
-    return TicketDetailsLocalization(
+  static FlightDetailsLocalization createEng() {
+    return FlightDetailsLocalization(
       bookingReference: "Booking reference:",
       ticketNumber: "Ticket number:",
       flightNumber: "Flight number",
@@ -33,7 +33,7 @@ class TicketDetailsLocalization {
   }
 }
 
-class TicketDetailsData {
+class FlightDetailsData {
   final String bookingReferenceValue;
   final String ticketNumberValue;
   final String departureTime;
@@ -50,7 +50,7 @@ class TicketDetailsData {
   final String arrivalLocationTitle;
   final String arrivalLocationSubtitle;
 
-  const TicketDetailsData({
+  const FlightDetailsData({
     this.bookingReferenceValue,
     this.ticketNumberValue,
     this.departureTime,
@@ -68,8 +68,8 @@ class TicketDetailsData {
     this.arrivalLocationSubtitle,
   });
 
-  static TicketDetailsData stub() {
-    return TicketDetailsData(
+  static FlightDetailsData stub() {
+    return FlightDetailsData(
       bookingReferenceValue: "NLJP6T (BA)",
       ticketNumberValue: "125-5328235118",
       departureTime: "9:50",

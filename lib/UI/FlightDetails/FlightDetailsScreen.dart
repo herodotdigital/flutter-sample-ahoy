@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
 import '../Shared/AhoyStyles.dart';
 import '../Shared/AhoyWidgets.dart';
-import 'TicketDetailsData.dart';
+import 'FlightDetailsData.dart';
 
 enum TextPairVariant { normal, accented, small }
 
-class TicketDetailsScreen extends StatelessWidget {
-  final TicketDetailsData detailsData;
+class FlightDetailsScreen extends StatelessWidget {
+  final FlightDetailsData detailsData;
 
-  TicketDetailsScreen(this.detailsData);
+  FlightDetailsScreen(this.detailsData);
 
   @override Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -18,20 +18,20 @@ class TicketDetailsScreen extends StatelessWidget {
       child: Material(
         type: MaterialType.canvas,
         child: SafeArea(
-          child: TicketDetails(detailsData),
+          child: FlightDetails(detailsData),
         ),
       ),
     );
   }
 }
 
-class TicketDetails extends StatelessWidget {
-  final captions = TicketDetailsLocalization.createEng();
-  final TicketDetailsData data;
+class FlightDetails extends StatelessWidget {
+  final captions = FlightDetailsLocalization.createEng();
+  final FlightDetailsData data;
   final margin = 6.0 * 2.0;
   final verticalMargin = 14.0 * 2.0;
 
-  TicketDetails(this.data);
+  FlightDetails(this.data);
 
   @override Widget build(BuildContext context) {
     final textBoarding = captions.showBoardingPass.toUpperCase(); 
