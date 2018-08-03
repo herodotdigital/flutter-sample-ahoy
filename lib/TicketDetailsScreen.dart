@@ -14,13 +14,16 @@ class TicketDetailsScreen extends StatelessWidget {
 
   @override Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      child: SafeArea(
-        child: TicketDetails(detailsData),
+      backgroundColor: AhoyColors.backgroundColor,
+      child: Material(
+        type: MaterialType.canvas,
+        child: SafeArea(
+          child: TicketDetails(detailsData),
         ),
+      ),
     );
   }
 }
-
 
 class TicketDetails extends StatelessWidget {
   final captions = TicketDetailsLocalization.createEng();
