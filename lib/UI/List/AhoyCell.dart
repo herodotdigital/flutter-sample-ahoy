@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
-import 'Shared/AhoyStyles.dart';
-import 'Shared/AhoyWidgets.dart';
-import 'TicketDetailsDataFactory.dart';
-import 'TicketDetailsScreen.dart';
+import '../Shared/AhoyStyles.dart';
+import '../Shared/AhoyWidgets.dart';
+import '../FlightDetails/TicketDetailsDataFactory.dart';
+import '../FlightDetails/TicketDetailsScreen.dart';
 import 'AhoyCellData.dart';
 
 class AhoyCell extends StatelessWidget {

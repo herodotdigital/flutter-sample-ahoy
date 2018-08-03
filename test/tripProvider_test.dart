@@ -2,7 +2,7 @@ import "package:test/test.dart";
 import 'package:ahoy_sample/Services/TripProvider.dart';
 import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
-import 'package:ahoy_sample/UI/AhoyCellData.dart';
+import 'package:ahoy_sample/UI/List/AhoyCellData.dart';
 
 main() {
   test("Trip provider should return Trips", (){

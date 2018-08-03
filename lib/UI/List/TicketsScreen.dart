@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
-import 'Shared/AhoyStyles.dart';
-import 'Shared/AhoyWidgets.dart';
+import '../Shared/AhoyStyles.dart';
+import '../Shared/AhoyWidgets.dart';
 import 'AhoyCellFactory.dart';
 
 class TicketsScreen extends StatelessWidget {
