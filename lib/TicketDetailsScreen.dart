@@ -34,7 +34,6 @@ class TicketDetails extends StatelessWidget {
   TicketDetails(this.data);
 
   @override Widget build(BuildContext context) {
-    final textBooking = captions.showEntireBooking.toUpperCase(); 
     final textBoarding = captions.showBoardingPass.toUpperCase(); 
     return Column(children: <Widget>[
       _navBar(context),
@@ -43,8 +42,6 @@ class TicketDetails extends StatelessWidget {
       Container(height: 10.0 * 2.0,),
       AhoyWidgets.cellWithShadow(_flightDetails()),
       Spacer(flex: 1,),
-      _bottomButton(accented: false, text: textBooking, onTap: _handleShowBooking),
-      Container(height: margin,),
       _bottomButton(accented: true, text: textBoarding, onTap: _handleShowBoarding),
       Container(height: 16.0 * 2.0,),
     ],);
@@ -53,10 +50,6 @@ class TicketDetails extends StatelessWidget {
   _handleGps() {
     print("Handle GPS button tap.");
     Bridge().dismiss();
-  }
-
-  _handleShowBooking() {
-    print("Handle Booking button tap.");
   }
 
   _handleShowBoarding() {
