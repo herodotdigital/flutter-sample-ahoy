@@ -1,6 +1,6 @@
-import 'package:ahoy_sample/Models/Trip.dart';
-import 'package:ahoy_sample/Models/Flight.dart';
-import 'package:ahoy_sample/Models/Booking.dart';
+import '../Trip.dart';
+import '../Flight.dart';
+import '../Booking.dart';
 
 class TripStubs {
   static int nextId = 1;

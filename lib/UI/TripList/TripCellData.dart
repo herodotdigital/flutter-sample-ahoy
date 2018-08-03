@@ -2,7 +2,7 @@ import 'package:ahoy_sample/Models/Flight.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
 
-class AhoyCellData {
+class TripCellData {
   int tripId = 0;
   String title;
   String subtitle;
@@ -13,7 +13,7 @@ class AhoyCellData {
   String bottomLeftCaption;
   String bottomLeftValue;
 
-  AhoyCellData({
+  TripCellData({
     this.title,
     this.subtitle,
     this.iconName,
@@ -24,7 +24,7 @@ class AhoyCellData {
     this.bottomLeftValue,
     });
 
-    AhoyCellData.withFlight(Flight flight, int tripId) {
+    TripCellData.withFlight(Flight flight, int tripId) {
       this.tripId = tripId;
       this.title = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
       this.subtitle = flight.from.fullName;
@@ -36,7 +36,7 @@ class AhoyCellData {
       this.bottomLeftValue = DateHelper.clock(flight.departureTime);
     }
 
-    AhoyCellData.withBooking(Booking booking, int tripId) {
+    TripCellData.withBooking(Booking booking, int tripId) {
       this.tripId = tripId;
       this.title = _howLong(booking);
       this.subtitle = "${booking.location}, ${booking.name}";

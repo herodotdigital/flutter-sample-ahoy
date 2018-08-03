@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ahoy_sample/AhoyStyles.dart';
-import 'package:ahoy_sample/AhoyWidgets.dart';
-import 'package:ahoy_sample/Bridge.dart';
+import 'package:ahoy_sample/Services/Bridge.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
-import 'package:ahoy_sample/UI/AhoyCellFactory.dart';
+import '../Shared/AhoyStyles.dart';
+import '../Shared/AhoyWidgets.dart';
+import 'TripCellFactory.dart';
 
-class TicketsScreen extends StatelessWidget {
+class TripsScreen extends StatelessWidget {
   @override Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(leading: _backButton(),),
       child: SafeArea(
-        child: TicketList(),
+        child: TripList(),
         ),
     );
   }
@@ -26,11 +26,11 @@ class TicketsScreen extends StatelessWidget {
   }
 }
 
-class TicketList extends StatefulWidget {
-  @override _TicketListState createState() => _TicketListState();
+class TripList extends StatefulWidget {
+  @override _TripListState createState() => _TripListState();
 }
 
-class _TicketListState extends State<TicketList> with WidgetsBindingObserver {
+class _TripListState extends State<TripList> with WidgetsBindingObserver {
   
   bool isLoaded = false;
   final tripProvider = TripProvider();
@@ -67,9 +67,9 @@ class _TicketListState extends State<TicketList> with WidgetsBindingObserver {
   _allCells() {
       List<Widget> widgets = [];
       widgets.add(_headerFor("Now", "12 March"));
-      widgets.addAll(AhoyCellFactory.fromTrips(tripProvider.tripsNow()));
+      widgets.addAll(TripCellFactory.fromTrips(tripProvider.tripsNow()));
       widgets.add(_headerFor("Later", ""));
-      widgets.addAll(AhoyCellFactory.fromTrips(tripProvider.tripsLater()));
+      widgets.addAll(TripCellFactory.fromTrips(tripProvider.tripsLater()));
       return widgets;
     }
 
