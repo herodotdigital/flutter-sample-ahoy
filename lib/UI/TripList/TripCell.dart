@@ -5,16 +5,16 @@ import '../Shared/AhoyStyles.dart';
 import '../Shared/AhoyWidgets.dart';
 import '../FlightDetails/TicketDetailsDataFactory.dart';
 import '../FlightDetails/TicketDetailsScreen.dart';
-import 'AhoyCellData.dart';
+import 'TripCellData.dart';
 
-class AhoyCell extends StatelessWidget {
-  final AhoyCellData data;
+class TripCell extends StatelessWidget {
+  final TripCellData data;
 
-  AhoyCell(this.data);
+  TripCell(this.data);
 
-  static List<AhoyCell> forData(List<AhoyCellData> input) {
+  static List<TripCell> forData(List<TripCellData> input) {
     return input.map(
-      (data){ return AhoyCell(data); }
+      (data){ return TripCell(data); }
     ).toList();
   }
 
