@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ahoy_sample/TicketsScreen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ahoy_sample/UI/TicketsScreen.dart';
 
 void main() {
   runApp(new AhoyApp());

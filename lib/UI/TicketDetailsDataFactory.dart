@@ -1,6 +1,6 @@
-import 'package:ahoy_sample/TicketDetailsData.dart';
 import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
+import 'TicketDetailsData.dart';
 
 class TicketDetailsDataFactory {
   static TicketDetailsData fromTrip(Trip trip) {

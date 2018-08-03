@@ -1,5 +1,5 @@
-import 'package:ahoy_sample/Models/Flight.dart';
-import 'package:ahoy_sample/Models/Booking.dart';
+import 'Flight.dart';
+import 'Booking.dart';
 
 class Trip {
   final int id;

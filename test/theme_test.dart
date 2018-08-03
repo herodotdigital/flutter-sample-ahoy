@@ -1,5 +1,5 @@
 import "package:test/test.dart";
-import "package:ahoy_sample/AhoyStyles.dart";
+import "package:ahoy_sample/UI/Shared/AhoyStyles.dart";
 
 void main() {
   test("Themes should be not null", (){

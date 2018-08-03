@@ -1,6 +1,6 @@
-import 'package:ahoy_sample/AhoyCell.dart';
-import 'package:ahoy_sample/UI/AhoyCellData.dart';
 import 'package:ahoy_sample/Models/Trip.dart';
+import 'AhoyCell.dart';
+import 'AhoyCellData.dart';
 
 class AhoyCellFactory {
   static List<AhoyCell> fromTrips(List<Trip> trips) {

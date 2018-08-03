@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ahoy_sample/Bridge.dart';
-import 'package:ahoy_sample/TicketDetailsData.dart';
-import 'package:ahoy_sample/AhoyStyles.dart';
-import 'package:ahoy_sample/AhoyWidgets.dart';
+import 'package:ahoy_sample/Services/Bridge.dart';
+import 'Shared/AhoyStyles.dart';
+import 'Shared/AhoyWidgets.dart';
+import 'TicketDetailsData.dart';
 
 enum TextPairVariant { normal, accented, small }
 
