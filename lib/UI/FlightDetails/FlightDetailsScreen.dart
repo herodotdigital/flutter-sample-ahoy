@@ -229,20 +229,22 @@ class FlightDetails extends StatelessWidget {
 
   Widget _bottomButton({bool accented, String text, Function onTap}) {
     final style = accented ? AhoyStyles.details.buttonTitleOnAccentStyle : AhoyStyles.details.buttonTitleOnBackgroundStyle;
-    final backgroundColor = accented ? AhoyColors.accentColor : AhoyColors.backgroundColor;
+    final backgroundColor = accented ? null : AhoyColors.backgroundColor;
+    final gradient = accented ? LinearGradient(colors: [AhoyColors.accentColor, AhoyColors.darkAccentColor]) : null;
     final label = Text(text, style: style,);
     final decoration = BoxDecoration(
       color: backgroundColor,
+      gradient: gradient,
       borderRadius: BorderRadius.circular(10.0),
       boxShadow: <BoxShadow>[
         BoxShadow(
-          color: Colors.black12,
-          blurRadius: 15.0,
-          offset: Offset(4.5, 4.5)
+          color: AhoyColors.shadowColor,
+          blurRadius: 20.0,
+          offset: Offset(4.0, 4.0)
         ),
       ],
     );
-    final height = 22.5 * 2.0;
+    final height = 45.0;
     final margin = const EdgeInsets.symmetric(
       horizontal: 16.0,
       vertical: 0.0,
@@ -252,8 +254,8 @@ class FlightDetails extends StatelessWidget {
       margin: margin,
       decoration: decoration,
       child: CupertinoButton(
-        color: backgroundColor,
         borderRadius: BorderRadius.circular(10.0),
+        padding: EdgeInsets.all(0.0),
         child: Center(child:label),
         onPressed: onTap,
         ),

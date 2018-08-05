@@ -7,9 +7,11 @@ class AhoyStyles {
 
 class AhoyColors {
   static final accentColor = Color.fromRGBO(211, 86, 165, 1.0);
+  static final darkAccentColor = Color.fromRGBO(179, 66, 138, 1.0);
   static final backgroundColor = Color.fromRGBO(255, 255, 255, 1.0);
   static final grey = Color.fromRGBO(155, 155, 155, 1.0);
   static final dark = Color.fromRGBO(74, 74, 74, 1.0);
+  static final shadowColor = Color.fromRGBO(0, 0, 0, 0.06);
 }
 
 class _StyleTicketsScreen {

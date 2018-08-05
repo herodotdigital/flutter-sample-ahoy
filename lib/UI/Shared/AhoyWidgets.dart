@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'AhoyStyles.dart';
 
 class AhoyWidgets {
   static Widget flexibleSpace() {
@@ -15,12 +16,12 @@ class AhoyWidgets {
       padding: EdgeInsets.all(14.0),
       decoration: new BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(15.0),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black12,
-            blurRadius: 15.0,
-            offset: Offset(4.5, 4.5)
+            color: AhoyColors.shadowColor,
+            blurRadius: 30.0,
+            offset: Offset(9.0, 9.0)
           ),
         ],
       ),
