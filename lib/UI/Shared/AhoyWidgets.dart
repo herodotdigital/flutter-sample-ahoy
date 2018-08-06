@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'AhoyStyles.dart';
+import 'AhoyDecorations.dart';
 
 class AhoyWidgets {
   static Widget flexibleSpace() {
@@ -8,7 +8,6 @@ class AhoyWidgets {
 
   static Widget cellWithShadow(Widget child) {
     return Container(
-      // height: 55.5*2,
       margin: const EdgeInsets.symmetric(
         horizontal: 16.0,
         vertical: 9.0,
@@ -17,13 +16,7 @@ class AhoyWidgets {
       decoration: new BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15.0),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: AhoyColors.shadowColor,
-            blurRadius: 30.0,
-            offset: Offset(9.0, 9.0)
-          ),
-        ],
+        boxShadow: <BoxShadow>[AhoyDecorations.bigShadow()],
       ),
       child: child
     );

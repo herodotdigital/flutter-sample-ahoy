@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
 import '../Shared/AhoyStyles.dart';
 import '../Shared/AhoyWidgets.dart';
+import '../Shared/AhoyDecorations.dart';
 import 'FlightDetailsData.dart';
 
 enum TextPairVariant { normal, accented, small }
@@ -36,7 +37,6 @@ class FlightDetails extends StatelessWidget {
   @override Widget build(BuildContext context) {
     final textBoarding = captions.showBoardingPass.toUpperCase();
     return Column(children: <Widget>[
-      Container(height: 4.0,), // Simulates android navbar height
       _navBar(context),
       Container(height: 24.0,),
       _referenceRow(),
@@ -229,21 +229,7 @@ class FlightDetails extends StatelessWidget {
 
   Widget _bottomButton({bool accented, String text, Function onTap}) {
     final style = accented ? AhoyStyles.details.buttonTitleOnAccentStyle : AhoyStyles.details.buttonTitleOnBackgroundStyle;
-    final backgroundColor = accented ? null : AhoyColors.backgroundColor;
-    final gradient = accented ? LinearGradient(colors: [AhoyColors.accentColor, AhoyColors.darkAccentColor]) : null;
     final label = Text(text, style: style,);
-    final decoration = BoxDecoration(
-      color: backgroundColor,
-      gradient: gradient,
-      borderRadius: BorderRadius.circular(10.0),
-      boxShadow: <BoxShadow>[
-        BoxShadow(
-          color: AhoyColors.shadowColor,
-          blurRadius: 20.0,
-          offset: Offset(4.0, 4.0)
-        ),
-      ],
-    );
     final height = 45.0;
     final margin = const EdgeInsets.symmetric(
       horizontal: 16.0,
@@ -252,7 +238,7 @@ class FlightDetails extends StatelessWidget {
     return Container(
       height: height,
       margin: margin,
-      decoration: decoration,
+      decoration: AhoyDecorations.wideButton(accented),
       child: CupertinoButton(
         borderRadius: BorderRadius.circular(10.0),
         padding: EdgeInsets.all(0.0),
