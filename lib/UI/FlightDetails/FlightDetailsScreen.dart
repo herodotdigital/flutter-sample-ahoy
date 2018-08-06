@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
 import '../Shared/AhoyStyles.dart';
 import '../Shared/AhoyWidgets.dart';
+import '../Shared/AhoyDecorations.dart';
 import 'FlightDetailsData.dart';
 
 enum TextPairVariant { normal, accented, small }
@@ -28,22 +29,26 @@ class FlightDetailsScreen extends StatelessWidget {
 class FlightDetails extends StatelessWidget {
   final captions = FlightDetailsLocalization.createEng();
   final FlightDetailsData data;
-  final margin = 6.0 * 2.0;
-  final verticalMargin = 14.0 * 2.0;
+  final margin = 12.0;
+  final verticalMargin = 28.5;
 
   FlightDetails(this.data);
 
   @override Widget build(BuildContext context) {
-    final textBoarding = captions.showBoardingPass.toUpperCase(); 
+    final textBoarding = captions.showBoardingPass.toUpperCase();
     return Column(children: <Widget>[
       _navBar(context),
-      Container(height: 12.0 * 2.0,),
+      Container(height: 24.0,),
       _referenceRow(),
-      Container(height: 10.0 * 2.0,),
-      AhoyWidgets.cellWithShadow(_flightDetails()),
+      Container(height: 20.0,),
+      AhoyWidgets.cellWithShadow(
+        Container(padding: EdgeInsets.only(top: 7.0, bottom: 18.0,),
+          child: _flightDetails(),
+        )
+      ),
       Spacer(flex: 1,),
       _bottomButton(accented: true, text: textBoarding, onTap: _handleShowBoarding),
-      Container(height: 16.0 * 2.0,),
+      Container(height: 32.0,),
     ],);
   }
 
@@ -73,17 +78,16 @@ class FlightDetails extends StatelessWidget {
   }
 
   _barButton(String imagePath, Function func) {
-    // return _icon(imagePath);
     return CupertinoButton(
       padding: EdgeInsets.all(0.0),
-      minSize: 28.0*2.0,
+      minSize: 28.0 * 2.0,
       child: _icon(imagePath),
       onPressed: func,
     );
   }
 
   _referenceRow() {
-    return Container(margin: EdgeInsets.symmetric(horizontal: 16 * 2.0),child:
+    return Container(margin: EdgeInsets.symmetric(horizontal: 32.0),child:
       Row(children: <Widget>[
         Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -107,9 +111,9 @@ class FlightDetails extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Expanded(flex: 63,child: _flightDetailsLeft(),),
-          _flightDetailsVerticalLine(),
-          Expanded(flex: 107,child: _flightDetailsRight(),),
+          Expanded(flex: 111,child: _flightDetailsLeft(),),
+          Expanded(flex: 20, child: _flightDetailsVerticalLine(),),
+          Expanded(flex: 206,child: _flightDetailsRight(),),
         ],
       ),
     );
@@ -144,7 +148,9 @@ class FlightDetails extends StatelessWidget {
   Widget _flightDetailsLeft() {
     final alignment = CrossAxisAlignment.end;
     final variant = TextPairVariant.accented;
-    final center = Text(data.travelTime, style: AhoyStyles.details.headerStyle,);
+    final center = Padding(padding: EdgeInsets.only(right: 3.0), child:
+      Text(data.travelTime, style: AhoyStyles.details.headerStyle,)
+    );
     final top = Padding(padding: EdgeInsets.only(right: margin), child: 
       _textPairView(data.departureTime, data.departureDate, variant, alignment)
     );
@@ -185,26 +191,28 @@ class FlightDetails extends StatelessWidget {
     final arrival = Padding(padding: EdgeInsets.only(left: margin), child: 
           _textPairView(data.arrivalLocationTitle, data.arrivalLocationSubtitle, normalVariant, alignment),
         );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        departure,
-        Container(height: verticalMargin,),
-        _uniformFilledRow([flightNumber, seat]),
-        Container(height: verticalMargin,),
-        _uniformFilledRow([terminal, gate]),
-        Container(height: verticalMargin,),
-        arrival,
-      ],
+    return Container(margin: EdgeInsets.only(left: 3.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          departure,
+          Container(height: verticalMargin,),
+          _uniformFilledRow([flightNumber, seat]),
+          Container(height: verticalMargin,),
+          _uniformFilledRow([terminal, gate]),
+          Container(height: verticalMargin,),
+          arrival,
+        ],
+      ),
     );
   }
   Widget _flightDetailsVerticalLine() {
     return Column(children: <Widget>[
-      Container(height: 5.0 * 2.0,),
-      Image.asset('assets/images/oval6.png', width: 9.0 * 2,),
-      Expanded(child: Container(color: Color.fromRGBO(155, 155, 155, 1.0), width: 1.5 * 2.0,),),
-      Image.asset('assets/images/oval6.png', width: 9.0 * 2,),
-      Container(height: 5.0 * 2.0,),
+      Container(height: 10.0,),
+      Image.asset('assets/images/oval6.png', width: 20.0,),
+      Expanded(child: Container(color: Color.fromRGBO(155, 155, 155, 1.0), width: 3.0,),),
+      Image.asset('assets/images/oval6.png', width: 20.0,),
+      Container(height: 10.0,),
     ],);
   }
 
@@ -221,20 +229,8 @@ class FlightDetails extends StatelessWidget {
 
   Widget _bottomButton({bool accented, String text, Function onTap}) {
     final style = accented ? AhoyStyles.details.buttonTitleOnAccentStyle : AhoyStyles.details.buttonTitleOnBackgroundStyle;
-    final backgroundColor = accented ? AhoyColors.accentColor : AhoyColors.backgroundColor;
     final label = Text(text, style: style,);
-    final decoration = BoxDecoration(
-      color: backgroundColor,
-      borderRadius: BorderRadius.circular(10.0),
-      boxShadow: <BoxShadow>[
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 15.0,
-          offset: Offset(4.5, 4.5)
-        ),
-      ],
-    );
-    final height = 22.5 * 2.0;
+    final height = 45.0;
     final margin = const EdgeInsets.symmetric(
       horizontal: 16.0,
       vertical: 0.0,
@@ -242,10 +238,10 @@ class FlightDetails extends StatelessWidget {
     return Container(
       height: height,
       margin: margin,
-      decoration: decoration,
+      decoration: AhoyDecorations.wideButton(accented),
       child: CupertinoButton(
-        color: backgroundColor,
         borderRadius: BorderRadius.circular(10.0),
+        padding: EdgeInsets.all(0.0),
         child: Center(child:label),
         onPressed: onTap,
         ),
