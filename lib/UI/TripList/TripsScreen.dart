@@ -9,9 +9,10 @@ import 'TripCellFactory.dart';
 class TripsScreen extends StatelessWidget {
   @override Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(leading: _backButton(),),
+      // navigationBar: CupertinoNavigationBar(leading: _backButton(),),
       child: SafeArea(
-        child: TripList(),
+        child: Padding(padding: EdgeInsets.only(top: 4.0), child: TripList(),),
+        // child: TripList(),
         ),
     );
   }

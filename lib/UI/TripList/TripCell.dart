@@ -26,19 +26,22 @@ class TripCell extends StatelessWidget {
         )
       ),
       child: _background(
-        Stack(children: <Widget>[
-          _icon(data.iconName),
-          _topRightText(data.topRightText),
-          Column(children: <Widget>[
-            _title(data.title),
-            _subtitle(data.subtitle),
-            Row(children: <Widget>[
-              _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
-              AhoyWidgets.flexibleSpace(),
-              _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+        Padding(
+          padding: EdgeInsets.only(top: 3.0),
+          child: Stack(children: <Widget>[
+            _icon(data.iconName),
+            _topRightText(data.topRightText),
+            Column(children: <Widget>[
+              _title(data.title),
+              _subtitle(data.subtitle),
+              Row(children: <Widget>[
+                _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
+                AhoyWidgets.flexibleSpace(),
+                _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+              ],),
             ],),
           ],),
-        ],),      
+        ),      
       ),
     );
   }
@@ -76,7 +79,7 @@ class TripCell extends StatelessWidget {
       ),
       padding: EdgeInsets.all(14.0),
       decoration: new BoxDecoration(
-        color: Colors.white,
+        color: AhoyColors.backgroundColor,
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: <BoxShadow>[
           BoxShadow(
@@ -103,7 +106,7 @@ class TripCell extends StatelessWidget {
   
   Widget _title(String text) {
     final titleStyle = AhoyStyles.list.titleStyle;
-    return Text(text.toUpperCase(), style: titleStyle,);
+    return Text(text, style: titleStyle,);
   }
 
   Widget _subtitle(String text) {

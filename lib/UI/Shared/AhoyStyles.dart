@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AhoyStyles {
-  static final list = _StyleTicketsScreen();
+  static final list = _StyleTripScreen();
   static final details = _StyleDetailsScreen();
 }
 
@@ -10,11 +10,12 @@ class AhoyColors {
   static final darkAccentColor = Color.fromRGBO(179, 66, 138, 1.0);
   static final backgroundColor = Color.fromRGBO(255, 255, 255, 1.0);
   static final grey = Color.fromRGBO(155, 155, 155, 1.0);
+  static final transparentGrey = Color.fromRGBO(155, 155, 155, 0.5);
   static final dark = Color.fromRGBO(74, 74, 74, 1.0);
   static final shadowColor = Color.fromRGBO(0, 0, 0, 0.06);
 }
 
-class _StyleTicketsScreen {
+class _StyleTripScreen {
   TextStyle titleStyle;
   TextStyle subtitleStyle;
   TextStyle headerDetailsStyle;
@@ -22,7 +23,7 @@ class _StyleTicketsScreen {
   TextStyle valueStyle;
   TextStyle accentedValueStyle;
 
-  _StyleTicketsScreen() {
+  _StyleTripScreen() {
     TextStyle base = TextStyle(
       fontFamily: 'OpenSans',
       fontWeight: FontWeight.w400,
@@ -31,16 +32,17 @@ class _StyleTicketsScreen {
     this.titleStyle = base.copyWith(
       color: AhoyColors.accentColor,
       fontSize: 18.0,
-      fontWeight: FontWeight.w600
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.2,
     );
     this.subtitleStyle = base.copyWith(
       color: AhoyColors.grey,
       fontSize: 14.0,
     );
     this.headerDetailsStyle = base.copyWith(
-      color: AhoyColors.grey,
+      color: AhoyColors.transparentGrey,
       fontSize: 14.0,
-      fontWeight: FontWeight.w600
+      fontWeight: FontWeight.w600,
     );
     this.captionStyle = base.copyWith(
       color: AhoyColors.dark
