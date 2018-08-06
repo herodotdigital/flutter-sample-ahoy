@@ -6,6 +6,7 @@ import '../Shared/AhoyWidgets.dart';
 import '../FlightDetails/FlightDetailsDataFactory.dart';
 import '../FlightDetails/FlightDetailsScreen.dart';
 import 'TripCellData.dart';
+import 'DraggableCell.dart';
 
 class TripCell extends StatelessWidget {
   final TripCellData data;
@@ -25,8 +26,10 @@ class TripCell extends StatelessWidget {
           builder: (BuildContext context) => _createDetailsScreen(),
         )
       ),
-      child: _background(
-        Padding(
+      child: DraggableCell(
+        onAccept: _onApprove,
+        onDelete: _onDismiss,
+        child: Padding(
           padding: EdgeInsets.only(top: 3.0),
           child: Stack(children: <Widget>[
             _icon(data.iconName),
@@ -41,9 +44,17 @@ class TripCell extends StatelessWidget {
               ],),
             ],),
           ],),
-        ),      
+        ),
       ),
     );
+  }
+
+  _onApprove() {
+    debugPrint("On Approve");
+  }
+
+  _onDismiss() {
+    debugPrint("On Dismiss");
   }
 
   FlightDetailsScreen _createDetailsScreen() {
@@ -68,28 +79,6 @@ class TripCell extends StatelessWidget {
     final valueStyle = AhoyStyles.list.valueStyle;
     return Container(alignment: Alignment.topRight,
       child:Text(text, style: valueStyle,),
-    );
-  }
-
-  Widget _background(Widget child) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-        vertical: 9.0,
-      ),
-      padding: EdgeInsets.all(14.0),
-      decoration: new BoxDecoration(
-        color: AhoyColors.backgroundColor,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5.0,
-            offset: Offset(4.5, 4.5)
-          ),
-        ],
-      ),
-      child: child
     );
   }
 
