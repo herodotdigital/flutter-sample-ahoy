@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/animation.dart';
 import 'package:ahoy_sample/UI/Shared/AhoyStyles.dart';
 
 class DraggableCell extends StatefulWidget {
@@ -11,16 +12,32 @@ class DraggableCell extends StatefulWidget {
   @override State<StatefulWidget> createState() => _DraggableCellState();
 }
 
-class _DraggableCellState extends State<DraggableCell> {
+class _DraggableCellState extends State<DraggableCell> with SingleTickerProviderStateMixin {
 
   double xOffset = 0.0;
   double screenWidth = 320.0;
+  Animation<double> animation;
+  AnimationController controller;
+
   final double triggerThreshold = 106.0;
   final double borderRadius = 10.0;
   final cellMargin = EdgeInsets.symmetric(
     horizontal: 16.0,
     vertical: 9.0,
   );
+
+  @override void initState() {
+    super.initState();
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+  }
+
+  @override void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
@@ -43,6 +60,7 @@ class _DraggableCellState extends State<DraggableCell> {
   }
 
   _onDragUpdate(DragUpdateDetails details) {
+    controller.reset();
     setState((){
       xOffset += details.delta.dx;
     });
@@ -56,25 +74,22 @@ class _DraggableCellState extends State<DraggableCell> {
         widget.onDelete();
       }
     }
-    setState((){
-      if (_passedDragThreshold()) {
-        //animate this
-        xOffset = screenWidth * xOffset.sign;
-      } else {
-        xOffset = 0.0;
-      }
-    });
+    if (_passedDragThreshold()) {
+      _playCompletionAnimation();
+    } else {
+      _playCancelAnimation();
+    }
   }
 
   _onDragCancel() {
     setState((){
-      xOffset = 0.0;
+      _playCancelAnimation();
     });
   }
 
   Widget _contentView() {
     return Container(
-        transform: Matrix4.translationValues(xOffset, 0.0, 0.0),
+        transform: Matrix4.translationValues(_currentXOffset(), 0.0, 0.0),
         margin: cellMargin,
         padding: EdgeInsets.all(14.0),
         decoration: BoxDecoration(
@@ -90,6 +105,39 @@ class _DraggableCellState extends State<DraggableCell> {
         ),
         child: widget.child,
       );
+  }
+
+  double _currentXOffset() {
+    double offset = xOffset;
+    if (animation != null && animation.status == AnimationStatus.forward) {
+      offset = animation.value;
+    }
+    return offset;
+  }
+
+  _playCancelAnimation() {
+    _playAnimationTo(offset: 0.0);
+  }
+
+  _playCompletionAnimation() {
+    final double offscreen = screenWidth * xOffset.sign;
+    _playAnimationTo(offset: offscreen);
+  }
+
+  _playAnimationTo({@required double offset}) {
+    controller.reset();
+    final Animation curve =
+    CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    animation = Tween(begin: xOffset, end: offset).animate(curve);
+    animation.addListener((){
+      setState((){});
+    });
+    animation.addStatusListener((AnimationStatus status){
+      if (status == AnimationStatus.completed) {
+        xOffset = offset;
+      }
+    });
+    controller.forward();
   }
 
   bool _passedDragThreshold() {
@@ -127,7 +175,6 @@ class _DraggableCellState extends State<DraggableCell> {
   Widget _layer({@required String text, @required image, @required List<Color> colors, @required align}) {
     return 
       Container(
-        // height: 100.0,
         margin: cellMargin,
         decoration: BoxDecoration(
             gradient: LinearGradient(colors: colors),
