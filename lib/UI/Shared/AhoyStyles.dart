@@ -13,6 +13,10 @@ class AhoyColors {
   static final transparentGrey = Color.fromRGBO(155, 155, 155, 0.5);
   static final dark = Color.fromRGBO(74, 74, 74, 1.0);
   static final shadowColor = Color.fromRGBO(0, 0, 0, 0.06);
+  static final declineColor = Color.fromRGBO(245, 81, 95, 1.0);
+  static final declineDarkColor = Color.fromRGBO(159, 4, 27, 1.0);
+  static final approveColor = Color.fromRGBO(86, 211, 101, 1.0);
+  static final approveDarkColor = Color.fromRGBO(83, 179, 66, 1.0);
 }
 
 class _StyleTripScreen {
@@ -22,6 +26,7 @@ class _StyleTripScreen {
   TextStyle captionStyle;
   TextStyle valueStyle;
   TextStyle accentedValueStyle;
+  TextStyle bottomLayerStyle;
 
   _StyleTripScreen() {
     TextStyle base = TextStyle(
@@ -52,6 +57,9 @@ class _StyleTripScreen {
     );
     this.accentedValueStyle = base.copyWith(
       color: AhoyColors.accentColor
+    );
+    this.bottomLayerStyle = base.copyWith(
+      color: AhoyColors.backgroundColor,
     );
   }
 }

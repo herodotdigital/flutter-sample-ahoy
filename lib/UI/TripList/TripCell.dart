@@ -10,12 +10,18 @@ import 'DraggableCell.dart';
 
 class TripCell extends StatelessWidget {
   final TripCellData data;
+  Function onApprove;
+  Function onDismiss;
 
-  TripCell(this.data);
+  TripCell({
+    @required this.data,
+    @required this.onApprove,
+    @required this.onDismiss,
+  });
 
   static List<TripCell> forData(List<TripCellData> input) {
     return input.map(
-      (data){ return TripCell(data); }
+      (data){ return TripCell(data:data, onApprove: (){}, onDismiss: (){}); }
     ).toList();
   }
 
@@ -50,10 +56,12 @@ class TripCell extends StatelessWidget {
   }
 
   _onApprove() {
+    onApprove();
     debugPrint("On Approve");
   }
 
   _onDismiss() {
+    onDismiss();
     debugPrint("On Dismiss");
   }
 

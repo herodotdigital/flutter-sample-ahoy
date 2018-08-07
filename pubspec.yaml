@@ -25,6 +25,8 @@ flutter:
     - assets/images/planeGray.png
     - assets/images/pinFullCopy.png
     - assets/images/close.png
+    - assets/images/approveWhite.png
+    - assets/images/closeGrayWhite.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
