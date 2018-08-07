@@ -14,9 +14,11 @@ class DraggableCell extends StatefulWidget {
 
 class _DraggableCellState extends State<DraggableCell> with SingleTickerProviderStateMixin {
 
-  double xOffset = 0.0;
+  double contentXOffset = 0.0;
   double screenWidth = 320.0;
-  Animation<double> animation;
+  bool backgroundVisible = true;
+  Animation<double> contentMoveAnimation;
+  Animation<double> backgroundMoveAnimation;
   AnimationController controller;
 
   final double triggerThreshold = 106.0;
@@ -62,13 +64,13 @@ class _DraggableCellState extends State<DraggableCell> with SingleTickerProvider
   _onDragUpdate(DragUpdateDetails details) {
     controller.reset();
     setState((){
-      xOffset += details.delta.dx;
+      contentXOffset += details.delta.dx;
     });
   }
 
   _onDragEnd(DragEndDetails details) {
     if (_passedDragThreshold()) {
-      if (xOffset.sign > 0) {
+      if (contentXOffset.sign > 0) {
         widget.onAccept();
       } else {
         widget.onDelete();
@@ -89,7 +91,7 @@ class _DraggableCellState extends State<DraggableCell> with SingleTickerProvider
 
   Widget _contentView() {
     return Container(
-        transform: Matrix4.translationValues(_currentXOffset(), 0.0, 0.0),
+        transform: Matrix4.translationValues(_currentContentXOffset(), 0.0, 0.0),
         margin: cellMargin,
         padding: EdgeInsets.all(14.0),
         decoration: BoxDecoration(
@@ -107,51 +109,82 @@ class _DraggableCellState extends State<DraggableCell> with SingleTickerProvider
       );
   }
 
-  double _currentXOffset() {
-    double offset = xOffset;
-    if (animation != null && animation.status == AnimationStatus.forward) {
-      offset = animation.value;
+  double _currentContentXOffset() {
+    double offset = contentXOffset;
+    if (contentMoveAnimation != null && contentMoveAnimation.status == AnimationStatus.forward) {
+      offset = contentMoveAnimation.value;
     }
     return offset;
   }
 
   _playCancelAnimation() {
-    _playAnimationTo(offset: 0.0);
+    _playAnimationTo(contentOffset: 0.0, animateBackground: false);
   }
 
   _playCompletionAnimation() {
-    final double offscreen = screenWidth * xOffset.sign;
-    _playAnimationTo(offset: offscreen);
+    final double offscreen = screenWidth * contentXOffset.sign;
+    _playAnimationTo(contentOffset: offscreen, animateBackground: true);
   }
 
-  _playAnimationTo({@required double offset}) {
+  _playAnimationTo({@required double contentOffset, @required bool animateBackground}) {
     controller.reset();
-    final Animation curve =
-    CurvedAnimation(parent: controller, curve: Curves.easeInOut);
-    animation = Tween(begin: xOffset, end: offset).animate(curve);
-    animation.addListener((){
+    final Animation curve = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    contentMoveAnimation = Tween(begin: contentXOffset, end: contentOffset).animate(curve);
+    contentMoveAnimation.addListener((){
       setState((){});
     });
-    animation.addStatusListener((AnimationStatus status){
+    contentMoveAnimation.addStatusListener((AnimationStatus status){
       if (status == AnimationStatus.completed) {
-        xOffset = offset;
+        contentXOffset = contentOffset;
       }
     });
+    if (animateBackground) {
+      final Animation delayed = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+      backgroundMoveAnimation = Tween(begin: 0.0, end: contentOffset).animate(delayed);
+      backgroundMoveAnimation.addListener((){
+        setState((){});
+      });
+      backgroundMoveAnimation.addStatusListener((AnimationStatus status){
+        if (status == AnimationStatus.completed) {
+          _runCompletionFor(offset: contentOffset);
+          setState(() {
+            backgroundVisible = false;          
+          });
+        }
+      });
+    }
     controller.forward();
   }
 
+  _runCompletionFor({@required double offset}) {
+    if (offset.sign > 0) {
+      widget.onAccept();
+    } else {
+      widget.onDelete();
+    }
+  }
+
   bool _passedDragThreshold() {
-    return xOffset.abs() > triggerThreshold;
+    return contentXOffset.abs() > triggerThreshold;
   }
 
   Widget _bottomLayer() {
-    if (xOffset == 0.0) {
+    Widget layer;
+    if (contentXOffset == 0.0 || !backgroundVisible) {
       return Container();
-    } else if (xOffset.sign > 0) {
-      return _acceptLayer();
+    } else if (contentXOffset.sign > 0) {
+      layer = _acceptLayer();
     } else {
-      return _dismissLayer();
+      layer = _dismissLayer();
     }
+    double xTranslation = 0.0;
+    if (backgroundMoveAnimation != null && backgroundMoveAnimation.status == AnimationStatus.forward) {
+      xTranslation = backgroundMoveAnimation.value;
+    }
+    return Container(
+      transform: Matrix4.translationValues(xTranslation, 0.0, 0.0),
+      child: layer,
+    );
   }
 
   Widget _acceptLayer() {

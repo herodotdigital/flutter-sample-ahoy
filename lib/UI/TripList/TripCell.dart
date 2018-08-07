@@ -57,12 +57,10 @@ class TripCell extends StatelessWidget {
 
   _onApprove() {
     onApprove();
-    debugPrint("On Approve");
   }
 
   _onDismiss() {
     onDismiss();
-    debugPrint("On Dismiss");
   }
 
   FlightDetailsScreen _createDetailsScreen() {
