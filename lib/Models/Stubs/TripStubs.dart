@@ -1,12 +1,12 @@
 import '../Trip.dart';
 import '../Flight.dart';
 import '../Booking.dart';
+import 'package:meta/meta.dart';
 
 class TripStubs {
-  static int nextId = 1;
-  static Trip stubTodayTrip() {
+  static Trip stubTodayTrip({@required int id}) {
     return Trip(
-      id: nextId++,
+      id: id,
       flight: Flight(
         gateClose: _today(8, 5),
         departureTime: _today(8, 15),
@@ -27,8 +27,9 @@ class TripStubs {
     );
   }
 
-  static Trip stubLaterTrip() {
+  static Trip stubLaterTrip({@required int id}) {
     return Trip(
+      id: id,
       flight: Flight(
         gateClose: _createTime(hour: 8, minute: 5, daysLater: 30),
         departureTime: _createTime(hour: 8, minute: 15, daysLater: 30),

@@ -2,7 +2,7 @@ import 'package:ahoy_sample/Models/Trip.dart';
 import 'TripCell.dart';
 import 'TripCellData.dart';
 
-class TripCellFactory {
+abstract class TripCellFactory {
   static List<TripCell> fromTrips(List<Trip> trips) {
     return TripCell.forData(
       trips.expand((trip){

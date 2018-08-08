@@ -3,9 +3,13 @@ import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
 
 class TripProvider {
   static final _allTrips = [
-    TripStubs.stubTodayTrip(),
-    TripStubs.stubLaterTrip(),
+    TripStubs.stubTodayTrip(id: 1),
+    TripStubs.stubLaterTrip(id: 2),
   ];
+
+  List<Trip> allTrips() {
+    return _allTrips;
+  }
 
   List<Trip> tripsNow() {
     return [_allTrips[0]];

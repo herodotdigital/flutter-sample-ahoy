@@ -7,6 +7,7 @@ import '../FlightDetails/FlightDetailsDataFactory.dart';
 import '../FlightDetails/FlightDetailsScreen.dart';
 import 'TripCellData.dart';
 import 'DraggableCell.dart';
+import 'TripCellFactory.dart';
 
 class TripCell extends StatelessWidget {
   final TripCellData data;

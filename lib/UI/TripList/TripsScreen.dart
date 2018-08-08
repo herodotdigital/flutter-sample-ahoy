@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
-import 'package:ahoy_sample/Services/TripProvider.dart';
-import '../Shared/AhoyStyles.dart';
-import '../Shared/AhoyWidgets.dart';
-import 'TripCellFactory.dart';
+import 'ListInteractorInterface.dart';
+import 'LegacyTripsInteractor.dart';
 
 class TripsScreen extends StatelessWidget {
   @override Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      // navigationBar: CupertinoNavigationBar(leading: _backButton(),),
+      navigationBar: CupertinoNavigationBar(leading: _backButton(),),
       child: SafeArea(
-        child: Padding(padding: EdgeInsets.only(top: 4.0), child: TripList(),),
-        // child: TripList(),
+        child: Padding(
+          padding: EdgeInsets.only(top: 4.0), 
+          child: TripList(),
         ),
+      ),
     );
   }
 
@@ -32,12 +32,14 @@ class TripList extends StatefulWidget {
 }
 
 class _TripListState extends State<TripList> with WidgetsBindingObserver {
-  
+  GlobalKey<AnimatedListState> _listKey;
   bool isLoaded = false;
-  final tripProvider = TripProvider();
+  ListInteractor myTrips;
 
   @override void initState() {
     super.initState();
+    _listKey = GlobalKey<AnimatedListState>();
+    myTrips = LegacyTripsInteractor(listKey: _listKey);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -60,28 +62,11 @@ class _TripListState extends State<TripList> with WidgetsBindingObserver {
 
   @override Widget build(BuildContext context) {
     return Material(
-        child: ListView(
-        children: _allCells(),
-    ));
-  }
-
-  _allCells() {
-      List<Widget> widgets = [];
-      widgets.add(_headerFor("Now", "12 March"));
-      widgets.addAll(TripCellFactory.fromTrips(tripProvider.tripsNow()));
-      widgets.add(_headerFor("Later", ""));
-      widgets.addAll(TripCellFactory.fromTrips(tripProvider.tripsLater()));
-      return widgets;
-    }
-
-  _headerFor(String title, String date) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-      child: Row(children: <Widget>[
-        Text(title, style: AhoyStyles.list.titleStyle,),
-        AhoyWidgets.flexibleSpace(),
-        Text(date, style: AhoyStyles.list.headerDetailsStyle,),
-      ],),
+        child: AnimatedList(
+          key: _listKey,
+          initialItemCount: myTrips.count(),
+          itemBuilder: myTrips.buildRow,
+        ),
     );
   }
 }
