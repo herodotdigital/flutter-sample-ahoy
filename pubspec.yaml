@@ -12,6 +12,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: 3.0.0-beta
+  # 3.0.0 is incompatibile with my flutter o_O
 
 
 # For information on the generic Dart part of this file, see the

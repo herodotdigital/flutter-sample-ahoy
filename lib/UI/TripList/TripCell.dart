@@ -7,12 +7,11 @@ import '../FlightDetails/FlightDetailsDataFactory.dart';
 import '../FlightDetails/FlightDetailsScreen.dart';
 import 'TripCellData.dart';
 import 'DraggableCell.dart';
-import 'TripCellFactory.dart';
 
 class TripCell extends StatelessWidget {
   final TripCellData data;
-  Function onApprove;
-  Function onDismiss;
+  final Function onApprove;
+  final Function onDismiss;
 
   TripCell({
     @required this.data,
@@ -65,7 +64,7 @@ class TripCell extends StatelessWidget {
   }
 
   FlightDetailsScreen _createDetailsScreen() {
-    final trip = TripProvider().tripForId(this.data.tripId);
+    final trip = MyTripProvider().tripForId(this.data.tripId);
     final data = FlightDetailsDataFactory.fromTrip(trip);
     return FlightDetailsScreen(data);
   }

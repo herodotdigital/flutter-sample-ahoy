@@ -6,7 +6,7 @@ import 'package:ahoy_sample/UI/TripList/TripCellData.dart';
 
 main() {
   test("Trip provider should return Trips", (){
-    final sut = TripProvider();
+    final sut = MyTripProvider();
     final result = sut.tripsNow();
     expect(result, isList);
     expect(result, isNotEmpty);
@@ -14,8 +14,8 @@ main() {
   });
 
   test("Call data should be instantinated from a flight", (){
-    final exampleTrip = TripStubs.stubTodayTrip();
-    final flightCell = TripCellData.withFlight(exampleTrip.flight, 13);
+    final exampleTrip = TripStubs.stubTodayTrip(id: 13);
+    final flightCell = TripCellData.withFlight(exampleTrip.flight, exampleTrip.id);
     expect(flightCell.tripId, 13);
     expect(flightCell.title, isNotNull);
     expect(flightCell.subtitle, isNotNull);
@@ -28,8 +28,8 @@ main() {
   });
 
   test("Call data should be instantinated from a booking", (){
-    final exampleTrip = TripStubs.stubTodayTrip();
-    final bookingCell = TripCellData.withBooking(exampleTrip.booking, 26);
+    final exampleTrip = TripStubs.stubTodayTrip(id: 26);
+    final bookingCell = TripCellData.withBooking(exampleTrip.booking, exampleTrip.id);
     expect(bookingCell.tripId, 26);
     expect(bookingCell.title, isNotNull);
     expect(bookingCell.subtitle, isNotNull);

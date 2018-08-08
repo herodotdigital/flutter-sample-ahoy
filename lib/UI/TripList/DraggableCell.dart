@@ -3,9 +3,9 @@ import 'package:flutter/animation.dart';
 import 'package:ahoy_sample/UI/Shared/AhoyStyles.dart';
 
 class DraggableCell extends StatefulWidget {
-  Widget child;
-  Function onAccept;
-  Function onDelete;
+  final Widget child;
+  final Function onAccept;
+  final Function onDelete;
 
   DraggableCell({this.child, this.onAccept, this.onDelete});
 

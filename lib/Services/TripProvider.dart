@@ -1,7 +1,11 @@
 import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
 
-class TripProvider {
+abstract class TripProvider {
+  List<Trip> allTrips();
+}
+
+class MyTripProvider extends TripProvider {
   static final _allTrips = [
     TripStubs.stubTodayTrip(id: 1),
     TripStubs.stubLaterTrip(id: 2),
