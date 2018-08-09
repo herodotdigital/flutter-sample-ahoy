@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
+import 'package:ahoy_sample/Services/TripProvider.dart';
 import 'ListInteractorInterface.dart';
-import 'LegacyTripsInteractor.dart';
+import 'MyTripsInteractor.dart';
 
 class TripsScreen extends StatelessWidget {
   @override Widget build(BuildContext context) {
@@ -35,11 +36,12 @@ class _TripListState extends State<TripList> with WidgetsBindingObserver {
   GlobalKey<AnimatedListState> _listKey;
   bool isLoaded = false;
   ListInteractor myTrips;
+  TripProvider tripProvider = MyTripProvider();
 
   @override void initState() {
     super.initState();
     _listKey = GlobalKey<AnimatedListState>();
-    myTrips = LegacyTripsInteractor(listKey: _listKey);
+    myTrips = MyTripsInteractor(listKey: _listKey, tripProvider: tripProvider);
     WidgetsBinding.instance.addObserver(this);
   }
 

@@ -55,4 +55,19 @@ main() {
 
     expect(DateHelper.howManyDays(from, to), 1);
   });
+
+  test("Human readable 'when' format", (){
+    DateTime fakeNow = DateHelper.today(18, 00);
+    DateTime nearFuture = DateTime.now().add(Duration(minutes: 15, seconds: 5));
+    DateTime laterToday = fakeNow.add(Duration(hours: 5, seconds: 5));
+    DateTime earlyTomorrow = fakeNow.add(Duration(hours: 8, seconds: 5));
+    DateTime farFuture = DateTime.now().add(Duration(days: 30));
+
+    expect(DateHelper.when(nearFuture), "in 15 mins");
+    expect(DateHelper.when(laterToday, referenceDate: fakeNow), "Today");
+    expect(DateHelper.when(earlyTomorrow, referenceDate: fakeNow), "Tomorrow");
+    expect(DateHelper.when(farFuture), allOf(
+      contains(", "),
+    ));
+  });
 }

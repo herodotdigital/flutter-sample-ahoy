@@ -1,6 +1,7 @@
 import '../Trip.dart';
 import '../Flight.dart';
 import '../Booking.dart';
+import 'package:ahoy_sample/Helpers/DateHelper.dart';
 import 'package:meta/meta.dart';
 
 class TripStubs {
@@ -8,9 +9,9 @@ class TripStubs {
     return Trip(
       id: id,
       flight: Flight(
-        gateClose: _today(8, 5),
-        departureTime: _today(8, 15),
-        arrivalTime: _today(8, 35),
+        gateClose: DateHelper.after(minutes: 5),
+        departureTime: DateHelper.after(minutes: 15),
+        arrivalTime: DateHelper.after(hours: 1, minutes: 25),
         flightNumber: "FR8406",
         seat: "13C",
         terminal: "A",
@@ -19,7 +20,7 @@ class TripStubs {
         to: Airport(code: "waw", fullName: "Warsaw Chopin Airport"),
       ),
       booking: Booking(
-        checkIn: _today(13, 0),
+        checkIn: DateHelper.after(hours: 3),
         checkOut: _createTime(hour: 10, minute: 0, daysLater: 2),
         location: "Warsaw",
         name: "Doubletree by Hilton",
@@ -50,13 +51,8 @@ class TripStubs {
     );
   }
 
-  static DateTime _today(int hour, int minute) {
-    final now = DateTime.now();
-    return DateTime.utc(now.year, now.month, now.day, 8, 15);
-  }
-
   static DateTime _createTime({int hour, int minute, int daysLater}) {
-    var output = _today(hour, minute);
+    var output = DateHelper.today(hour, minute);
     if (daysLater > 0) {
       output = output.add(Duration(days: daysLater));
     }

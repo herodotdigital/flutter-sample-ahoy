@@ -63,16 +63,17 @@ class MyTripsInteractor extends ListInteractor {
       return;
     }
     List<TripCellData> viewModels = _allViewmodels();
-    final todayModels = viewModels.where((m) => _isSameDayPredicate(m)).toList();
-    final laterModels = viewModels.where((m) => !_isSameDayPredicate(m)).toList();
-    _Section nowSection = createSection(headerText: "Now", detailText: "12 March", viewModels: todayModels);
+    final todayModels = viewModels.where((m) => _isWithin24hPredicate(m)).toList();
+    final laterModels = viewModels.where((m) => !_isWithin24hPredicate(m)).toList();
+    final when = DateHelper.formatted(format: "d MMMM", date: DateTime.now());
+    _Section nowSection = createSection(headerText: "Now", detailText: when, viewModels: todayModels);
     _Section laterSection = createSection(headerText: "Later", viewModels: laterModels);
     sections = [nowSection, laterSection];
   }
 
-  bool _isSameDayPredicate(TripCellData model) {
-    DateTime now = DateTime.now();
-    return DateHelper.isSameDay(model.sortingDate, now);
+  bool _isWithin24hPredicate(TripCellData model) {
+    DateTime tomorrow = DateTime.now().add(Duration(days: 1));
+    return model.sortingDate.isBefore(tomorrow);
   }
 
   _Section createSection({@required List<TripCellData> viewModels, @required String headerText, String detailText,}) {
