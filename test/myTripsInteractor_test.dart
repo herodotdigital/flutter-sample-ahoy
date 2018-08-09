@@ -32,7 +32,6 @@ main() {
   
   test("Header and Two cells for one full trip", (){
     final trip = TripStubs.stubTodayTrip(id: 1); //trip with flight and hotel
-
     when(provider.allTrips()).thenReturn([trip]);
 
     expect(sut.count(), 3);
@@ -40,6 +39,18 @@ main() {
     expect(sut.buildRow(null, 1, null), isInstanceOf<TripCell>()); //flight cell
     expect(sut.buildRow(null, 2, null), isInstanceOf<TripCell>()); //hotel cell
     expect(sut.buildRow(null, 3, null), isNull);
+  });
+
+  test("Date-based headers", (){
+    final todayTrip = TripStubs.stubTodayTrip(id: 1);
+    final laterTrip = TripStubs.stubLaterTrip(id: 2);
+    when(provider.allTrips()).thenReturn([todayTrip, laterTrip]);
+
+    expect(sut.buildRow(null, 0, null), isInstanceOf<TripHeader>());
+    expect((sut.buildRow(null, 0, null) as TripHeader).title, "Now");
+    expect((sut.buildRow(null, 0, null) as TripHeader).details, isNotNull);
+    expect(sut.buildRow(null, 3, null), isInstanceOf<TripHeader>());
+    expect((sut.buildRow(null, 3, null) as TripHeader).title, "Later");
   });
 
 }

@@ -62,13 +62,22 @@ class MyTripsInteractor extends ListInteractor {
     if (sections != null) {
       return;
     }
-    _Section section = _Section();
-    section.rows = _allViewmodels();
-    if (section.rows.length > 0) {
-      section.headerText = "Now";
-      section.headerDetails = "12 March";
+    List<TripCellData> viewModels = _allViewmodels();
+
+    _Section nowSection = _Section();
+    nowSection.rows = viewModels;
+    if (nowSection.rows.length > 0) {
+      nowSection.headerText = "Now";
+      nowSection.headerDetails = "12 March";
     }
-    sections = [section];
+
+    _Section laterSection = _Section();
+    laterSection.rows = viewModels;
+    if (laterSection.rows.length > 0) {
+      laterSection.headerText = "Later";
+    }
+
+    sections = [nowSection, laterSection];
   }
   
   List<TripCellData> _allViewmodels() {
