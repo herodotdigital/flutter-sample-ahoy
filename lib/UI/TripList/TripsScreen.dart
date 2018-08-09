@@ -10,10 +10,8 @@ class TripsScreen extends StatelessWidget {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(leading: _backButton(),),
       child: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(top: 4.0), 
-          child: TripList(),
-        ),
+        // child: Padding(padding: EdgeInsets.only(top: 4.0), child: TripList(),), //uncommenting simulates android statusbar
+        child: TripList(),
       ),
     );
   }
