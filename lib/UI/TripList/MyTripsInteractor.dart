@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
-import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/UI/TripList/TripCellData.dart';
 import 'TripHeader.dart';
 import 'TripCell.dart';
