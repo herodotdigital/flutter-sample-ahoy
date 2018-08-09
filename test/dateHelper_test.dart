@@ -49,25 +49,32 @@ main() {
     expect(DateHelper.clock(hour_13_15), "1:15 PM");
   });
 
-  test("Get difference in days", (){
-    DateTime from = DateTime.utc(2018, 2, 2, 8);
-    DateTime to = DateTime.utc(2018, 2, 3, 9, 15);
+  test("Get difference in nights", (){
+    DateTime from = DateTime.utc(2018, 2, 2, 10);
+    DateTime to = DateTime.utc(2018, 2, 3, 9);
 
-    expect(DateHelper.howManyDays(from, to), 1);
+    expect(DateHelper.howManyNights(from, to), 1);
   });
 
   test("Human readable 'when' format", (){
     DateTime fakeNow = DateHelper.today(18, 00);
-    DateTime nearFuture = DateTime.now().add(Duration(minutes: 15, seconds: 5));
+    DateTime nearFuture = fakeNow.add(Duration(minutes: 15, seconds: 5));
     DateTime laterToday = fakeNow.add(Duration(hours: 5, seconds: 5));
     DateTime earlyTomorrow = fakeNow.add(Duration(hours: 8, seconds: 5));
-    DateTime farFuture = DateTime.now().add(Duration(days: 30));
+    DateTime farFuture = fakeNow.add(Duration(days: 30));
 
-    expect(DateHelper.when(nearFuture), "in 15 mins");
+    expect(DateHelper.when(nearFuture, referenceDate: fakeNow), "in 15 mins");
     expect(DateHelper.when(laterToday, referenceDate: fakeNow), "Today");
     expect(DateHelper.when(earlyTomorrow, referenceDate: fakeNow), "Tomorrow");
-    expect(DateHelper.when(farFuture), allOf(
+    expect(DateHelper.when(farFuture, referenceDate: fakeNow), allOf(
       contains(", "),
     ));
+  });
+
+  test("Midnight edge case for 'when'", (){
+    DateTime fakeNow = DateHelper.today(23, 55);
+    DateTime nearFuture = fakeNow.add(Duration(minutes: 15, seconds: 5));
+
+    expect(DateHelper.when(nearFuture, referenceDate: fakeNow), "in 15 mins");
   });
 }

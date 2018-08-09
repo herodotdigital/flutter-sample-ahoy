@@ -53,7 +53,7 @@ class TripCellData {
     }
 
     String _howLong(Booking booking) {
-      final days = DateHelper.howManyDays(booking.checkIn, booking.checkOut);
+      final days = DateHelper.howManyNights(booking.checkIn, booking.checkOut);
       return "$days ${_BookingCaptions.nightStay}";
     }
 }

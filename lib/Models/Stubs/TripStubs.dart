@@ -21,7 +21,7 @@ class TripStubs {
       ),
       booking: Booking(
         checkIn: DateHelper.after(hours: 3),
-        checkOut: _createTime(hour: 10, minute: 0, daysLater: 2),
+        checkOut: DateHelper.after(hours: 4, days: 2),//_createTime(hour: 10, minute: 0, daysLater: 2),
         location: "Warsaw",
         name: "Doubletree by Hilton",
       ),

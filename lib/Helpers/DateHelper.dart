@@ -8,11 +8,12 @@ class DateHelper {
       final now = referenceDate ?? DateTime.now();
       final endOfToday = now.add(Duration(days: 1, hours: -now.hour, minutes: -now.minute, seconds: -now.second));
       final endOfTomorrow = endOfToday.add(Duration(days: 1));
+      final moreThan4h = time.isAfter(now.add(Duration(hours: 4)));
       if (time.isAfter(endOfTomorrow)) {
         return DateHelper.localizedDate(time);
-      } else if(time.isAfter(endOfToday)) {
+      } else if(time.isAfter(endOfToday) && moreThan4h) {
         return "Tomorrow";
-      } else if(time.isAfter(now.add(Duration(hours: 4)))) {
+      } else if(moreThan4h) {
         return "Today";
       } else {
         final String eta = howLong(now, time, pluralMinutes:true);
@@ -24,8 +25,10 @@ class DateHelper {
       return DateFormat.jm().format(time);
     }
 
-    static int howManyDays(DateTime start, DateTime end) {
-      return end.difference(start).inDays;
+    static int howManyNights(DateTime start, DateTime end) {
+      final diff = end.difference(start); 
+      final incompleteDay = start.hour > end.hour ? 1 : 0;
+      return diff.inDays + incompleteDay;
     }
 
     /// format: "1d 3 h 21 min"
