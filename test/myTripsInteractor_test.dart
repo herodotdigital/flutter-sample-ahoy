@@ -4,6 +4,8 @@ import 'package:ahoy_sample/Services/TripProvider.dart';
 import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
 import 'package:ahoy_sample/UI/TripList/MyTripsInteractor.dart';
 import 'package:mockito/mockito.dart';
+import 'package:ahoy_sample/UI/TripList/TripHeader.dart';
+import 'package:ahoy_sample/UI/TripList/TripCell.dart';
 
 class MockTripProvider extends Mock implements TripProvider {}
 
@@ -28,15 +30,16 @@ main() {
     expect(sut.buildRow(null, 0, null), isNull);
   });
   
-  test("Two cells on one full trip", (){
-    final trip = TripStubs.stubTodayTrip(id: 1);
+  test("Header and Two cells for one full trip", (){
+    final trip = TripStubs.stubTodayTrip(id: 1); //trip with flight and hotel
 
     when(provider.allTrips()).thenReturn([trip]);
 
-    expect(sut.count(), 2);
-    expect(sut.buildRow(null, 0, null), isInstanceOf<Widget>());
-    expect(sut.buildRow(null, 1, null), isInstanceOf<Widget>());
-    expect(sut.buildRow(null, 2, null), isNull);
+    expect(sut.count(), 3);
+    expect(sut.buildRow(null, 0, null), isInstanceOf<TripHeader>()); //header
+    expect(sut.buildRow(null, 1, null), isInstanceOf<TripCell>()); //flight cell
+    expect(sut.buildRow(null, 2, null), isInstanceOf<TripCell>()); //hotel cell
+    expect(sut.buildRow(null, 3, null), isNull);
   });
 
 }

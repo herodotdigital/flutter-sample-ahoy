@@ -8,6 +8,9 @@ abstract class TripCellFactory {
   }
 
   static List<TripCellData> cellDataListFrom(List<Trip> trips) {
+    if (trips == null || trips.isEmpty) {
+      return [];
+    }
     return trips.expand((trip){
       return [
         TripCellData.withFlight(trip.flight, trip.id),
