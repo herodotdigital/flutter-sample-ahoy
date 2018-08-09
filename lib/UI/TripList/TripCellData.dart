@@ -12,6 +12,7 @@ class TripCellData {
   String bottomRightValue;
   String bottomLeftCaption;
   String bottomLeftValue;
+  DateTime sortingDate;
 
   TripCellData({
     this.title,
@@ -22,6 +23,7 @@ class TripCellData {
     this.bottomRightValue,
     this.bottomLeftCaption,
     this.bottomLeftValue,
+    this.sortingDate,
     });
 
     TripCellData.withFlight(Flight flight, int tripId) {
@@ -34,6 +36,7 @@ class TripCellData {
       this.bottomRightValue = DateHelper.clock(flight.gateClose);
       this.bottomLeftCaption = _FlightCaptions.departure;
       this.bottomLeftValue = DateHelper.clock(flight.departureTime);
+      this.sortingDate = flight.departureTime;
     }
 
     TripCellData.withBooking(Booking booking, int tripId) {
@@ -46,6 +49,7 @@ class TripCellData {
       this.bottomRightValue = DateHelper.clock(booking.checkIn);
       this.bottomLeftCaption = "";
       this.bottomLeftValue = "";
+      this.sortingDate = booking.checkIn;
     }
 
     String _howLong(Booking booking) {

@@ -24,4 +24,10 @@ class DateHelper {
       // TODO: proper implementation
       return "Tue, 22 Feb";
     }
+
+    static bool isSameDay(DateTime dateA, DateTime dateB) {
+      return dateA.year == dateB.year && 
+        dateA.month == dateB.month && 
+        dateA.day == dateB.day;
+    }
 }

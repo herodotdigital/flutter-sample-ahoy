@@ -6,7 +6,7 @@ class TripHeader extends StatelessWidget {
   final String title;
   final String details;
 
-  TripHeader({@required String this.title, String this.details});
+  TripHeader({@required this.title, this.details});
 
   @override Widget build(BuildContext context) {
     List<Widget> children = [

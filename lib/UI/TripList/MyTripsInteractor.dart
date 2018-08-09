@@ -6,6 +6,7 @@ import 'TripHeader.dart';
 import 'TripCell.dart';
 import 'TripCellFactory.dart';
 import 'ListInteractorInterface.dart';
+import 'package:ahoy_sample/Helpers/DateHelper.dart';
 
 class _Section {
   String headerText;
@@ -63,21 +64,26 @@ class MyTripsInteractor extends ListInteractor {
       return;
     }
     List<TripCellData> viewModels = _allViewmodels();
-
-    _Section nowSection = _Section();
-    nowSection.rows = viewModels;
-    if (nowSection.rows.length > 0) {
-      nowSection.headerText = "Now";
-      nowSection.headerDetails = "12 March";
-    }
-
-    _Section laterSection = _Section();
-    laterSection.rows = viewModels;
-    if (laterSection.rows.length > 0) {
-      laterSection.headerText = "Later";
-    }
-
+    final todayModels = viewModels.where((m) => _isSameDayPredicate(m)).toList();
+    final laterModels = viewModels.where((m) => !_isSameDayPredicate(m)).toList();
+    _Section nowSection = createSection(headerText: "Now", detailText: "12 March", viewModels: todayModels);
+    _Section laterSection = createSection(headerText: "Later", viewModels: laterModels);
     sections = [nowSection, laterSection];
+  }
+
+  bool _isSameDayPredicate(TripCellData model) {
+    DateTime now = DateTime.now();
+    return DateHelper.isSameDay(model.sortingDate, now);
+  }
+
+  _Section createSection({@required List<TripCellData> viewModels, @required String headerText, String detailText,}) {
+    _Section newSection = _Section();
+    newSection.rows = viewModels;
+    if (newSection.rows.length > 0) {
+      newSection.headerText = headerText;
+      newSection.headerDetails = detailText;
+    }
+    return newSection;
   }
   
   List<TripCellData> _allViewmodels() {
