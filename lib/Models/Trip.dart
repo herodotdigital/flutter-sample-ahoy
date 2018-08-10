@@ -7,5 +7,8 @@ class Trip {
   final Flight flight;
   final Booking booking;
 
-  Trip({@required this.id, @required this.flight, @required this.booking});
+  Trip({@required this.id, @required this.flight, @required this.booking}) {
+    flight.parentTrip = this;
+    booking.parentTrip = this;
+  }
 }

@@ -34,7 +34,7 @@ class _TripListState extends State<TripList> with WidgetsBindingObserver {
   GlobalKey<AnimatedListState> _listKey;
   bool isLoaded = false;
   ListInteractor myTrips;
-  TripProvider tripProvider = MyTripProvider();
+  TripProvider tripProvider = TripProvider();
 
   @override void initState() {
     super.initState();

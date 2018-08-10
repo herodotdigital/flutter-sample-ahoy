@@ -112,7 +112,7 @@ class MyTripsInteractor extends ListInteractor {
   Widget _createDetailsScreen(TripCellData inData) {
     switch (inData.type) {
       case TripCellType.flight:
-        final trip = MyTripProvider().tripForId(inData.tripId);
+        final trip = TripProvider().tripForId(inData.tripId);
         final flightData = FlightDetailsDataFactory.fromTrip(trip);
         return FlightDetailsScreen(flightData);
       case TripCellType.booking:

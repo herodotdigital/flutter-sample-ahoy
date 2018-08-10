@@ -1,4 +1,7 @@
+import 'Trip.dart';
+
 class Booking {
+  Trip parentTrip;
   String name;
   String location;
   DateTime checkIn;

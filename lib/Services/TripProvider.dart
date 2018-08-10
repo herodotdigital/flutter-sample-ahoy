@@ -1,30 +1,31 @@
 import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
 
-abstract class TripProvider {
-  List<Trip> allTrips();
-}
+class TripProvider {
+  static List<Trip> _allTrips = _defaultTrips();
 
-class MyTripProvider extends TripProvider {
-  static final _allTrips = [
-    TripStubs.stubTodayTrip(id: 1),
-    TripStubs.stubLaterTrip(id: 2),
-  ];
+  static resetAll() {
+    _allTrips = _defaultTrips();
+  }
+
+  static _defaultTrips() {
+    return <Trip>[
+      TripStubs.stubTodayTrip(id: 1),
+      TripStubs.stubLaterTrip(id: 2),
+    ];
+  }
 
   List<Trip> allTrips() {
     return _allTrips;
-  }
-
-  List<Trip> tripsNow() {
-    return [_allTrips[0]];
-  }
-  List<Trip> tripsLater() {
-    return [_allTrips[1]];
   }
 
   Trip tripForId(int id) {
     return _allTrips.firstWhere((trip) {
       return trip.id == id;
     });
+  }
+
+  removeTrip({int id}) {
+    _allTrips.removeWhere((t) => t.id == id);
   }
 }
