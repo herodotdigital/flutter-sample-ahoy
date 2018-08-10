@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:ahoy_sample/UI/Shared/AhoyStyles.dart';
 import 'package:ahoy_sample/UI/Shared/AhoyWidgets.dart';
 
-class TripHeader extends StatelessWidget {
+class TripHeaderData {
   final String title;
   final String details;
 
-  TripHeader({@required this.title, this.details});
+  TripHeaderData({@required this.title, this.details});
+}
+
+class TripHeader extends StatelessWidget {
+  final TripHeaderData data;
+
+  TripHeader({@required this.data});
 
   @override Widget build(BuildContext context) {
     List<Widget> children = [
-      Text(title, style: AhoyStyles.list.titleStyle,),
+      Text(data.title, style: AhoyStyles.list.titleStyle,),
       AhoyWidgets.flexibleSpace(),
     ];
-    if (details != null) {
-      children.add(Text(details, style: AhoyStyles.list.headerDetailsStyle,));
+    if (data.details != null) {
+      children.add(Text(data.details, style: AhoyStyles.list.headerDetailsStyle,));
     }
     return Container(
       margin: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),

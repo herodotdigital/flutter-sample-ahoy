@@ -47,10 +47,10 @@ main() {
     when(provider.allTrips()).thenReturn([todayTrip, laterTrip]);
 
     expect(sut.buildRow(null, 0, null), isInstanceOf<TripHeader>());
-    expect((sut.buildRow(null, 0, null) as TripHeader).title, "Now");
-    expect((sut.buildRow(null, 0, null) as TripHeader).details, isNotNull);
+    expect((sut.buildRow(null, 0, null) as TripHeader).data.title, "Now");
+    expect((sut.buildRow(null, 0, null) as TripHeader).data.details, isNotNull);
     expect(sut.buildRow(null, 3, null), isInstanceOf<TripHeader>());
-    expect((sut.buildRow(null, 3, null) as TripHeader).title, "Later");
+    expect((sut.buildRow(null, 3, null) as TripHeader).data.title, "Later");
   });
 
 }
