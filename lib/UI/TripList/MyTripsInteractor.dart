@@ -6,6 +6,9 @@ import 'TripCell.dart';
 import 'TripCellFactory.dart';
 import 'ListInteractorInterface.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
+import 'package:flutter/cupertino.dart';
+import '../FlightDetails/FlightDetailsScreen.dart';
+import '../FlightDetails/FlightDetailsDataFactory.dart';
 
 class _Section {
   String headerText;
@@ -20,17 +23,45 @@ class _Section {
     return headerText != null;
   }
 
-  Widget widgetFor({int index}) {
+  Widget widgetFor(BuildContext context, int index, Animation<double> animation) {
     assert(index >= 0);
     if (_hasHeader() && index == 0) {
       return TripHeader(title: headerText, details: headerDetails);
     } else {
       int shiftedIndex = _hasHeader() ? index - 1 : index;
       if (shiftedIndex < rows.length) {
-        return TripCell(data: rows[shiftedIndex], onApprove: (){}, onDismiss: (){},);
+        var data = rows[shiftedIndex];
+        data.onTap = () => _pushDetails(data, context);
+        data.onApprove = () {
+          print("Approved");
+        };
+        data.onDismiss = () {
+          print("Dismissed");
+        };
+        return TripCell(data: data, animation: animation);
       }
     }
     return null;
+  }
+
+  _pushDetails(TripCellData data, BuildContext context) {
+    Navigator.of(context).push(
+      CupertinoPageRoute<void>(
+        builder: (BuildContext context) => _createDetailsScreen(data),
+      )
+    );
+  }
+
+  Widget _createDetailsScreen(TripCellData inData) {
+    switch (inData.type) {
+      case TripCellType.flight:
+        final trip = MyTripProvider().tripForId(inData.tripId);
+        final flightData = FlightDetailsDataFactory.fromTrip(trip);
+        return FlightDetailsScreen(flightData);
+      case TripCellType.booking:
+        print("Tapped Booking");
+        break;
+    }
   }
 }
 
@@ -45,7 +76,7 @@ class MyTripsInteractor extends ListInteractor {
   });
 
   int count() {
-    _prepareIfNeeded();
+    _prepareSectionsIfNeeded();
     int sum = 0;
     for (var section in sections) {
       sum += section.itemCount();
@@ -54,11 +85,11 @@ class MyTripsInteractor extends ListInteractor {
   }
 
   Widget buildRow(BuildContext context, int index, Animation<double> animation) {
-    _prepareIfNeeded();
-    return _widgetFor(index: index);
+    _prepareSectionsIfNeeded();
+    return _widgetFor(context,index,animation);
   }
 
-  _prepareIfNeeded() {
+  _prepareSectionsIfNeeded() {
     if (sections != null) {
       return;
     }
@@ -91,10 +122,10 @@ class MyTripsInteractor extends ListInteractor {
     return TripCellFactory.cellDataListFrom(trips);
   }
 
-  Widget _widgetFor({@required int index}) {
+  Widget _widgetFor(BuildContext context, int index, Animation<double> animation) {
     int indexLeft = index;
     for (var i = 0; i < sections.length; i++) {
-      Widget potentialWidget = sections[i].widgetFor(index: indexLeft);
+      Widget potentialWidget = sections[i].widgetFor(context, indexLeft, animation);
       if (potentialWidget != null) {
         return potentialWidget;
       }

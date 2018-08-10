@@ -2,8 +2,13 @@ import 'package:ahoy_sample/Models/Flight.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
 
+enum TripCellType {
+  flight, booking
+}
+
 class TripCellData {
   int tripId = 0;
+  TripCellType type;
   String title;
   String subtitle;
   String iconName;
@@ -13,8 +18,12 @@ class TripCellData {
   String bottomLeftCaption;
   String bottomLeftValue;
   DateTime sortingDate;
+  Function onTap;
+  Function onApprove;
+  Function onDismiss;
 
   TripCellData({
+    this.type,
     this.title,
     this.subtitle,
     this.iconName,
@@ -27,6 +36,7 @@ class TripCellData {
     });
 
     TripCellData.withFlight(Flight flight, int tripId) {
+      this.type = TripCellType.flight;
       this.tripId = tripId;
       this.title = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
       this.subtitle = flight.from.fullName;
@@ -40,6 +50,7 @@ class TripCellData {
     }
 
     TripCellData.withBooking(Booking booking, int tripId) {
+      this.type = TripCellType.booking;
       this.tripId = tripId;
       this.title = _howLong(booking);
       this.subtitle = "${booking.location}, ${booking.name}";

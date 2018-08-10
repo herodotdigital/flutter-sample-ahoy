@@ -70,13 +70,6 @@ class _DraggableCellState extends State<DraggableCell> with SingleTickerProvider
 
   _onDragEnd(DragEndDetails details) {
     if (_passedDragThreshold()) {
-      if (contentXOffset.sign > 0) {
-        widget.onAccept();
-      } else {
-        widget.onDelete();
-      }
-    }
-    if (_passedDragThreshold()) {
       _playCompletionAnimation();
     } else {
       _playCancelAnimation();

@@ -10,63 +10,61 @@ import 'DraggableCell.dart';
 
 class TripCell extends StatelessWidget {
   final TripCellData data;
-  final Function onApprove;
-  final Function onDismiss;
+  final bool interactive;
+  final Animation<double> animation;
 
   TripCell({
     @required this.data,
-    @required this.onApprove,
-    @required this.onDismiss,
+    this.animation,
+    this.interactive = true,
   });
-
-  static List<TripCell> forData(List<TripCellData> input) {
-    return input.map(
-      (data){ return TripCell(data:data, onApprove: (){}, onDismiss: (){}); }
-    ).toList();
-  }
 
   @override Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        CupertinoPageRoute<void>(
-          builder: (BuildContext context) => _createDetailsScreen(),
-        )
-      ),
-      child: DraggableCell(
-        onAccept: _onApprove,
-        onDelete: _onDismiss,
-        child: Padding(
-          padding: EdgeInsets.only(top: 3.0),
-          child: Stack(children: <Widget>[
-            _icon(data.iconName),
-            _topRightText(data.topRightText),
-            Column(children: <Widget>[
-              _title(data.title),
-              _subtitle(data.subtitle),
-              Row(children: <Widget>[
-                _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
-                AhoyWidgets.flexibleSpace(),
-                _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+      onTap: _onTap,
+      child: SizeTransition(
+        axis: Axis.vertical,
+        sizeFactor: animation,
+        child: DraggableCell(
+          onAccept: _onApprove,
+          onDelete: _onDismiss,
+          child: Padding(
+            padding: EdgeInsets.only(top: 3.0),
+            child: Stack(children: <Widget>[
+              _icon(data.iconName),
+              _topRightText(data.topRightText),
+              Column(children: <Widget>[
+                _title(data.title),
+                _subtitle(data.subtitle),
+                Row(children: <Widget>[
+                  _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
+                  AhoyWidgets.flexibleSpace(),
+                  _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+                ],),
               ],),
             ],),
-          ],),
+          ),
         ),
       ),
     );
   }
 
+  _onTap() {
+    if (interactive) {
+      data.onTap();
+    }
+  }
+
   _onApprove() {
-    onApprove();
+    if (interactive) {
+      data.onApprove();
+    }
   }
 
   _onDismiss() {
-    onDismiss();
-  }
-
-  FlightDetailsScreen _createDetailsScreen() {
-    final trip = MyTripProvider().tripForId(this.data.tripId);
-    final data = FlightDetailsDataFactory.fromTrip(trip);
-    return FlightDetailsScreen(data);
+    if (interactive) {
+      data.onDismiss();
+    }
   }
 
   _bottomText(String caption, String value, bool accented) {
