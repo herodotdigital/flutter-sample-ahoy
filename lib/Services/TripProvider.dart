@@ -28,4 +28,20 @@ class TripProvider {
   removeTrip({int id}) {
     _allTrips.removeWhere((t) => t.id == id);
   }
+
+  removeFlight({int tripId}) {
+    Trip oldTrip = tripForId(tripId);
+    int index = _allTrips.indexOf(oldTrip);
+    _allTrips.removeAt(index);
+    Trip newTrip = Trip(id: oldTrip.id, booking: oldTrip.booking, flight: null);
+    _allTrips.insert(index, newTrip);
+  }
+
+  removeBooking({int tripId}) {
+    Trip oldTrip = tripForId(tripId);
+    int index = _allTrips.indexOf(oldTrip);
+    _allTrips.removeAt(index);
+    Trip newTrip = Trip(id: oldTrip.id, flight: oldTrip.flight, booking: null);
+    _allTrips.insert(index, newTrip);
+  }
 }

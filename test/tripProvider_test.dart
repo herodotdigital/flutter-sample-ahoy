@@ -8,12 +8,12 @@ TripProvider sut;
 
 main() {
 
-  setUpAll((){
-    TripProvider.resetAll();
-    sut = TripProvider();
-  });
-
   group("TripProvider tests", (){
+
+    setUp((){
+      TripProvider.resetAll();
+      sut = TripProvider();
+    });
 
     test("Trip provider should return Trips", (){
       final result = sut.allTrips();
@@ -28,6 +28,18 @@ main() {
       expect(sut.allTrips(), everyElement(predicate<Trip>((value) => value.id != 1)));
     });
 
+    test("Remove flight on trip with given Id", (){
+      expect(sut.allTrips(), anyElement(predicate<Trip>((t) => t.id == 1 && t.flight != null)));
+      sut.removeFlight(tripId:1);
+      expect(sut.allTrips(), anyElement(predicate<Trip>((t) => t.id == 1 && t.flight == null)));
+    });
+
+    test("Remove booking on trip with given Id", (){
+      expect(sut.allTrips(), anyElement(predicate<Trip>((t) => t.id == 1 && t.booking != null)));
+      sut.removeBooking(tripId:1);
+      expect(sut.allTrips(), anyElement(predicate<Trip>((t) => t.id == 1 && t.booking == null)));
+    });
+    
   });
 
   group("TripCellData generation", (){
