@@ -35,6 +35,10 @@ class MyTripsInteractor extends ListInteractor {
     return _widgetFor(context,index,animation);
   }
 
+  _resetSections() {
+    sections = null;
+  }
+
   _prepareSectionsIfNeeded() {
     if (sections != null) {
       return;
@@ -61,14 +65,16 @@ class MyTripsInteractor extends ListInteractor {
   List<TripCellData> _allViewmodels() {
     final trips = tripProvider.allTrips();
     var cellDatas = TripCellFactory.cellDataListFrom(trips);
-
     return cellDatas;
   }
 
-  Widget _widgetFor(BuildContext context, int index, Animation<double> animation) {
-    int indexLeft = index;
+  Widget _widgetFor(BuildContext context, int globalIndex, Animation<double> animation) {
+    int indexLeft = globalIndex;
     for (var i = 0; i < sections.length; i++) {
       Widget potentialWidget = sections[i].query(indexLeft, (TableSectionElement type, TripHeaderData headerData, TripCellData rowData){
+        if (type == TableSectionElement.row) {
+          rowData.indexInTable = globalIndex;
+        }
         return _createWidget(type, headerData, rowData, context, animation);
       });
       if (potentialWidget != null) {
@@ -90,9 +96,25 @@ class MyTripsInteractor extends ListInteractor {
     }
   }
 
+  AnimatedListState get _animatedList => listKey.currentState;
+
   Widget _createTripCell(BuildContext context, TripCellData data, Animation<double> animation) {
     data.onTap = () => _pushDetails(data, context);
     data.onApprove = () {
+      switch (data.type) {
+        case TripCellType.flight:
+          TripProvider().removeFlight(tripId: data.tripId);
+          break;
+        case TripCellType.booking:
+          TripProvider().removeBooking(tripId: data.tripId);
+          break;
+        default:
+      }
+      _resetSections();
+      _prepareSectionsIfNeeded();
+      _animatedList.removeItem(data.indexInTable, (BuildContext context, Animation<double> animation){
+        return TripCell(data: data, animation: animation, interactive: false);
+      });
       print("Approved");
     };
     data.onDismiss = () {

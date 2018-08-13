@@ -7,10 +7,14 @@ abstract class TripCellFactory {
       return [];
     }
     return trips.expand((trip){
-      return [
-        TripCellData.withFlight(trip.flight, trip.id),
-        TripCellData.withBooking(trip.booking, trip.id),
-      ];
+      List<TripCellData> list = [];
+      if (trip.flight != null) {
+        list.add(TripCellData.withFlight(trip.flight, trip.id));
+      }
+      if (trip.booking != null) {
+        list.add(TripCellData.withBooking(trip.booking, trip.id));
+      }
+      return list;
     }).toList();
   }
 }

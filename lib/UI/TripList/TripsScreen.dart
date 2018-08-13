@@ -31,14 +31,13 @@ class TripList extends StatefulWidget {
 }
 
 class _TripListState extends State<TripList> with WidgetsBindingObserver {
-  GlobalKey<AnimatedListState> _listKey;
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   bool isLoaded = false;
   ListInteractor myTrips;
   TripProvider tripProvider = TripProvider();
 
   @override void initState() {
     super.initState();
-    _listKey = GlobalKey<AnimatedListState>();
     myTrips = MyTripsInteractor(listKey: _listKey, tripProvider: tripProvider);
     WidgetsBinding.instance.addObserver(this);
   }

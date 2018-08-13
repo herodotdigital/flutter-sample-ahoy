@@ -21,6 +21,7 @@ class TripCellData {
   Function onTap;
   Function onApprove;
   Function onDismiss;
+  int indexInTable;
 
   TripCellData({
     this.type,
