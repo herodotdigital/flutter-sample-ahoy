@@ -22,6 +22,12 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
   Animation<double> backgroundMoveAnimation;
   AnimationController controller;
 
+  final double animationLength = 800.0;
+  final double contentAnimationLength = 500.0;
+  final double backgroundAnimationLength = 500.0;
+  final Curve contentAnimationCurve = Curves.easeIn;
+  final Curve backgroundAnimationCurve = Curves.easeIn;
+
   final double triggerThreshold = 106.0;
   final double borderRadius = 10.0;
   final cellMargin = EdgeInsets.symmetric(
@@ -34,7 +40,7 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
     screenWidth = 320.0;
     backgroundVisible = true;
     controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
     super.initState();
@@ -125,7 +131,7 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
 
   _playAnimationTo({@required double contentOffset, @required bool animateBackground}) {
     controller.reset();
-    final Animation curve = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    final Animation curve = CurvedAnimation(parent: controller, curve: Interval(0.0, contentAnimationLength/animationLength, curve: contentAnimationCurve));
     contentMoveAnimation = Tween(begin: contentXOffset, end: contentOffset).animate(curve);
     contentMoveAnimation.addListener((){
       setState((){});
@@ -138,7 +144,7 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
       }
     });
     if (animateBackground) {
-      final Animation delayed = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+      final Animation delayed = CurvedAnimation(parent: controller, curve: Interval((animationLength-backgroundAnimationLength)/animationLength, animationLength/animationLength, curve: backgroundAnimationCurve));
       backgroundMoveAnimation = Tween(begin: 0.0, end: contentOffset).animate(delayed);
       backgroundMoveAnimation.addListener((){
         setState((){});
