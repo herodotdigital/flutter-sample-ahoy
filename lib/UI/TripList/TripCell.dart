@@ -26,6 +26,7 @@ class TripCell extends StatelessWidget {
         axis: Axis.vertical,
         sizeFactor: animation,
         child: DraggableCell(
+          key: new Key(data.uniqueKey()),
           onAccept: _onApprove,
           onDelete: _onDismiss,
           child: Padding(

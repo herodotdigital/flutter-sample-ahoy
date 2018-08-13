@@ -7,16 +7,17 @@ class DraggableCell extends StatefulWidget {
   final Function onAccept;
   final Function onDelete;
 
-  DraggableCell({this.child, this.onAccept, this.onDelete});
+  DraggableCell({Key key, this.child, this.onAccept, this.onDelete}):super(key: key);
 
-  @override State<StatefulWidget> createState() => _DraggableCellState();
+  @override State<StatefulWidget> createState() => DraggableCellState();
+
 }
 
-class _DraggableCellState extends State<DraggableCell> with SingleTickerProviderStateMixin {
+class DraggableCellState extends State<DraggableCell> with SingleTickerProviderStateMixin {
 
-  double contentXOffset = 0.0;
-  double screenWidth = 320.0;
-  bool backgroundVisible = true;
+  double contentXOffset;
+  double screenWidth;
+  bool backgroundVisible;
   Animation<double> contentMoveAnimation;
   Animation<double> backgroundMoveAnimation;
   AnimationController controller;
@@ -29,11 +30,14 @@ class _DraggableCellState extends State<DraggableCell> with SingleTickerProvider
   );
 
   @override void initState() {
-    super.initState();
+    contentXOffset = 0.0;
+    screenWidth = 320.0;
+    backgroundVisible = true;
     controller = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
+    super.initState();
   }
 
   @override void dispose() {
@@ -128,7 +132,9 @@ class _DraggableCellState extends State<DraggableCell> with SingleTickerProvider
     });
     contentMoveAnimation.addStatusListener((AnimationStatus status){
       if (status == AnimationStatus.completed) {
-        contentXOffset = contentOffset;
+        setState(() {
+          contentXOffset = contentOffset;
+        });
       }
     });
     if (animateBackground) {

@@ -68,6 +68,10 @@ class TripCellData {
       final days = DateHelper.howManyNights(booking.checkIn, booking.checkOut);
       return "$days ${_BookingCaptions.nightStay}";
     }
+
+    String uniqueKey() {
+      return "${tripId}_$type";
+    }
 }
 
 class _FlightCaptions {

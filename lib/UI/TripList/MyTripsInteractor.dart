@@ -100,7 +100,7 @@ class MyTripsInteractor extends ListInteractor {
 
   Widget _createTripCell(BuildContext context, TripCellData data, Animation<double> animation) {
     data.onTap = () => _pushDetails(data, context);
-    data.onApprove = () {
+    Function removeCellAction = () {
       switch (data.type) {
         case TripCellType.flight:
           TripProvider().removeFlight(tripId: data.tripId);
@@ -115,11 +115,9 @@ class MyTripsInteractor extends ListInteractor {
       _animatedList.removeItem(data.indexInTable, (BuildContext context, Animation<double> animation){
         return TripCell(data: data, animation: animation, interactive: false);
       });
-      print("Approved");
     };
-    data.onDismiss = () {
-      print("Dismissed");
-    };
+    data.onApprove = removeCellAction;
+    data.onDismiss = removeCellAction;
     return TripCell(data: data, animation: animation);
   }
 
