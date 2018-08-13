@@ -12,6 +12,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: 3.0.0-beta
+  intl:
+  # 3.0.0 is incompatibile with my flutter o_O
 
 
 # For information on the generic Dart part of this file, see the
@@ -25,6 +28,8 @@ flutter:
     - assets/images/planeGray.png
     - assets/images/pinFullCopy.png
     - assets/images/close.png
+    - assets/images/approveWhite.png
+    - assets/images/closeGrayWhite.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

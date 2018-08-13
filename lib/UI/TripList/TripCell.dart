@@ -6,50 +6,66 @@ import '../Shared/AhoyWidgets.dart';
 import '../FlightDetails/FlightDetailsDataFactory.dart';
 import '../FlightDetails/FlightDetailsScreen.dart';
 import 'TripCellData.dart';
+import 'DraggableCell.dart';
 
 class TripCell extends StatelessWidget {
   final TripCellData data;
+  final bool interactive;
+  final Animation<double> animation;
 
-  TripCell(this.data);
-
-  static List<TripCell> forData(List<TripCellData> input) {
-    return input.map(
-      (data){ return TripCell(data); }
-    ).toList();
-  }
+  TripCell({
+    @required this.data,
+    this.animation,
+    this.interactive = true,
+  });
 
   @override Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        CupertinoPageRoute<void>(
-          builder: (BuildContext context) => _createDetailsScreen(),
-        )
-      ),
-      child: _background(
-        Padding(
-          padding: EdgeInsets.only(top: 3.0),
-          child: Stack(children: <Widget>[
-            _icon(data.iconName),
-            _topRightText(data.topRightText),
-            Column(children: <Widget>[
-              _title(data.title),
-              _subtitle(data.subtitle),
-              Row(children: <Widget>[
-                _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
-                AhoyWidgets.flexibleSpace(),
-                _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+      onTap: _onTap,
+      child: SizeTransition(
+        axis: Axis.vertical,
+        sizeFactor: animation,
+        child: DraggableCell(
+          key: new Key(data.uniqueKey()),
+          onAccept: _onApprove,
+          onDelete: _onDismiss,
+          child: Padding(
+            padding: EdgeInsets.only(top: 3.0),
+            child: Stack(children: <Widget>[
+              _icon(data.iconName),
+              _topRightText(data.topRightText),
+              Column(children: <Widget>[
+                _title(data.title),
+                _subtitle(data.subtitle),
+                Row(children: <Widget>[
+                  _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
+                  AhoyWidgets.flexibleSpace(),
+                  _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+                ],),
               ],),
             ],),
-          ],),
-        ),      
+          ),
+        ),
       ),
     );
   }
 
-  FlightDetailsScreen _createDetailsScreen() {
-    final trip = TripProvider().tripForId(this.data.tripId);
-    final data = FlightDetailsDataFactory.fromTrip(trip);
-    return FlightDetailsScreen(data);
+  _onTap() {
+    if (interactive) {
+      data.onTap();
+    }
+  }
+
+  _onApprove() {
+    if (interactive) {
+      data.onApprove();
+    }
+  }
+
+  _onDismiss() {
+    if (interactive) {
+      data.onDismiss();
+    }
   }
 
   _bottomText(String caption, String value, bool accented) {
@@ -68,28 +84,6 @@ class TripCell extends StatelessWidget {
     final valueStyle = AhoyStyles.list.valueStyle;
     return Container(alignment: Alignment.topRight,
       child:Text(text, style: valueStyle,),
-    );
-  }
-
-  Widget _background(Widget child) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-        vertical: 9.0,
-      ),
-      padding: EdgeInsets.all(14.0),
-      decoration: new BoxDecoration(
-        color: AhoyColors.backgroundColor,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5.0,
-            offset: Offset(4.5, 4.5)
-          ),
-        ],
-      ),
-      child: child
     );
   }
 

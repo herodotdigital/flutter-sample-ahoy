@@ -1,4 +1,7 @@
+import 'Trip.dart';
+
 class Flight {
+  Trip parentTrip;
   Airport from;
   Airport to;
   DateTime gateClose;

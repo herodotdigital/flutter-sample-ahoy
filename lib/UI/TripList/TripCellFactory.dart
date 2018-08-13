@@ -1,16 +1,20 @@
 import 'package:ahoy_sample/Models/Trip.dart';
-import 'TripCell.dart';
 import 'TripCellData.dart';
 
-class TripCellFactory {
-  static List<TripCell> fromTrips(List<Trip> trips) {
-    return TripCell.forData(
-      trips.expand((trip){
-        return [
-          TripCellData.withFlight(trip.flight, trip.id),
-          TripCellData.withBooking(trip.booking, trip.id),
-        ];
-      }).toList()
-    );
+abstract class TripCellFactory {
+  static List<TripCellData> cellDataListFrom(List<Trip> trips) {
+    if (trips == null || trips.isEmpty) {
+      return [];
+    }
+    return trips.expand((trip){
+      List<TripCellData> list = [];
+      if (trip.flight != null) {
+        list.add(TripCellData.withFlight(trip.flight, trip.id));
+      }
+      if (trip.booking != null) {
+        list.add(TripCellData.withBooking(trip.booking, trip.id));
+      }
+      return list;
+    }).toList();
   }
 }

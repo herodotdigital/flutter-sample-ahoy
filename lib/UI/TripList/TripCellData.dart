@@ -2,8 +2,13 @@ import 'package:ahoy_sample/Models/Flight.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
 
+enum TripCellType {
+  flight, booking
+}
+
 class TripCellData {
   int tripId = 0;
+  TripCellType type;
   String title;
   String subtitle;
   String iconName;
@@ -12,8 +17,14 @@ class TripCellData {
   String bottomRightValue;
   String bottomLeftCaption;
   String bottomLeftValue;
+  DateTime sortingDate;
+  Function onTap;
+  Function onApprove;
+  Function onDismiss;
+  int indexInTable;
 
   TripCellData({
+    this.type,
     this.title,
     this.subtitle,
     this.iconName,
@@ -22,9 +33,11 @@ class TripCellData {
     this.bottomRightValue,
     this.bottomLeftCaption,
     this.bottomLeftValue,
+    this.sortingDate,
     });
 
     TripCellData.withFlight(Flight flight, int tripId) {
+      this.type = TripCellType.flight;
       this.tripId = tripId;
       this.title = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
       this.subtitle = flight.from.fullName;
@@ -34,9 +47,11 @@ class TripCellData {
       this.bottomRightValue = DateHelper.clock(flight.gateClose);
       this.bottomLeftCaption = _FlightCaptions.departure;
       this.bottomLeftValue = DateHelper.clock(flight.departureTime);
+      this.sortingDate = flight.departureTime;
     }
 
     TripCellData.withBooking(Booking booking, int tripId) {
+      this.type = TripCellType.booking;
       this.tripId = tripId;
       this.title = _howLong(booking);
       this.subtitle = "${booking.location}, ${booking.name}";
@@ -46,11 +61,16 @@ class TripCellData {
       this.bottomRightValue = DateHelper.clock(booking.checkIn);
       this.bottomLeftCaption = "";
       this.bottomLeftValue = "";
+      this.sortingDate = booking.checkIn;
     }
 
     String _howLong(Booking booking) {
-      final days = DateHelper.howManyDays(booking.checkIn, booking.checkOut);
+      final days = DateHelper.howManyNights(booking.checkIn, booking.checkOut);
       return "$days ${_BookingCaptions.nightStay}";
+    }
+
+    String uniqueKey() {
+      return "${tripId}_$type";
     }
 }
 
