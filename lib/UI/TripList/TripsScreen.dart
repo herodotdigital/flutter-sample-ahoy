@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
+import 'package:ahoy_sample/UI/Shared/AhoySegmentedControl.dart';
 import 'ListInteractorInterface.dart';
 import 'MyTripsInteractor.dart';
 
@@ -10,8 +11,21 @@ class TripsScreen extends StatelessWidget {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(leading: _backButton(),),
       child: SafeArea(
-        // child: Padding(padding: EdgeInsets.only(top: 4.0), child: TripList(),), //uncommenting simulates android statusbar
-        child: TripList(),
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: <Widget>[
+            TripList(),
+            Positioned(
+              bottom: 13.0,
+              width: 190.0,
+              height: 40.0,
+              child: AhoySegmentedControl(segments:[
+                AhoySegmentData(text: "Me", callback: () => print("Tapped: Me")),
+                AhoySegmentData(text: "Everyone", callback: () => print("Tapped: Everyone"))
+              ]),
+            ),
+          ],
+        )
       ),
     );
   }

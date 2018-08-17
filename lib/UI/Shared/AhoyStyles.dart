@@ -20,6 +20,7 @@ class AhoyColors {
 }
 
 class _StyleTripScreen {
+  TextStyle _base;
   TextStyle titleStyle;
   TextStyle subtitleStyle;
   TextStyle headerDetailsStyle;
@@ -29,37 +30,44 @@ class _StyleTripScreen {
   TextStyle bottomLayerStyle;
 
   _StyleTripScreen() {
-    TextStyle base = TextStyle(
+    this._base = TextStyle(
       fontFamily: 'OpenSans',
       fontWeight: FontWeight.w400,
       fontSize: 12.0,
     );
-    this.titleStyle = base.copyWith(
+    this.titleStyle = _base.copyWith(
       color: AhoyColors.accentColor,
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
       letterSpacing: 0.2,
     );
-    this.subtitleStyle = base.copyWith(
+    this.subtitleStyle = _base.copyWith(
       color: AhoyColors.grey,
       fontSize: 14.0,
     );
-    this.headerDetailsStyle = base.copyWith(
+    this.headerDetailsStyle = _base.copyWith(
       color: AhoyColors.transparentGrey,
       fontSize: 14.0,
       fontWeight: FontWeight.w600,
     );
-    this.captionStyle = base.copyWith(
+    this.captionStyle = _base.copyWith(
       color: AhoyColors.dark
     );
-    this.valueStyle = base.copyWith(
+    this.valueStyle = _base.copyWith(
       color: AhoyColors.grey
     );
-    this.accentedValueStyle = base.copyWith(
+    this.accentedValueStyle = _base.copyWith(
       color: AhoyColors.accentColor
     );
-    this.bottomLayerStyle = base.copyWith(
+    this.bottomLayerStyle = _base.copyWith(
       color: AhoyColors.backgroundColor,
+    );
+  }
+
+TextStyle segmentedControlStyle({@required bool accented}) {
+    return _base.copyWith(
+      fontSize: 14.0,
+      color: accented ? AhoyColors.accentColor : AhoyColors.backgroundColor
     );
   }
 }
