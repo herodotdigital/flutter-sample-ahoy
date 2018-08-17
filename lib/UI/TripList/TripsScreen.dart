@@ -6,7 +6,17 @@ import 'package:ahoy_sample/UI/Shared/AhoySegmentedControl.dart';
 import 'ListInteractorInterface.dart';
 import 'MyTripsInteractor.dart';
 
-class TripsScreen extends StatelessWidget {
+enum _Mode {
+  me, everyone
+}
+
+class TripsScreen extends StatefulWidget {
+  @override State<StatefulWidget> createState() => _TripsScreenState();
+}
+
+class _TripsScreenState extends State<TripsScreen> {
+  _Mode _mode = _Mode.me;
+
   @override Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(leading: _backButton(),),
@@ -14,20 +24,33 @@ class TripsScreen extends StatelessWidget {
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: <Widget>[
-            TripList(),
+            _listForCurrentMode(),
             Positioned(
               bottom: 13.0,
               width: 190.0,
               height: 40.0,
               child: AhoySegmentedControl(segments:[
-                AhoySegmentData(text: "Me", callback: () => print("Tapped: Me")),
-                AhoySegmentData(text: "Everyone", callback: () => print("Tapped: Everyone"))
+                AhoySegmentData(text: "Me", callback: () => _switchModeTo(_Mode.me)),
+                AhoySegmentData(text: "Everyone", callback: () => _switchModeTo(_Mode.everyone))
               ]),
             ),
           ],
         )
       ),
     );
+  }
+
+  _switchModeTo(_Mode mode) {
+    setState(() {
+      this._mode = mode;
+    });
+  }
+
+  Widget _listForCurrentMode() {
+    switch (_mode) {
+      case _Mode.me: return TripList();
+      case _Mode.everyone: return Container();
+    }
   }
 
   _backButton() {
