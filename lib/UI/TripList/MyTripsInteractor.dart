@@ -35,8 +35,9 @@ class MyTripsInteractor extends ListInteractor {
     return _widgetFor(context,index,animation);
   }
 
-  _resetSections() {
+  _reloadSections() {
     sections = null;
+    _prepareSectionsIfNeeded();
   }
 
   _prepareSectionsIfNeeded() {
@@ -103,15 +104,14 @@ class MyTripsInteractor extends ListInteractor {
     Function removeCellAction = () {
       switch (data.type) {
         case TripCellType.flight:
-          TripProvider().removeFlight(tripId: data.tripId);
+          tripProvider.removeFlight(tripId: data.tripId);
           break;
         case TripCellType.booking:
-          TripProvider().removeBooking(tripId: data.tripId);
+          tripProvider.removeBooking(tripId: data.tripId);
           break;
         default:
       }
-      _resetSections();
-      _prepareSectionsIfNeeded();
+      _reloadSections();
       _animatedList.removeItem(data.indexInTable, (BuildContext context, Animation<double> animation){
         return TripCell(data: data, animation: animation, interactive: false);
       });
@@ -132,7 +132,7 @@ class MyTripsInteractor extends ListInteractor {
   Widget _createDetailsScreen(TripCellData inData) {
     switch (inData.type) {
       case TripCellType.flight:
-        final trip = TripProvider().tripForId(inData.tripId);
+        final trip = tripProvider.tripForId(inData.tripId);
         final flightData = FlightDetailsDataFactory.fromTrip(trip);
         return FlightDetailsScreen(flightData);
       case TripCellType.booking:

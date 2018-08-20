@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
 import 'package:ahoy_sample/UI/Shared/AhoySegmentedControl.dart';
-import 'ListInteractorInterface.dart';
 import 'MyTripsInteractor.dart';
 
 enum _Mode {
@@ -14,8 +13,38 @@ class TripsScreen extends StatefulWidget {
   @override State<StatefulWidget> createState() => _TripsScreenState();
 }
 
-class _TripsScreenState extends State<TripsScreen> {
+class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
   _Mode _mode = _Mode.me;
+  bool isLoaded = false;
+  final GlobalKey<AnimatedListState> _meKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> _everyoneKey = GlobalKey<AnimatedListState>();
+  final TripProvider _meTripProvider = TripProvider();
+  final TripProvider _everyoneTripProvider = TripProvider();
+  MyTripsInteractor _meTripInteractor;
+  MyTripsInteractor _everyoneTripInteractor;
+
+  @override void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    _meTripInteractor = MyTripsInteractor(listKey: _meKey, tripProvider: _meTripProvider);
+    _everyoneTripInteractor = MyTripsInteractor(listKey: _everyoneKey, tripProvider: _everyoneTripProvider);
+    super.initState();
+  }
+
+  @override void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && !isLoaded) {
+      isLoaded = true;
+      _hideSplash();
+    }
+  }
+
+  void _hideSplash() {
+    Bridge().viewReady();
+  }
 
   @override Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -47,10 +76,25 @@ class _TripsScreenState extends State<TripsScreen> {
   }
 
   Widget _listForCurrentMode() {
+    MyTripsInteractor anInteractor;
+    GlobalKey aKey;
     switch (_mode) {
-      case _Mode.me: return TripList();
-      case _Mode.everyone: return Container();
+      case _Mode.me:
+        anInteractor = _meTripInteractor;
+        aKey = _meKey;
+        break;
+      case _Mode.everyone:
+        anInteractor = _everyoneTripInteractor;
+        aKey = _everyoneKey;
+        break;
     }
+    return Material(
+        child: AnimatedList(
+          key: aKey,
+          initialItemCount: anInteractor.count(),
+          itemBuilder: anInteractor.buildRow,
+        ),
+    );
   }
 
   _backButton() {
@@ -59,50 +103,6 @@ class _TripsScreenState extends State<TripsScreen> {
       onPressed: (){
         Bridge().dismiss();
       },
-    );
-  }
-}
-
-class TripList extends StatefulWidget {
-  @override _TripListState createState() => _TripListState();
-}
-
-class _TripListState extends State<TripList> with WidgetsBindingObserver {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  bool isLoaded = false;
-  ListInteractor myTrips;
-  TripProvider tripProvider = TripProvider();
-
-  @override void initState() {
-    super.initState();
-    myTrips = MyTripsInteractor(listKey: _listKey, tripProvider: tripProvider);
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && !isLoaded) {
-      isLoaded = true;
-      _hideSplash();
-    }
-  }
-
-  void _hideSplash() {
-    Bridge().viewReady();
-  }
-
-  @override Widget build(BuildContext context) {
-    return Material(
-        child: AnimatedList(
-          key: _listKey,
-          initialItemCount: myTrips.count(),
-          itemBuilder: myTrips.buildRow,
-        ),
     );
   }
 }

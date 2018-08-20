@@ -11,7 +11,6 @@ main() {
   group("TripProvider tests", (){
 
     setUp((){
-      TripProvider.resetAll();
       sut = TripProvider();
     });
 
