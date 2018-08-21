@@ -111,6 +111,7 @@ class TripsInteractor {
   _pushDetails(TripCellData data, BuildContext context) {
     Navigator.of(context).push(
       CupertinoPageRoute<void>(
+        fullscreenDialog: true,
         builder: (BuildContext context) => _createDetailsScreen(data),
       )
     );
