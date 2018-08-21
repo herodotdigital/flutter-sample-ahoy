@@ -5,7 +5,7 @@ import 'TripHeader.dart';
 import 'TripCell.dart';
 import 'TripCellFactory.dart';
 import 'ListInteractorInterface.dart';
-import 'package:ahoy_sample/Helpers/DateHelper.dart';
+import 'TripsSectionBuilder.dart';
 import 'package:flutter/cupertino.dart';
 import '../FlightDetails/FlightDetailsScreen.dart';
 import '../FlightDetails/FlightDetailsDataFactory.dart';
@@ -15,10 +15,13 @@ class MyTripsInteractor extends ListInteractor {
   final GlobalKey<AnimatedListState> listKey;
   final TripProvider tripProvider;
   List<TableSection<TripHeaderData,TripCellData,Widget>> sections;
+  final TripsSectionBuilder sectionBuilder;
+
 
   MyTripsInteractor({
     @required this.listKey,
     @required this.tripProvider,
+    @required this.sectionBuilder,
   });
 
   int count() {
@@ -45,22 +48,7 @@ class MyTripsInteractor extends ListInteractor {
       return;
     }
     List<TripCellData> viewModels = _allViewmodels();
-    final todayModels = viewModels.where((m) => _isWithin24hPredicate(m)).toList();
-    final laterModels = viewModels.where((m) => !_isWithin24hPredicate(m)).toList();
-    final when = DateHelper.formatted(format: "d MMMM", date: DateTime.now());
-    final nowSection = _createSection(headerText: "Now", detailText: when, viewModels: todayModels);
-    final laterSection = _createSection(headerText: "Later", viewModels: laterModels);
-    sections = [nowSection, laterSection];
-  }
-
-  bool _isWithin24hPredicate(TripCellData model) {
-    DateTime tomorrow = DateTime.now().add(Duration(days: 1));
-    return model.sortingDate.isBefore(tomorrow);
-  }
-
-  TableSection<TripHeaderData,TripCellData,Widget> _createSection({@required List<TripCellData> viewModels, @required String headerText, String detailText,}) {
-    final header = (viewModels.length > 0) ? TripHeaderData(title: headerText, details: detailText) : null;
-    return TableSection<TripHeaderData,TripCellData,Widget>(headerData: header, rows: viewModels);
+    sections = sectionBuilder.buildSectionsFrom(viewModels);
   }
   
   List<TripCellData> _allViewmodels() {

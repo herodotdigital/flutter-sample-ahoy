@@ -1,47 +1,39 @@
 import 'package:ahoy_sample/Models/Trip.dart';
-import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
+import 'package:meta/meta.dart';
 
 class TripProvider {
-  List<Trip> _trips = _defaultTrips();
+  List<Trip> trips;
 
-  resetAll() {
-    _trips = _defaultTrips();
-  }
-
-  static _defaultTrips() {
-    return <Trip>[
-      TripStubs.stubTodayTrip(id: 1),
-      TripStubs.stubLaterTrip(id: 2),
-    ];
+  TripProvider({@required this.trips}) {
   }
 
   List<Trip> allTrips() {
-    return _trips;
+    return trips;
   }
 
   Trip tripForId(int id) {
-    return _trips.firstWhere((trip) {
+    return trips.firstWhere((trip) {
       return trip.id == id;
     });
   }
 
   removeTrip({int id}) {
-    _trips.removeWhere((t) => t.id == id);
+    trips.removeWhere((t) => t.id == id);
   }
 
   removeFlight({int tripId}) {
     Trip oldTrip = tripForId(tripId);
-    int index = _trips.indexOf(oldTrip);
-    _trips.removeAt(index);
+    int index = trips.indexOf(oldTrip);
+    trips.removeAt(index);
     Trip newTrip = Trip(id: oldTrip.id, booking: oldTrip.booking, flight: null);
-    _trips.insert(index, newTrip);
+    trips.insert(index, newTrip);
   }
 
   removeBooking({int tripId}) {
     Trip oldTrip = tripForId(tripId);
-    int index = _trips.indexOf(oldTrip);
-    _trips.removeAt(index);
+    int index = trips.indexOf(oldTrip);
+    trips.removeAt(index);
     Trip newTrip = Trip(id: oldTrip.id, flight: oldTrip.flight, booking: null);
-    _trips.insert(index, newTrip);
+    trips.insert(index, newTrip);
   }
 }

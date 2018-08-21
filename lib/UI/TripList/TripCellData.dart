@@ -1,5 +1,6 @@
 import 'package:ahoy_sample/Models/Flight.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
+import 'package:ahoy_sample/Models/Person.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
 
 enum TripCellType {
@@ -10,7 +11,8 @@ class TripCellData {
   int tripId = 0;
   TripCellType type;
   String title;
-  String subtitle;
+  String subtitle1;
+  String subtitle2; //second line
   String iconName;
   String topRightText;
   String bottomRightCaption;
@@ -26,7 +28,8 @@ class TripCellData {
   TripCellData({
     this.type,
     this.title,
-    this.subtitle,
+    this.subtitle1,
+    this.subtitle2,
     this.iconName,
     this.topRightText,
     this.bottomRightCaption,
@@ -36,11 +39,17 @@ class TripCellData {
     this.sortingDate,
     });
 
-    TripCellData.withFlight(Flight flight, int tripId) {
+    TripCellData.withFlight(Flight flight, int tripId, Person person) {
       this.type = TripCellType.flight;
       this.tripId = tripId;
-      this.title = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
-      this.subtitle = flight.from.fullName;
+      if (person != null) {
+        this.title = "${person.name} ${person.surname}";
+        this.subtitle1 = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
+        this.subtitle2 = flight.from.fullName;
+      } else {
+        this.title = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
+        this.subtitle1 = flight.from.fullName;
+      }
       this.iconName = "assets/images/planeGray.png";
       this.topRightText = DateHelper.when(flight.departureTime);
       this.bottomRightCaption = _FlightCaptions.gateClose;
@@ -50,11 +59,17 @@ class TripCellData {
       this.sortingDate = flight.departureTime;
     }
 
-    TripCellData.withBooking(Booking booking, int tripId) {
+    TripCellData.withBooking(Booking booking, int tripId, Person person) {
       this.type = TripCellType.booking;
       this.tripId = tripId;
-      this.title = _howLong(booking);
-      this.subtitle = "${booking.location}, ${booking.name}";
+      if (person != null) {
+        this.title = "${person.name} ${person.surname}";
+        this.subtitle1 = _howLong(booking);
+        this.subtitle2 = "${booking.location}, ${booking.name}";
+      } else {
+        this.title = _howLong(booking);
+        this.subtitle1 = "${booking.location}, ${booking.name}";
+      }
       this.iconName = "assets/images/hotelGray.png";
       this.topRightText = DateHelper.when(booking.checkIn);
       this.bottomRightCaption = _BookingCaptions.checkIn;
