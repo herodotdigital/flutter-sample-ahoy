@@ -11,8 +11,7 @@ main() {
   group("TripProvider tests", (){
 
     setUp((){
-      TripProvider.resetAll();
-      sut = TripProvider();
+      sut = TripProvider(trips: TripStubs.stubMyTrips());
     });
 
     test("Trip provider should return Trips", (){
@@ -46,10 +45,11 @@ main() {
 
     test("Call data should be instantinated from a flight", (){
       final exampleTrip = TripStubs.stubTodayTrip(id: 13);
-      final flightCell = TripCellData.withFlight(exampleTrip.flight, exampleTrip.id);
+      final flightCell = TripCellData.forFlight(exampleTrip);
       expect(flightCell.tripId, 13);
       expect(flightCell.title, isNotNull);
-      expect(flightCell.subtitle, isNotNull);
+      expect(flightCell.subtitle1, isNotNull);
+      expect(flightCell.subtitle2, isNull);
       expect(flightCell.iconName, isNotNull);
       expect(flightCell.topRightText, isNotNull);
       expect(flightCell.bottomRightCaption, isNotNull);
@@ -60,10 +60,40 @@ main() {
 
     test("Call data should be instantinated from a booking", (){
       final exampleTrip = TripStubs.stubTodayTrip(id: 26);
-      final bookingCell = TripCellData.withBooking(exampleTrip.booking, exampleTrip.id);
+      final bookingCell = TripCellData.forBooking(exampleTrip);
       expect(bookingCell.tripId, 26);
       expect(bookingCell.title, isNotNull);
-      expect(bookingCell.subtitle, isNotNull);
+      expect(bookingCell.subtitle1, isNotNull);
+      expect(bookingCell.subtitle2, isNull);
+      expect(bookingCell.iconName, isNotNull);
+      expect(bookingCell.topRightText, isNotNull);
+      expect(bookingCell.bottomRightCaption, isNotNull);
+      expect(bookingCell.bottomRightValue, isNotNull);
+      expect(bookingCell.bottomLeftCaption, isNotNull);
+      expect(bookingCell.bottomLeftValue, isNotNull);
+    });
+    test("Call data should be instantinated from a flight, with a person", (){
+      final exampleTrip = TripStubs.stubJohnTrip(id: 13);
+      final flightCell = TripCellData.forFlight(exampleTrip);
+      expect(flightCell.tripId, 13);
+      expect(flightCell.title, isNotNull);
+      expect(flightCell.subtitle1, isNotNull);
+      expect(flightCell.subtitle2, isNotNull);
+      expect(flightCell.iconName, isNotNull);
+      expect(flightCell.topRightText, isNotNull);
+      expect(flightCell.bottomRightCaption, isNotNull);
+      expect(flightCell.bottomRightValue, isNotNull);
+      expect(flightCell.bottomLeftCaption, isNotNull);
+      expect(flightCell.bottomLeftValue, isNotNull);
+    });
+
+    test("Call data should be instantinated from a booking, with a person", (){
+      final exampleTrip = TripStubs.stubJohnTrip(id: 26);
+      final bookingCell = TripCellData.forBooking(exampleTrip);
+      expect(bookingCell.tripId, 26);
+      expect(bookingCell.title, isNotNull);
+      expect(bookingCell.subtitle1, isNotNull);
+      expect(bookingCell.subtitle2, isNotNull);
       expect(bookingCell.iconName, isNotNull);
       expect(bookingCell.topRightText, isNotNull);
       expect(bookingCell.bottomRightCaption, isNotNull);

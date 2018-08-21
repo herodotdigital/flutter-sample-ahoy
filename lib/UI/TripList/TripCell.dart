@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ahoy_sample/Services/TripProvider.dart';
 import '../Shared/AhoyStyles.dart';
 import '../Shared/AhoyWidgets.dart';
-import '../FlightDetails/FlightDetailsDataFactory.dart';
-import '../FlightDetails/FlightDetailsScreen.dart';
 import 'TripCellData.dart';
 import 'DraggableCell.dart';
+
+enum _SubtitlePosition {
+  standalone, upper, lower
+}
 
 class TripCell extends StatelessWidget {
   final TripCellData data;
@@ -27,27 +28,36 @@ class TripCell extends StatelessWidget {
         sizeFactor: animation,
         child: DraggableCell(
           key: new Key(data.uniqueKey()),
-          onAccept: _onApprove,
-          onDelete: _onDismiss,
+          onAccept: data.swipeable ? _onApprove : null,
+          onDelete: data.swipeable ? _onDismiss : null,
           child: Padding(
             padding: EdgeInsets.only(top: 3.0),
             child: Stack(children: <Widget>[
               _icon(data.iconName),
               _topRightText(data.topRightText),
-              Column(children: <Widget>[
-                _title(data.title),
-                _subtitle(data.subtitle),
-                Row(children: <Widget>[
-                  _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
-                  AhoyWidgets.flexibleSpace(),
-                  _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
-                ],),
-              ],),
+              _buildColumn(),
             ],),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildColumn() {
+    bool hasTwoLineSubtitle = data.subtitle2 != null;
+    List<Widget> columnChildren = <Widget>[
+      _title(data.title),
+      _subtitle(data.subtitle1, hasTwoLineSubtitle ? _SubtitlePosition.upper : _SubtitlePosition.standalone),
+      Row(children: <Widget>[
+        _bottomText(data.bottomLeftCaption, data.bottomLeftValue, false),
+        AhoyWidgets.flexibleSpace(),
+        _bottomText(data.bottomRightCaption, data.bottomRightValue, true),
+      ],),
+    ];
+    if (hasTwoLineSubtitle) {
+      columnChildren.insert(2, _subtitle(data.subtitle2, _SubtitlePosition.lower));
+    }
+    return Column(children: columnChildren);
   }
 
   _onTap() {
@@ -103,11 +113,19 @@ class TripCell extends StatelessWidget {
     return Text(text, style: titleStyle,);
   }
 
-  Widget _subtitle(String text) {
+  Widget _subtitle(String text, _SubtitlePosition position) {
     final subtitleStyle = AhoyStyles.list.subtitleStyle;
     return Container(
-      margin: EdgeInsets.only(top: 7.0, bottom: 16.0,),
+      margin: _insetsFor(position),
       child: Text(text, style: subtitleStyle,),
     );
+  }
+
+  EdgeInsets _insetsFor(_SubtitlePosition position) {
+    switch (position) {
+      case _SubtitlePosition.standalone: return EdgeInsets.only(top: 7.0, bottom: 16.0,);
+      case _SubtitlePosition.upper: return EdgeInsets.only(top: 7.0, bottom: 2.0,);
+      case _SubtitlePosition.lower: return EdgeInsets.only(top: 2.0, bottom: 11.0,);
+    }
   }
 }

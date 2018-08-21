@@ -72,6 +72,9 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
   }
 
   _onDragUpdate(DragUpdateDetails details) {
+    if (!_allowDrag(details)) {
+      return;
+    }
     controller.reset();
     setState((){
       contentXOffset += details.delta.dx;
@@ -90,6 +93,14 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
     setState((){
       _playCancelAnimation();
     });
+  }
+
+  bool _allowDrag(DragUpdateDetails details) {
+    bool acceptPossible = widget.onAccept != null;
+    bool deletePossible = widget.onDelete != null;
+    bool dragRight = details.delta.dx > 0;
+    bool dragLeft = details.delta.dx < 0;
+    return (dragRight && acceptPossible) || (dragLeft && deletePossible);
   }
 
   Widget _contentView() {

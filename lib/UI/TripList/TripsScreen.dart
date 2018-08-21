@@ -2,44 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/Services/Bridge.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
-import 'ListInteractorInterface.dart';
-import 'MyTripsInteractor.dart';
+import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
+import 'package:ahoy_sample/UI/Shared/AhoySegmentedControl.dart';
+import 'TripsInteractor.dart';
+import 'TripsSectionBuilder.dart';
 
-class TripsScreen extends StatelessWidget {
-  @override Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(leading: _backButton(),),
-      child: SafeArea(
-        // child: Padding(padding: EdgeInsets.only(top: 4.0), child: TripList(),), //uncommenting simulates android statusbar
-        child: TripList(),
-      ),
-    );
-  }
-
-  _backButton() {
-    return CupertinoButton(
-      child: Icon(CupertinoIcons.back),
-      onPressed: (){
-        Bridge().dismiss();
-      },
-    );
-  }
+enum _Mode {
+  me, everyone
 }
 
-class TripList extends StatefulWidget {
-  @override _TripListState createState() => _TripListState();
+class TripsScreen extends StatefulWidget {
+  @override State<StatefulWidget> createState() => _TripsScreenState();
 }
 
-class _TripListState extends State<TripList> with WidgetsBindingObserver {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
+  _Mode _mode = _Mode.me;
   bool isLoaded = false;
-  ListInteractor myTrips;
-  TripProvider tripProvider = TripProvider();
+  final GlobalKey<AnimatedListState> _meKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> _everyoneKey = GlobalKey<AnimatedListState>();
+  final TripProvider _meTripProvider = TripProvider(trips: TripStubs.stubMyTrips());
+  final TripProvider _everyoneTripProvider = TripProvider(trips: TripStubs.stubEveryoneTrips());
+  TripsInteractor _meTripInteractor;
+  TripsInteractor _everyoneTripInteractor;
 
   @override void initState() {
-    super.initState();
-    myTrips = MyTripsInteractor(listKey: _listKey, tripProvider: tripProvider);
     WidgetsBinding.instance.addObserver(this);
+    _meTripInteractor = TripsInteractor(listKey: _meKey, tripProvider: _meTripProvider, sectionBuilder: MyTripsSectionBuilder());
+    _everyoneTripInteractor = TripsInteractor(listKey: _everyoneKey, tripProvider: _everyoneTripProvider, sectionBuilder: EveryoneTripsSectionBuilder());
+    super.initState();
   }
 
   @override void dispose() {
@@ -47,8 +37,7 @@ class _TripListState extends State<TripList> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  @override void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed && !isLoaded) {
       isLoaded = true;
       _hideSplash();
@@ -60,12 +49,62 @@ class _TripListState extends State<TripList> with WidgetsBindingObserver {
   }
 
   @override Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(leading: _backButton(),),
+      child: SafeArea(
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: <Widget>[
+            _listForCurrentMode(),
+            Positioned(
+              bottom: 13.0,
+              width: 190.0,
+              height: 40.0,
+              child: AhoySegmentedControl(segments:[
+                AhoySegmentData(text: "Me", callback: () => _switchModeTo(_Mode.me)),
+                AhoySegmentData(text: "Everyone", callback: () => _switchModeTo(_Mode.everyone))
+              ]),
+            ),
+          ],
+        )
+      ),
+    );
+  }
+
+  _switchModeTo(_Mode mode) {
+    setState(() {
+      this._mode = mode;
+    });
+  }
+
+  Widget _listForCurrentMode() {
+    TripsInteractor anInteractor;
+    GlobalKey aKey;
+    switch (_mode) {
+      case _Mode.me:
+        anInteractor = _meTripInteractor;
+        aKey = _meKey;
+        break;
+      case _Mode.everyone:
+        anInteractor = _everyoneTripInteractor;
+        aKey = _everyoneKey;
+        break;
+    }
     return Material(
         child: AnimatedList(
-          key: _listKey,
-          initialItemCount: myTrips.count(),
-          itemBuilder: myTrips.buildRow,
+          key: aKey,
+          initialItemCount: anInteractor.count(),
+          itemBuilder: anInteractor.buildRow,
         ),
+    );
+  }
+
+  _backButton() {
+    return CupertinoButton(
+      child: Icon(CupertinoIcons.back),
+      onPressed: (){
+        Bridge().dismiss();
+      },
     );
   }
 }

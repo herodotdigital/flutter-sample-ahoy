@@ -4,21 +4,23 @@ import 'package:ahoy_sample/UI/TripList/TripCellData.dart';
 import 'TripHeader.dart';
 import 'TripCell.dart';
 import 'TripCellFactory.dart';
-import 'ListInteractorInterface.dart';
-import 'package:ahoy_sample/Helpers/DateHelper.dart';
+import 'TripsSectionBuilder.dart';
 import 'package:flutter/cupertino.dart';
 import '../FlightDetails/FlightDetailsScreen.dart';
 import '../FlightDetails/FlightDetailsDataFactory.dart';
 import 'package:ahoy_sample/UI/Shared/TableSection.dart';
 
-class MyTripsInteractor extends ListInteractor {
+class TripsInteractor {
   final GlobalKey<AnimatedListState> listKey;
   final TripProvider tripProvider;
   List<TableSection<TripHeaderData,TripCellData,Widget>> sections;
+  final TripsSectionBuilder sectionBuilder;
 
-  MyTripsInteractor({
+
+  TripsInteractor({
     @required this.listKey,
     @required this.tripProvider,
+    @required this.sectionBuilder,
   });
 
   int count() {
@@ -35,8 +37,9 @@ class MyTripsInteractor extends ListInteractor {
     return _widgetFor(context,index,animation);
   }
 
-  _resetSections() {
+  _reloadSections() {
     sections = null;
+    _prepareSectionsIfNeeded();
   }
 
   _prepareSectionsIfNeeded() {
@@ -44,22 +47,7 @@ class MyTripsInteractor extends ListInteractor {
       return;
     }
     List<TripCellData> viewModels = _allViewmodels();
-    final todayModels = viewModels.where((m) => _isWithin24hPredicate(m)).toList();
-    final laterModels = viewModels.where((m) => !_isWithin24hPredicate(m)).toList();
-    final when = DateHelper.formatted(format: "d MMMM", date: DateTime.now());
-    final nowSection = _createSection(headerText: "Now", detailText: when, viewModels: todayModels);
-    final laterSection = _createSection(headerText: "Later", viewModels: laterModels);
-    sections = [nowSection, laterSection];
-  }
-
-  bool _isWithin24hPredicate(TripCellData model) {
-    DateTime tomorrow = DateTime.now().add(Duration(days: 1));
-    return model.sortingDate.isBefore(tomorrow);
-  }
-
-  TableSection<TripHeaderData,TripCellData,Widget> _createSection({@required List<TripCellData> viewModels, @required String headerText, String detailText,}) {
-    final header = (viewModels.length > 0) ? TripHeaderData(title: headerText, details: detailText) : null;
-    return TableSection<TripHeaderData,TripCellData,Widget>(headerData: header, rows: viewModels);
+    sections = sectionBuilder.buildSectionsFrom(viewModels);
   }
   
   List<TripCellData> _allViewmodels() {
@@ -103,15 +91,14 @@ class MyTripsInteractor extends ListInteractor {
     Function removeCellAction = () {
       switch (data.type) {
         case TripCellType.flight:
-          TripProvider().removeFlight(tripId: data.tripId);
+          tripProvider.removeFlight(tripId: data.tripId);
           break;
         case TripCellType.booking:
-          TripProvider().removeBooking(tripId: data.tripId);
+          tripProvider.removeBooking(tripId: data.tripId);
           break;
         default:
       }
-      _resetSections();
-      _prepareSectionsIfNeeded();
+      _reloadSections();
       _animatedList.removeItem(data.indexInTable, (BuildContext context, Animation<double> animation){
         return TripCell(data: data, animation: animation, interactive: false);
       });
@@ -132,7 +119,7 @@ class MyTripsInteractor extends ListInteractor {
   Widget _createDetailsScreen(TripCellData inData) {
     switch (inData.type) {
       case TripCellType.flight:
-        final trip = TripProvider().tripForId(inData.tripId);
+        final trip = tripProvider.tripForId(inData.tripId);
         final flightData = FlightDetailsDataFactory.fromTrip(trip);
         return FlightDetailsScreen(flightData);
       case TripCellType.booking:
