@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ahoy_sample/UI/Shared/AhoyStyles.dart';
+import 'package:ahoy_sample/UI/Shared/AhoyDecorations.dart';
 
 class AhoySegmentData {
   final String text;
@@ -23,12 +24,14 @@ class _AhoySegmentedControlState extends State<AhoySegmentedControl> {
   final double borderRadius = 20.0;
 
   @override Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AhoyColors.backgroundColor,
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      child: Row(children: _allSegments()),
+    return Material(child:
+      Container(
+        decoration: BoxDecoration(
+          color: AhoyColors.backgroundColor,
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        child: Row(children: _allSegments()),
+      )
     );
   }
 
@@ -58,19 +61,24 @@ class _AhoySegmentedControlState extends State<AhoySegmentedControl> {
   Widget _segment({@required AhoySegmentData data, @required bool accented, _AhoySegmentPosition position}) {
     return Expanded(
       flex: 1, 
-      child: CupertinoButton(
-        padding: EdgeInsets.all(0.0),
-        color: accented ? AhoyColors.accentColor : AhoyColors.backgroundColor,
-        minSize: 40.0,
-        borderRadius: _borderRadiusForPosition(position),
-        onPressed: (){
+      child: GestureDetector(
+        onTapDown: (event){
           setState(() {
             selected = widget.segments.indexOf(data);
           });
           data.callback();
         },
-        child: Text(data.text, style: AhoyStyles.list.segmentedControlStyle(accented: !accented),)
-      ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: accented ? null : AhoyColors.backgroundColor,
+            gradient: accented ? AhoyDecorations.accentedGradient() : null,
+            borderRadius: _borderRadiusForPosition(position),
+          ),
+          child: Center(
+            child:Text(data.text, style: AhoyStyles.list.segmentedControlStyle(accented: !accented)),
+          )
+        ),
+      )
     );
   }
 

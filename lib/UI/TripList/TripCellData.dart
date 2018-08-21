@@ -1,6 +1,5 @@
-import 'package:ahoy_sample/Models/Flight.dart';
+import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
-import 'package:ahoy_sample/Models/Person.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
 
 enum TripCellType {
@@ -24,6 +23,7 @@ class TripCellData {
   Function onApprove;
   Function onDismiss;
   int indexInTable;
+  bool swipeable;
 
   TripCellData({
     this.type,
@@ -37,46 +37,49 @@ class TripCellData {
     this.bottomLeftCaption,
     this.bottomLeftValue,
     this.sortingDate,
+    this.swipeable,
     });
 
-    TripCellData.withFlight(Flight flight, int tripId, Person person) {
+    TripCellData.forFlight(Trip trip) {
       this.type = TripCellType.flight;
-      this.tripId = tripId;
-      if (person != null) {
-        this.title = "${person.name} ${person.surname}";
-        this.subtitle1 = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
-        this.subtitle2 = flight.from.fullName;
+      this.tripId = trip.id;
+      if (trip.person != null) {
+        this.title = "${trip.person.name} ${trip.person.surname}";
+        this.subtitle1 = "${trip.flight.from.code.toUpperCase()} - ${trip.flight.to.code.toUpperCase()}";
+        this.subtitle2 = trip.flight.from.fullName;
       } else {
-        this.title = "${flight.from.code.toUpperCase()} - ${flight.to.code.toUpperCase()}";
-        this.subtitle1 = flight.from.fullName;
+        this.title = "${trip.flight.from.code.toUpperCase()} - ${trip.flight.to.code.toUpperCase()}";
+        this.subtitle1 = trip.flight.from.fullName;
       }
       this.iconName = "assets/images/planeGray.png";
-      this.topRightText = DateHelper.when(flight.departureTime);
+      this.topRightText = DateHelper.when(trip.flight.departureTime);
       this.bottomRightCaption = _FlightCaptions.gateClose;
-      this.bottomRightValue = DateHelper.clock(flight.gateClose);
+      this.bottomRightValue = DateHelper.clock(trip.flight.gateClose);
       this.bottomLeftCaption = _FlightCaptions.departure;
-      this.bottomLeftValue = DateHelper.clock(flight.departureTime);
-      this.sortingDate = flight.departureTime;
+      this.bottomLeftValue = DateHelper.clock(trip.flight.departureTime);
+      this.sortingDate = trip.flight.departureTime;
+      this.swipeable = trip.needsApproval;
     }
 
-    TripCellData.withBooking(Booking booking, int tripId, Person person) {
+    TripCellData.forBooking(trip) {
       this.type = TripCellType.booking;
-      this.tripId = tripId;
-      if (person != null) {
-        this.title = "${person.name} ${person.surname}";
-        this.subtitle1 = _howLong(booking);
-        this.subtitle2 = "${booking.location}, ${booking.name}";
+      this.tripId = trip.id;
+      if (trip.person != null) {
+        this.title = "${trip.person.name} ${trip.person.surname}";
+        this.subtitle1 = _howLong(trip.booking);
+        this.subtitle2 = "${trip.booking.location}, ${trip.booking.name}";
       } else {
-        this.title = _howLong(booking);
-        this.subtitle1 = "${booking.location}, ${booking.name}";
+        this.title = _howLong(trip.booking);
+        this.subtitle1 = "${trip.booking.location}, ${trip.booking.name}";
       }
       this.iconName = "assets/images/hotelGray.png";
-      this.topRightText = DateHelper.when(booking.checkIn);
+      this.topRightText = DateHelper.when(trip.booking.checkIn);
       this.bottomRightCaption = _BookingCaptions.checkIn;
-      this.bottomRightValue = DateHelper.clock(booking.checkIn);
+      this.bottomRightValue = DateHelper.clock(trip.booking.checkIn);
       this.bottomLeftCaption = "";
       this.bottomLeftValue = "";
-      this.sortingDate = booking.checkIn;
+      this.sortingDate = trip.booking.checkIn;
+      this.swipeable = trip.needsApproval;
     }
 
     String _howLong(Booking booking) {

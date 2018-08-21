@@ -4,7 +4,7 @@ import 'package:ahoy_sample/Services/Bridge.dart';
 import 'package:ahoy_sample/Services/TripProvider.dart';
 import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
 import 'package:ahoy_sample/UI/Shared/AhoySegmentedControl.dart';
-import 'MyTripsInteractor.dart';
+import 'TripsInteractor.dart';
 import 'TripsSectionBuilder.dart';
 
 enum _Mode {
@@ -22,13 +22,13 @@ class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
   final GlobalKey<AnimatedListState> _everyoneKey = GlobalKey<AnimatedListState>();
   final TripProvider _meTripProvider = TripProvider(trips: TripStubs.stubMyTrips());
   final TripProvider _everyoneTripProvider = TripProvider(trips: TripStubs.stubEveryoneTrips());
-  MyTripsInteractor _meTripInteractor;
-  MyTripsInteractor _everyoneTripInteractor;
+  TripsInteractor _meTripInteractor;
+  TripsInteractor _everyoneTripInteractor;
 
   @override void initState() {
     WidgetsBinding.instance.addObserver(this);
-    _meTripInteractor = MyTripsInteractor(listKey: _meKey, tripProvider: _meTripProvider, sectionBuilder: MyTripsSectionBuilder());
-    _everyoneTripInteractor = MyTripsInteractor(listKey: _everyoneKey, tripProvider: _everyoneTripProvider, sectionBuilder: EveryoneTripsSectionBuilder());
+    _meTripInteractor = TripsInteractor(listKey: _meKey, tripProvider: _meTripProvider, sectionBuilder: MyTripsSectionBuilder());
+    _everyoneTripInteractor = TripsInteractor(listKey: _everyoneKey, tripProvider: _everyoneTripProvider, sectionBuilder: EveryoneTripsSectionBuilder());
     super.initState();
   }
 
@@ -78,7 +78,7 @@ class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
   }
 
   Widget _listForCurrentMode() {
-    MyTripsInteractor anInteractor;
+    TripsInteractor anInteractor;
     GlobalKey aKey;
     switch (_mode) {
       case _Mode.me:

@@ -23,6 +23,7 @@ class TripStubs {
   static Trip stubTodayTrip({@required int id}) {
     return Trip(
       id: id,
+      needsApproval: false,
       flight: Flight(
         gateClose: DateHelper.after(minutes: 5),
         departureTime: DateHelper.after(minutes: 15),
@@ -46,6 +47,7 @@ class TripStubs {
   static Trip stubLaterTrip({@required int id}) {
     return Trip(
       id: id,
+      needsApproval: false,
       flight: Flight(
         gateClose: _createTime(hour: 8, minute: 5, daysLater: 30),
         departureTime: _createTime(hour: 8, minute: 15, daysLater: 30),
@@ -69,6 +71,7 @@ class TripStubs {
   static Trip stubJohnTrip({@required int id}) {
     return Trip(
       id: id,
+      needsApproval: true,
       flight: Flight(
         gateClose: DateHelper.after(minutes: 5),
         departureTime: DateHelper.after(minutes: 15),
@@ -93,6 +96,7 @@ class TripStubs {
   static Trip stubLukaTrip({@required int id}) {
     return Trip(
       id: id,
+      needsApproval: false,
       flight: Flight(
         gateClose: DateHelper.after(minutes: 5),
         departureTime: DateHelper.after(minutes: 15),

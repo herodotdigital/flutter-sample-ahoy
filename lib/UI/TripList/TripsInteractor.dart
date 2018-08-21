@@ -4,21 +4,20 @@ import 'package:ahoy_sample/UI/TripList/TripCellData.dart';
 import 'TripHeader.dart';
 import 'TripCell.dart';
 import 'TripCellFactory.dart';
-import 'ListInteractorInterface.dart';
 import 'TripsSectionBuilder.dart';
 import 'package:flutter/cupertino.dart';
 import '../FlightDetails/FlightDetailsScreen.dart';
 import '../FlightDetails/FlightDetailsDataFactory.dart';
 import 'package:ahoy_sample/UI/Shared/TableSection.dart';
 
-class MyTripsInteractor extends ListInteractor {
+class TripsInteractor {
   final GlobalKey<AnimatedListState> listKey;
   final TripProvider tripProvider;
   List<TableSection<TripHeaderData,TripCellData,Widget>> sections;
   final TripsSectionBuilder sectionBuilder;
 
 
-  MyTripsInteractor({
+  TripsInteractor({
     @required this.listKey,
     @required this.tripProvider,
     @required this.sectionBuilder,

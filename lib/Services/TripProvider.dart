@@ -24,7 +24,7 @@ class TripProvider {
     Trip oldTrip = tripForId(tripId);
     int index = trips.indexOf(oldTrip);
     trips.removeAt(index);
-    Trip newTrip = Trip(id: oldTrip.id, booking: oldTrip.booking, flight: null);
+    Trip newTrip = Trip(id: oldTrip.id, needsApproval: oldTrip.needsApproval, booking: oldTrip.booking, flight: null);
     trips.insert(index, newTrip);
   }
 
@@ -32,7 +32,7 @@ class TripProvider {
     Trip oldTrip = tripForId(tripId);
     int index = trips.indexOf(oldTrip);
     trips.removeAt(index);
-    Trip newTrip = Trip(id: oldTrip.id, flight: oldTrip.flight, booking: null);
+    Trip newTrip = Trip(id: oldTrip.id, needsApproval: oldTrip.needsApproval, flight: oldTrip.flight, booking: null);
     trips.insert(index, newTrip);
   }
 }

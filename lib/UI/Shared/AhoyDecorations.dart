@@ -4,7 +4,7 @@ import 'AhoyStyles.dart';
 class AhoyDecorations {
   static BoxDecoration wideButton(bool accented) {
     final backgroundColor = accented ? null : AhoyColors.backgroundColor;
-    final gradient = accented ? LinearGradient(colors: [AhoyColors.accentColor, AhoyColors.darkAccentColor]) : null;
+    final gradient = accented ? accentedGradient() : null;
     return BoxDecoration(
       color: backgroundColor,
       gradient: gradient,
@@ -27,5 +27,9 @@ class AhoyDecorations {
       blurRadius: radius,
       offset: Offset(offset, offset)
     );
+  }
+
+  static LinearGradient accentedGradient() {
+    return LinearGradient(colors: [AhoyColors.accentColor, AhoyColors.darkAccentColor]);
   }
 }

@@ -9,10 +9,10 @@ abstract class TripCellFactory {
     return trips.expand((trip){
       List<TripCellData> list = [];
       if (trip.flight != null) {
-        list.add(TripCellData.withFlight(trip.flight, trip.id, trip.person));
+        list.add(TripCellData.forFlight(trip));
       }
       if (trip.booking != null) {
-        list.add(TripCellData.withBooking(trip.booking, trip.id, trip.person));
+        list.add(TripCellData.forBooking(trip));
       }
       return list;
     }).toList();

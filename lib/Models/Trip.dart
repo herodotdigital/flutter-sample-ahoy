@@ -8,8 +8,9 @@ class Trip {
   final Flight flight;
   final Booking booking;
   final Person person;
+  final bool needsApproval;
 
-  Trip({@required this.id, @required this.flight, @required this.booking, this.person}) {
+  Trip({@required this.id, @required this.flight, @required this.booking, @required this.needsApproval, this.person}) {
     if (this.flight != null) {
       flight.parentTrip = this;
     }

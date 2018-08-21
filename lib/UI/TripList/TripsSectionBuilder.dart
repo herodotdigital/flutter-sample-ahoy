@@ -9,14 +9,12 @@ abstract class TripsSectionBuilder {
 }
 
 class MyTripsSectionBuilder extends TripsSectionBuilder {
-  final headerTexts = ["Now", "Later"];
-
   @override List<TableSection<TripHeaderData, TripCellData, Widget>> buildSectionsFrom(List<TripCellData> viewModels) {
     final todayModels = viewModels.where((m) => _isWithin24hPredicate(m)).toList();
     final laterModels = viewModels.where((m) => !_isWithin24hPredicate(m)).toList();
     final when = DateHelper.formatted(format: "d MMMM", date: DateTime.now());
-    final nowSection = _createSection(headerText: headerTexts[0], detailText: when, viewModels: todayModels);
-    final laterSection = _createSection(headerText: headerTexts[1], viewModels: laterModels);
+    final nowSection = _createSection(headerText: "Now", detailText: when, viewModels: todayModels);
+    final laterSection = _createSection(headerText: "Later", viewModels: laterModels);
     return [nowSection, laterSection];
   }
 
@@ -33,5 +31,16 @@ class MyTripsSectionBuilder extends TripsSectionBuilder {
 }
 
 class EveryoneTripsSectionBuilder extends MyTripsSectionBuilder {
-  @override final headerTexts = ["Approvals", "Trips"];
+  @override List<TableSection<TripHeaderData, TripCellData, Widget>> buildSectionsFrom(List<TripCellData> viewModels) {
+    final modelsToApprove = viewModels.where((m) => _needsApprovalPredicate(m)).toList();
+    final otherModels = viewModels.where((m) => !_needsApprovalPredicate(m)).toList();
+    final when = DateHelper.formatted(format: "d MMMM", date: DateTime.now());
+    final toApproveSection = _createSection(headerText: "Approvals", detailText: when, viewModels: modelsToApprove);
+    final otherSection = _createSection(headerText: "Trips", viewModels: otherModels);
+    return [toApproveSection, otherSection];
+  }
+
+  bool _needsApprovalPredicate(TripCellData model) {
+    return model.swipeable;
+  }
 }
