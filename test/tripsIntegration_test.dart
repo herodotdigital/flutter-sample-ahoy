@@ -6,6 +6,7 @@ import 'package:ahoy_sample/UI/TripList/MyTripsInteractor.dart';
 import 'package:mockito/mockito.dart';
 import 'package:ahoy_sample/UI/TripList/TripHeader.dart';
 import 'package:ahoy_sample/UI/TripList/TripCell.dart';
+import 'package:ahoy_sample/UI/TripList/TripsSectionBuilder.dart';
 
 class MockTripProvider extends Mock implements TripProvider {}
 
@@ -17,7 +18,8 @@ main() {
   setUp(() async {
     GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
     provider = MockTripProvider();
-    sut = MyTripsInteractor(listKey: listKey, tripProvider: provider);
+    final sut2 = MyTripsSectionBuilder();
+    sut = MyTripsInteractor(listKey: listKey, tripProvider: provider, sectionBuilder: sut2);
   });
 
   tearDown(() async {

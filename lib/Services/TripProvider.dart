@@ -4,8 +4,7 @@ import 'package:meta/meta.dart';
 class TripProvider {
   List<Trip> trips;
 
-  TripProvider({@required this.trips}) {
-  }
+  TripProvider({@required this.trips});
 
   List<Trip> allTrips() {
     return trips;
