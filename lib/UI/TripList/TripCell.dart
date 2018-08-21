@@ -28,8 +28,8 @@ class TripCell extends StatelessWidget {
         sizeFactor: animation,
         child: DraggableCell(
           key: new Key(data.uniqueKey()),
-          onAccept: _onApprove,
-          onDelete: _onDismiss,
+          onAccept: data.swipeable ? _onApprove : null,
+          onDelete: data.swipeable ? _onDismiss : null,
           child: Padding(
             padding: EdgeInsets.only(top: 3.0),
             child: Stack(children: <Widget>[
