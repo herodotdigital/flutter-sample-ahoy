@@ -18,7 +18,7 @@ main() {
       final result = sut.allTrips();
       expect(result, isList);
       expect(result, isNotEmpty);
-      expect(result, everyElement(isInstanceOf<Trip>()));
+      expect(result, everyElement(TypeMatcher<Trip>()));
     });
 
     test("Remove whole trip by Id", () {
