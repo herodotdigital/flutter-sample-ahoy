@@ -11,7 +11,7 @@ void main() {
 
 class AhoyApp extends MaterialApp {
   AhoyApp() : super(
-    title: "Ahoy Sample",
+    title: l10nGlobal().ahoySample,
     localizationsDelegates: [
       const AhoyLocalizationsDelegate(),
       GlobalMaterialLocalizations.delegate,

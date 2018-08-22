@@ -1,6 +1,7 @@
 import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
+import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
 
 enum TripCellType {
   flight, booking
@@ -83,8 +84,8 @@ class TripCellData {
     }
 
     String _howLong(Booking booking) {
-      final days = DateHelper.howManyNights(booking.checkIn, booking.checkOut);
-      return "$days ${_BookingCaptions.nightStay}";
+      final nights = DateHelper.howManyNights(booking.checkIn, booking.checkOut);
+      return l10nGlobal().nNightsStay(nights);
     }
 
     String uniqueKey() {
@@ -93,11 +94,10 @@ class TripCellData {
 }
 
 class _FlightCaptions {
-  static final departure = "Departure:";
-  static final gateClose = "Gate closes:";
+  static final departure = "${l10nGlobal().departure}:";
+  static final gateClose = "${l10nGlobal().gateClose}:";
 }
 
 class _BookingCaptions {
-  static final nightStay = "night stay";
-  static final checkIn = "Check in after:";
+  static final checkIn = "${l10nGlobal().checkIn}:";
 }
