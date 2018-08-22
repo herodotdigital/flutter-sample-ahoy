@@ -52,11 +52,6 @@ class FlightDetails extends StatelessWidget {
     ],);
   }
 
-  _handleGps() {
-    print("Handle GPS button tap.");
-    Bridge().dismiss();
-  }
-
   _handleShowBoarding() {
     print("Handle Boarding button tap.");
   }
@@ -71,7 +66,7 @@ class FlightDetails extends StatelessWidget {
             Navigator.pop(context); 
           }),
           Text(navbarTitle, style: AhoyStyles.details.navbarStyle,),
-          _barButton('assets/images/pinFullCopy.png', _handleGps),
+          Container(width:28.0 * 2), //Empty placeholder of bar button's size so title will appear in the center
         ],
       ),
     );
