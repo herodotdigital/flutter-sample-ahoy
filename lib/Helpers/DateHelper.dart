@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
 
 // Format: https://pub.dartlang.org/documentation/intl/latest/intl/DateFormat-class.html
 
@@ -12,12 +13,12 @@ class DateHelper {
       if (time.isAfter(endOfTomorrow)) {
         return DateHelper.localizedDate(time);
       } else if(time.isAfter(endOfToday) && moreThan4h) {
-        return "Tomorrow";
+        return l10nGlobal().tomorrow;
       } else if(moreThan4h) {
-        return "Today";
+        return l10nGlobal().today;
       } else {
         final String eta = howLong(now, time, pluralMinutes:true);
-        return "in $eta";
+        return l10nGlobal().inEta(eta);
       }
     }
 
@@ -35,21 +36,20 @@ class DateHelper {
     static String howLong(DateTime start, DateTime end, {bool pluralMinutes = false}) {
       final diff = end.difference(start);
       if (diff.isNegative) {
-        return "Past";
+        return l10nGlobal().past;
       }
       final days = diff.inDays;
       final hours = diff.inHours.remainder(24);
       final minutes = diff.inMinutes.remainder(60);
       List<String> parts = [];
       if (days > 0) {
-        parts.add("$days d");
+        parts.add(l10nGlobal().nDays(days));
       }
       if (hours > 0) {
-        parts.add("$hours h");
+        parts.add(l10nGlobal().nHours(hours));
       }
       if (minutes > 0) {
-        final suffix = (minutes > 1 && pluralMinutes) ? "mins" : "min"; 
-        parts.add("$minutes $suffix");
+        parts.add(pluralMinutes ? l10nGlobal().nMinutesPlural(minutes) : l10nGlobal().nMinutes(minutes));
       }
       return parts.join(" ");
     }

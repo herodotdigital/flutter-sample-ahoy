@@ -6,12 +6,17 @@ import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
 import 'package:ahoy_sample/UI/Shared/AhoySegmentedControl.dart';
 import 'TripsInteractor.dart';
 import 'TripsSectionBuilder.dart';
+import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
 
 enum _Mode {
   me, everyone
 }
 
 class TripsScreen extends StatefulWidget {
+  final bool unitTestsEnabled;
+
+  TripsScreen({this.unitTestsEnabled = false});
+
   @override State<StatefulWidget> createState() => _TripsScreenState();
 }
 
@@ -45,6 +50,9 @@ class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
   }
 
   void _hideSplash() {
+    if (widget.unitTestsEnabled) {
+      return;
+    }
     Bridge().viewReady();
   }
 
@@ -61,8 +69,8 @@ class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
               width: 190.0,
               height: 40.0,
               child: AhoySegmentedControl(segments:[
-                AhoySegmentData(text: "Me", callback: () => _switchModeTo(_Mode.me)),
-                AhoySegmentData(text: "Everyone", callback: () => _switchModeTo(_Mode.everyone))
+                AhoySegmentData(text: l10n(context).me, callback: () => _switchModeTo(_Mode.me)),
+                AhoySegmentData(text: l10n(context).everyone, callback: () => _switchModeTo(_Mode.everyone))
               ]),
             ),
           ],

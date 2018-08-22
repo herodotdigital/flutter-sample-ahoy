@@ -1,3 +1,5 @@
+import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
+
 class FlightDetailsLocalization {
   final String bookingReference;
   final String ticketNumber;
@@ -21,14 +23,14 @@ class FlightDetailsLocalization {
 
   static FlightDetailsLocalization createEng() {
     return FlightDetailsLocalization(
-      bookingReference: "Booking reference:",
-      ticketNumber: "Ticket number:",
-      flightNumber: "Flight number",
-      seat: "Seat",
-      terminal: "Terminal",
-      gate: "Gate",
-      showEntireBooking: "Show entire booking",
-      showBoardingPass: "Show boarding pass",
+      bookingReference: "${l10nGlobal().bookingReference}:",
+      ticketNumber: "${l10nGlobal().ticketNumber}:",
+      flightNumber: l10nGlobal().flightNumber,
+      seat: l10nGlobal().seat,
+      terminal: l10nGlobal().terminal,
+      gate: l10nGlobal().gate,
+      showEntireBooking: l10nGlobal().showEntireBooking,
+      showBoardingPass: l10nGlobal().showBoardingPass,
     );
   }
 }
