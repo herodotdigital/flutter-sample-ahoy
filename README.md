@@ -1,6 +1,6 @@
 # ahoy_sample
 
-A new Flutter project.
+A new flutter module project.
 
 ## Getting Started
 
