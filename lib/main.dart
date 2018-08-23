@@ -10,7 +10,7 @@ void main() {
 }
 
 class AhoyApp extends MaterialApp {
-  AhoyApp({bool unitTestsEnabled = false}) : super(
+  AhoyApp() : super(
     title: l10nGlobal().ahoySample,
     localizationsDelegates: [
       const AhoyLocalizationsDelegate(),
@@ -21,6 +21,6 @@ class AhoyApp extends MaterialApp {
       const Locale('en', 'US'),
     ],
     theme: new ThemeData(primarySwatch: Colors.blue),
-    home: new TripsScreen(unitTestsEnabled: unitTestsEnabled,),
+    home: new TripsScreen(),
   );
 }

@@ -6,6 +6,8 @@ class Bridge {
   void viewReady() async {
     try {
       channel.invokeMethod("ViewReady");
+    } on MissingPluginException catch (e) {
+      print("Error invoking method ViewReady: ${e.message}");
     } on PlatformException catch (e) {
       print("Error invoking method ViewReady: ${e.message}");
     }
@@ -14,6 +16,8 @@ class Bridge {
   void dismiss() async {
     try {
       channel.invokeMethod("Dismiss");
+    } on MissingPluginException catch (e) {
+      print("Error invoking method Dismiss: ${e.message}");
     } on PlatformException catch (e) {
       print("Error invoking method Dismiss: ${e.message}");
     }

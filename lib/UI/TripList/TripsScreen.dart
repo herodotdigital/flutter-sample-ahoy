@@ -13,10 +13,6 @@ enum _Mode {
 }
 
 class TripsScreen extends StatefulWidget {
-  final bool unitTestsEnabled;
-
-  TripsScreen({this.unitTestsEnabled = false});
-
   @override State<StatefulWidget> createState() => _TripsScreenState();
 }
 
@@ -50,9 +46,6 @@ class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
   }
 
   void _hideSplash() {
-    if (widget.unitTestsEnabled) {
-      return;
-    }
     Bridge().viewReady();
   }
 

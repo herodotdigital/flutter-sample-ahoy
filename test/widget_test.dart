@@ -9,7 +9,7 @@
 
 void main() {
   // testWidgets('Has a cell', (WidgetTester tester) async {
-  //   await tester.pumpWidget(new AhoyApp(unitTestsEnabled: true,));
+  //   await tester.pumpWidget(new AhoyApp());
   //   expect(find.text('WRO - WAW'), findsOneWidget);
   // });
 }
