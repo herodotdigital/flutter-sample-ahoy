@@ -10,6 +10,9 @@ import '../FlightDetails/FlightDetailsScreen.dart';
 import '../FlightDetails/FlightDetailsDataFactory.dart';
 import 'package:ahoy_sample/UI/Shared/TableSection.dart';
 import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
+import 'package:ahoy_sample/Models/Stubs/TripStubs.dart';
+
+int _newId = 10;
 
 class TripsInteractor {
   final GlobalKey<AnimatedListState> listKey;
@@ -89,25 +92,41 @@ class TripsInteractor {
 
   Widget _createTripCell(BuildContext context, TripCellData data, Animation<double> animation) {
     data.onTap = () => _handleTap(data, context);
-    Function removeCellAction = () {
-      switch (data.type) {
-        case TripCellType.flight:
-          tripProvider.removeFlight(tripId: data.tripId);
-          break;
-        case TripCellType.booking:
-          tripProvider.removeBooking(tripId: data.tripId);
-          break;
-        default:
-      }
-      _reloadSections();
-      _animatedList.removeItem(data.indexInTable, (BuildContext context, Animation<double> animation){
-        return TripCell(data: data, animation: animation, interactive: false);
-      });
-    };
-    data.onApprove = removeCellAction;
-    data.onDecline = removeCellAction;
-    data.onSlide = removeCellAction;
+    data.onApprove = () => _removeAndAddCell(context, data, animation);
+    data.onDecline = () => _removeAndAddCell(context, data, animation);
+    data.onSlide = () => _removeAndAddCell(context, data, animation);
     return TripCell(data: data, animation: animation);
+  }
+
+  _removeAndAddCell(BuildContext context, TripCellData data, Animation<double> animation) {
+    _removeCell(context, data, animation);
+    _addCell(context, data, animation);
+  }
+
+  _addCell(BuildContext context, TripCellData data, Animation<double> animation) {
+    _newId++;
+    final generatedTrip = TripStubs.stubLaterTrip(id: _newId, appendId: true);
+    tripProvider.addTrip(generatedTrip);
+    _reloadSections();
+    int totalItemCount = count();
+    _animatedList.insertItem(totalItemCount - 2);
+    _animatedList.insertItem(totalItemCount - 1);
+  }
+
+  _removeCell(BuildContext context, TripCellData data, Animation<double> animation) {
+    switch (data.type) {
+      case TripCellType.flight:
+        tripProvider.removeFlight(tripId: data.tripId);
+        break;
+      case TripCellType.booking:
+        tripProvider.removeBooking(tripId: data.tripId);
+        break;
+      default:
+    }
+    _reloadSections();
+    _animatedList.removeItem(data.indexInTable, (BuildContext context, Animation<double> animation){
+      return TripCell(data: data, animation: animation, interactive: false);
+    });
   }
 
   _handleTap(TripCellData data, BuildContext context) {

@@ -44,14 +44,15 @@ class TripStubs {
     );
   }
 
-  static Trip stubLaterTrip({@required int id}) {
+  static Trip stubLaterTrip({@required int id, bool appendId = false}) {
+    final int daysLater = 30 + ( appendId ? id : 0);
     return Trip(
       id: id,
       needsApproval: true,
       flight: Flight(
-        gateClose: _createTime(hour: 8, minute: 5, daysLater: 30),
-        departureTime: _createTime(hour: 8, minute: 15, daysLater: 30),
-        arrivalTime: _createTime(hour: 8, minute: 35, daysLater: 30),
+        gateClose: _createTime(hour: 8, minute: 5, daysLater: daysLater),
+        departureTime: _createTime(hour: 8, minute: 15, daysLater: daysLater),
+        arrivalTime: _createTime(hour: 8, minute: 35, daysLater: daysLater),
         flightNumber: "FR8305",
         seat: "15A",
         terminal: "B",
@@ -60,8 +61,8 @@ class TripStubs {
         to: Airport(code: "bcn", fullName: "Barcelona"),
       ),
       booking: Booking(
-        checkIn: _createTime(hour: 12, minute: 0, daysLater: 30),
-        checkOut: _createTime(hour: 9, minute: 0, daysLater: 31),
+        checkIn: _createTime(hour: 12, minute: 0, daysLater: daysLater),
+        checkOut: _createTime(hour: 9, minute: 0, daysLater: daysLater+1),
         location: "Barcelona",
         name: "Some Apartments",
       ),

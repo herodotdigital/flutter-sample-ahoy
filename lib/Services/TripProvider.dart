@@ -35,4 +35,8 @@ class TripProvider {
     Trip newTrip = Trip(id: oldTrip.id, needsApproval: oldTrip.needsApproval, flight: oldTrip.flight, booking: null, person: oldTrip.person);
     trips.insert(index, newTrip);
   }
+
+  addTrip(Trip trip) {
+    trips.add(trip);
+  }
 }
