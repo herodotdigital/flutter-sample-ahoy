@@ -42,6 +42,6 @@ class EveryoneTripsSectionBuilder extends MyTripsSectionBuilder {
   }
 
   bool _needsApprovalPredicate(TripCellData model) {
-    return model.swipeable;
+    return model.dismissMode == TripCellDismissMode.approveAndDecline;
   }
 }

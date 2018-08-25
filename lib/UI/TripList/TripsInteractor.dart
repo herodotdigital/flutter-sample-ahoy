@@ -105,7 +105,8 @@ class TripsInteractor {
       });
     };
     data.onApprove = removeCellAction;
-    data.onDismiss = removeCellAction;
+    data.onDecline = removeCellAction;
+    data.onSlide = removeCellAction;
     return TripCell(data: data, animation: animation);
   }
 

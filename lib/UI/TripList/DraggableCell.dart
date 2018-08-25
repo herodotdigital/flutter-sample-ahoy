@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 import 'package:ahoy_sample/UI/Shared/AhoyStyles.dart';
+import 'package:meta/meta.dart';
 
+/// Cell that can slide left or right.
+/// onAccept - filling this callback enables cell to slide right with "accept color" background
+/// onDecline - filling this callback enables cell to slide left with "decline color" background
+/// onSlide - filling this callback enables cell to slide both sides with "accent color" background. Applies only when accept/decline directions are null.
 class DraggableCell extends StatefulWidget {
   final Widget child;
   final Function onAccept;
-  final Function onDelete;
+  final Function onDecline;
+  final Function onSlide;
 
-  DraggableCell({Key key, this.child, this.onAccept, this.onDelete}):super(key: key);
+  DraggableCell({Key key, this.child, this.onAccept, this.onDecline, this.onSlide}):super(key: key);
 
   @override State<StatefulWidget> createState() => DraggableCellState();
 
@@ -97,10 +103,11 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
 
   bool _allowDrag(DragUpdateDetails details) {
     bool acceptPossible = widget.onAccept != null;
-    bool deletePossible = widget.onDelete != null;
+    bool declinePossible = widget.onDecline != null;
+    bool genericSlidePossible = widget.onSlide != null;
     bool dragRight = details.delta.dx > 0;
     bool dragLeft = details.delta.dx < 0;
-    return (dragRight && acceptPossible) || (dragLeft && deletePossible);
+    return genericSlidePossible || (dragRight && acceptPossible) || (dragLeft && declinePossible);
   }
 
   Widget _contentView() {
@@ -173,10 +180,12 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
   }
 
   _runCompletionFor({@required double offset}) {
-    if (offset.sign > 0) {
+    if (widget.onAccept != null && offset.sign > 0) {
       widget.onAccept();
-    } else {
-      widget.onDelete();
+    } else if (widget.onDecline != null && offset.sign < 0) {
+      widget.onDecline();
+    } else if (widget.onSlide != null) {
+      widget.onSlide();
     }
   }
 
@@ -184,14 +193,22 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
     return contentXOffset.abs() > triggerThreshold;
   }
 
+  bool get renderAcceptLayerNow => contentXOffset.sign > 0 && widget.onAccept != null;
+  bool get renderDeclineLayerNow => contentXOffset.sign < 0 && widget.onDecline != null;
+  bool get renderGenericSlideLayerNow => contentXOffset.sign != 0.0 && widget.onSlide != null;
+
   Widget _bottomLayer() {
     Widget layer;
     if (contentXOffset == 0.0 || !backgroundVisible) {
       return Container();
-    } else if (contentXOffset.sign > 0) {
+    } else if (renderAcceptLayerNow) {
       layer = _acceptLayer();
-    } else {
+    } else if (renderDeclineLayerNow) {
       layer = _dismissLayer();
+    } else if (renderGenericSlideLayerNow) {
+      layer = _genericSlideLayer();
+    } else {
+      return Container();
     }
     double xTranslation = 0.0;
     if (backgroundMoveAnimation != null && backgroundMoveAnimation.status == AnimationStatus.forward) {
@@ -201,6 +218,11 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
       transform: Matrix4.translationValues(xTranslation, 0.0, 0.0),
       child: layer,
     );
+  }
+
+  Widget _genericSlideLayer() {
+    const unusedAlignment = FractionalOffset.centerLeft;
+    return _layer(colors: [AhoyColors.accentColor, AhoyColors.darkAccentColor], align: unusedAlignment);
   }
 
   Widget _acceptLayer() {
@@ -221,8 +243,18 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
     );
   }
 
-  Widget _layer({@required String text, @required image, @required List<Color> colors, @required align}) {
-    return 
+  Widget _layer({String text, String image, @required List<Color> colors, @required align}) {
+    List<Widget> innerColumn = [];
+    if (image != null) {
+      innerColumn.add(Image.asset(image, width: 24.0,));
+    }
+    if (image != null && text != null) {
+      innerColumn.add(Container(height: 6.0, width: 1.0,));
+    }
+    if (text != null) {
+      innerColumn.add(Text(text, style: AhoyStyles.list.bottomLayerStyle,));
+    }
+    return
       Container(
         margin: cellMargin,
         decoration: BoxDecoration(
@@ -235,11 +267,8 @@ class DraggableCellState extends State<DraggableCell> with SingleTickerProviderS
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(image, width: 24.0,),
-              Container(height: 6.0, width: 1.0,),
-              Text(text, style: AhoyStyles.list.bottomLayerStyle,),
-            ],),
+            children: innerColumn,
+          ),
         ),
       );
   }

@@ -2,9 +2,14 @@ import 'package:ahoy_sample/Models/Trip.dart';
 import 'package:ahoy_sample/Models/Booking.dart';
 import 'package:ahoy_sample/Helpers/DateHelper.dart';
 import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
+import 'package:meta/meta.dart';
 
 enum TripCellType {
   flight, booking
+}
+
+enum TripCellDismissMode {
+  none, simpleSwipe, approveAndDecline
 }
 
 class TripCellData {
@@ -22,9 +27,10 @@ class TripCellData {
   DateTime sortingDate;
   Function onTap;
   Function onApprove;
-  Function onDismiss;
+  Function onDecline;
+  Function onSlide;
   int indexInTable;
-  bool swipeable;
+  TripCellDismissMode dismissMode = TripCellDismissMode.none;
 
   TripCellData({
     this.type,
@@ -38,7 +44,6 @@ class TripCellData {
     this.bottomLeftCaption,
     this.bottomLeftValue,
     this.sortingDate,
-    this.swipeable,
     });
 
     TripCellData.forFlight(Trip trip) {
@@ -59,7 +64,7 @@ class TripCellData {
       this.bottomLeftCaption = _FlightCaptions.departure;
       this.bottomLeftValue = DateHelper.clock(trip.flight.departureTime);
       this.sortingDate = trip.flight.departureTime;
-      this.swipeable = trip.needsApproval;
+      this.dismissMode = dismissModeFor(person: trip.person, swipeable: trip.needsApproval);
     }
 
     TripCellData.forBooking(trip) {
@@ -80,7 +85,17 @@ class TripCellData {
       this.bottomLeftCaption = "";
       this.bottomLeftValue = "";
       this.sortingDate = trip.booking.checkIn;
-      this.swipeable = trip.needsApproval;
+      this.dismissMode = dismissModeFor(person: trip.person, swipeable: trip.needsApproval);
+    }
+
+    static TripCellDismissMode dismissModeFor({@required Object person, @required bool swipeable}) {
+      if (person != null && swipeable) {
+        return TripCellDismissMode.approveAndDecline;
+      } else if (person == null && swipeable) {
+        return TripCellDismissMode.simpleSwipe;
+      } else {
+        return TripCellDismissMode.none;
+      }
     }
 
     String _howLong(Booking booking) {
