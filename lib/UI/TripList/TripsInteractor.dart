@@ -105,8 +105,11 @@ class TripsInteractor {
 
   _addCell(BuildContext context, TripCellData data, Animation<double> animation) {
     _newId++;
-    final generatedTrip = TripStubs.stubLaterTrip(id: _newId, appendId: true);
-    tripProvider.addTrip(generatedTrip);
+    if (data.dismissMode == TripCellDismissMode.approveAndDecline) {
+      tripProvider.addTrip(TripStubs.stubJohnTrip(id: _newId, appendId: true));
+    } else {
+      tripProvider.addTrip(TripStubs.stubLaterTrip(id: _newId, appendId: true));
+    }
     _reloadSections();
     int totalItemCount = count();
     _animatedList.insertItem(totalItemCount - 2);

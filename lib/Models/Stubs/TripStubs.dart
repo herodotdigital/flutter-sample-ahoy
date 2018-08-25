@@ -69,14 +69,15 @@ class TripStubs {
     );
   }
 
-  static Trip stubJohnTrip({@required int id}) {
+  static Trip stubJohnTrip({@required int id, bool appendId = false}) {
+    final int daysLater = 0 + ( appendId ? id : 0);
     return Trip(
       id: id,
       needsApproval: true,
       flight: Flight(
-        gateClose: DateHelper.after(minutes: 5),
-        departureTime: DateHelper.after(minutes: 15),
-        arrivalTime: DateHelper.after(hours: 1, minutes: 25),
+        gateClose: DateHelper.after(days: daysLater, minutes: 5),
+        departureTime: DateHelper.after(days: daysLater, minutes: 15),
+        arrivalTime: DateHelper.after(days: daysLater, hours: 1, minutes: 25),
         flightNumber: "FR8406",
         seat: "13C",
         terminal: "A",
@@ -85,8 +86,8 @@ class TripStubs {
         to: Airport(code: "waw", fullName: "Warsaw Chopin Airport"),
       ),
       booking: Booking(
-        checkIn: _createTime(hour: 12, minute: 0, daysLater: 1),
-        checkOut: _createTime(hour: 9, minute: 0, daysLater: 2),
+        checkIn: _createTime(hour: 12, minute: 0, daysLater: daysLater+1),
+        checkOut: _createTime(hour: 9, minute: 0, daysLater: daysLater+2),
         location: "Warsaw",
         name: "Doubletree by Hilton",
       ),
