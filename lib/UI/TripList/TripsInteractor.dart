@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../FlightDetails/FlightDetailsScreen.dart';
 import '../FlightDetails/FlightDetailsDataFactory.dart';
 import 'package:ahoy_sample/UI/Shared/TableSection.dart';
+import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
 
 class TripsInteractor {
   final GlobalKey<AnimatedListState> listKey;
@@ -87,7 +88,7 @@ class TripsInteractor {
   AnimatedListState get _animatedList => listKey.currentState;
 
   Widget _createTripCell(BuildContext context, TripCellData data, Animation<double> animation) {
-    data.onTap = () => _pushDetails(data, context);
+    data.onTap = () => _handleTap(data, context);
     Function removeCellAction = () {
       switch (data.type) {
         case TripCellType.flight:
@@ -106,6 +107,31 @@ class TripsInteractor {
     data.onApprove = removeCellAction;
     data.onDismiss = removeCellAction;
     return TripCell(data: data, animation: animation);
+  }
+
+  _handleTap(TripCellData data, BuildContext context) {
+    if (data.type == TripCellType.flight) {
+      _pushDetails(data, context);
+    } else {
+      _showStub(title: l10n(context).stubBookingsText, context: context);
+    }
+  }
+
+  _showStub({String title, BuildContext context}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: Text(title),
+        actions: <Widget>[
+          new CupertinoDialogAction(
+            child: Text(l10n(context).stubOk),
+            isDestructiveAction: false,
+            onPressed: () => Navigator.pop(context, 'Discard'),
+          ),
+        ],
+      ),
+    );
   }
 
   _pushDetails(TripCellData data, BuildContext context) {

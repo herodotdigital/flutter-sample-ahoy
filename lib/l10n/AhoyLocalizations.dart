@@ -65,6 +65,11 @@ class AhoyLocalizations {
   String get later => Intl.message('Later', desc: '');
   String get approvals => Intl.message('Approvals', desc: '');
   String get trips => Intl.message('Trips', desc: '');
+
+  // Stub alert
+  String get stubBookingsText => Intl.message('Bookings are not implemented in this demo.');
+  String get stubBoardingPassText => Intl.message('Boarding pass is not implemented in this demo.');
+  String get stubOk => Intl.message('Ok');
 }
 
 class AhoyLocalizationsDelegate extends LocalizationsDelegate<AhoyLocalizations> {

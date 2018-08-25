@@ -4,6 +4,7 @@ import '../Shared/AhoyStyles.dart';
 import '../Shared/AhoyWidgets.dart';
 import '../Shared/AhoyDecorations.dart';
 import 'FlightDetailsData.dart';
+import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
 
 enum TextPairVariant { normal, accented, small }
 
@@ -46,13 +47,33 @@ class FlightDetails extends StatelessWidget {
         )
       ),
       Spacer(flex: 1,),
-      _bottomButton(accented: true, text: textBoarding, onTap: _handleShowBoarding),
+      _bottomButton(
+          accented: true,
+          text: textBoarding,
+          onTap: () => _showStub(
+            title: l10n(context).stubBoardingPassText,
+            context: context,
+          )
+      ),
       Container(height: 32.0,),
     ],);
   }
 
-  _handleShowBoarding() {
-    print("Handle Boarding button tap.");
+  _showStub({String title, BuildContext context}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: Text(title),
+        actions: <Widget>[
+          new CupertinoDialogAction(
+            child: Text(l10n(context).stubOk),
+            isDestructiveAction: false,
+            onPressed: () => Navigator.pop(context, 'Discard'),
+          ),
+        ],
+      ),
+    );
   }
 
   _navBar(BuildContext context) {
