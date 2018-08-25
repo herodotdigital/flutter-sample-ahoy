@@ -13,12 +13,12 @@ enum _Mode {
 }
 
 class TripsScreen extends StatefulWidget {
+  const TripsScreen({ Key key }) : super(key: key);
   @override State<StatefulWidget> createState() => _TripsScreenState();
 }
 
-class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
+class _TripsScreenState extends State<TripsScreen> {
   _Mode _mode = _Mode.me;
-  bool isLoaded = false;
   final GlobalKey<AnimatedListState> _meKey = GlobalKey<AnimatedListState>();
   final GlobalKey<AnimatedListState> _everyoneKey = GlobalKey<AnimatedListState>();
   final TripProvider _meTripProvider = TripProvider(trips: TripStubs.stubMyTrips());
@@ -27,26 +27,9 @@ class _TripsScreenState extends State<TripsScreen> with WidgetsBindingObserver {
   TripsInteractor _everyoneTripInteractor;
 
   @override void initState() {
-    WidgetsBinding.instance.addObserver(this);
+    super.initState();
     _meTripInteractor = TripsInteractor(listKey: _meKey, tripProvider: _meTripProvider, sectionBuilder: MyTripsSectionBuilder());
     _everyoneTripInteractor = TripsInteractor(listKey: _everyoneKey, tripProvider: _everyoneTripProvider, sectionBuilder: EveryoneTripsSectionBuilder());
-    super.initState();
-  }
-
-  @override void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && !isLoaded) {
-      isLoaded = true;
-      _hideSplash();
-    }
-  }
-
-  void _hideSplash() {
-    Bridge().viewReady();
   }
 
   @override Widget build(BuildContext context) {
