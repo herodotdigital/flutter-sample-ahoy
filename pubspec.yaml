@@ -1,5 +1,9 @@
 name: ahoy_sample
-description: A new Flutter project.
+description: A new flutter module project.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -33,6 +37,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  
+  module:
+    androidPackage: com.example.ahoysample
 
   # To add assets to your application, add an assets section, like this:
   # assets:
