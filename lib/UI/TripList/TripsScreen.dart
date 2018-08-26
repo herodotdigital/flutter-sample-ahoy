@@ -7,6 +7,7 @@ import 'package:ahoy_sample/UI/Shared/AhoySegmentedControl.dart';
 import 'TripsInteractor.dart';
 import 'TripsSectionBuilder.dart';
 import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
+import 'package:ahoy_sample/UI/Shared/AhoyBarButton.dart';
 
 enum _Mode {
   me, everyone
@@ -34,7 +35,11 @@ class _TripsScreenState extends State<TripsScreen> {
 
   @override Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(leading: _backButton(),),
+      navigationBar: CupertinoNavigationBar(
+        leading: AhoyBarButton.close(
+            onTap: () => Bridge().dismiss()
+        ),
+      ),
       child: SafeArea(
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
@@ -80,15 +85,6 @@ class _TripsScreenState extends State<TripsScreen> {
           initialItemCount: anInteractor.count(),
           itemBuilder: anInteractor.buildRow,
         ),
-    );
-  }
-
-  _backButton() {
-    return CupertinoButton(
-      child: Icon(CupertinoIcons.back),
-      onPressed: (){
-        Bridge().dismiss();
-      },
     );
   }
 }

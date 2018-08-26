@@ -5,6 +5,7 @@ import '../Shared/AhoyWidgets.dart';
 import '../Shared/AhoyDecorations.dart';
 import 'FlightDetailsData.dart';
 import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
+import 'package:ahoy_sample/UI/Shared/AhoyBarButton.dart';
 
 enum TextPairVariant { normal, accented, small }
 
@@ -14,7 +15,15 @@ class FlightDetailsScreen extends StatelessWidget {
   FlightDetailsScreen(this.detailsData);
 
   @override Widget build(BuildContext context) {
+    final navbarTitle = "${detailsData.departureLocationTitle} - ${detailsData.arrivalLocationTitle}";
     return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        leading: AhoyBarButton.close(onTap: () => Navigator.pop(context)),
+        middle: Text(navbarTitle, style: AhoyStyles.details.navbarStyle,),
+        border: Border(),
+        padding: EdgeInsetsDirectional.only(start: 18.0, end: 18.0, top: 18.0),
+        backgroundColor: Color.fromARGB(0, 255, 255, 255),
+      ),
       backgroundColor: AhoyColors.backgroundColor,
       child: Material(
         type: MaterialType.canvas,
@@ -37,8 +46,8 @@ class FlightDetails extends StatelessWidget {
   @override Widget build(BuildContext context) {
     final textBoarding = captions.showBoardingPass.toUpperCase();
     return Column(children: <Widget>[
-      _navBar(context),
-      Container(height: 24.0,),
+//      _navBar(context),
+      Container(height: 40.0,),
       _referenceRow(),
       Container(height: 20.0,),
       AhoyWidgets.cellWithShadow(
@@ -73,31 +82,6 @@ class FlightDetails extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  _navBar(BuildContext context) {
-    final navbarTitle = "${data.departureLocationTitle} - ${data.arrivalLocationTitle}";
-    return Container(margin: EdgeInsets.symmetric(horizontal: 1.0 * 2), child: 
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          _barButton('assets/images/close.png', (){
-            Navigator.pop(context); 
-          }),
-          Text(navbarTitle, style: AhoyStyles.details.navbarStyle,),
-          Container(width:28.0 * 2), //Empty placeholder of bar button's size so title will appear in the center
-        ],
-      ),
-    );
-  }
-
-  _barButton(String imagePath, Function func) {
-    return CupertinoButton(
-      padding: EdgeInsets.all(0.0),
-      minSize: 28.0 * 2.0,
-      child: _icon(imagePath),
-      onPressed: func,
     );
   }
 
@@ -166,10 +150,10 @@ class FlightDetails extends StatelessWidget {
     final center = Padding(padding: EdgeInsets.only(right: 3.0), child:
       Text(data.travelTime, style: AhoyStyles.details.headerStyle,)
     );
-    final top = Padding(padding: EdgeInsets.only(right: margin), child: 
+    final top = Padding(padding: EdgeInsets.only(right: margin), child:
       _textPairView(data.departureTime, data.departureDate, variant, alignment)
     );
-    final bottom = Padding(padding: EdgeInsets.only(right: margin), child: 
+    final bottom = Padding(padding: EdgeInsets.only(right: margin), child:
       _textPairView(data.arrivalTime, data.arrivalDate, variant, alignment)
     );
 
@@ -191,7 +175,6 @@ class FlightDetails extends StatelessWidget {
     }).toList();
     return Row(children: expandedChildren);
   }
-
   Widget _flightDetailsRight() {
     final alignment = CrossAxisAlignment.start;
     final smallVariant = TextPairVariant.small;
@@ -221,6 +204,7 @@ class FlightDetails extends StatelessWidget {
       ),
     );
   }
+
   Widget _flightDetailsVerticalLine() {
     return Column(children: <Widget>[
       Container(height: 10.0,),
@@ -229,17 +213,6 @@ class FlightDetails extends StatelessWidget {
       Image.asset('assets/images/oval6.png', width: 20.0,),
       Container(height: 10.0,),
     ],);
-  }
-
-  Widget _icon(String imageName) {
-    return Container(
-      alignment: FractionalOffset.topLeft,
-      child:new Image(
-        image: new AssetImage(imageName),
-        height: 24.0,
-        width: 24.0,
-      ),
-    );
   }
 
   Widget _bottomButton({bool accented, String text, Function onTap}) {

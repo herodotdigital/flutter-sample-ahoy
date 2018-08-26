@@ -14,6 +14,7 @@ void main() {
 class AhoyApp extends MaterialApp {
   AhoyApp() : super(
     title: l10nGlobal().ahoySample,
+    debugShowCheckedModeBanner: false,
     localizationsDelegates: [
       const AhoyLocalizationsDelegate(),
       GlobalMaterialLocalizations.delegate,
