@@ -24,10 +24,15 @@ class _AhoySegmentedControlState extends State<AhoySegmentedControl> {
   final double borderRadius = 20.0;
 
   @override Widget build(BuildContext context) {
-    return Material(
-      borderRadius: BorderRadius.circular(borderRadius),
-      color: AhoyColors.backgroundColor,
-      child:Row(children: _allSegments())
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [AhoyDecorations.bigShadow()]
+      ),
+      child: Material(
+        borderRadius: BorderRadius.circular(borderRadius),
+        color: AhoyColors.backgroundColor,
+        child:Row(children: _allSegments())
+      ),
     );
   }
 
