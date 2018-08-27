@@ -1,1 +1,3 @@
 #include "../../.ios/Flutter/Generated.xcconfig"
+FLUTTER_BUILD_MODE=debug
+ENABLE_BITCODE=NO
