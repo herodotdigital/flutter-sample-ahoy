@@ -38,4 +38,5 @@ Icon?
 build/
 .android/
 .ios/Flutter
+.ios/ServiceDefinitions.json
 .flutter-plugins
