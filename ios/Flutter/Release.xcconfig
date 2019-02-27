@@ -1,3 +1,0 @@
-#include "../../.ios/Flutter/Generated.xcconfig"
-FLUTTER_BUILD_MODE=release
-ENABLE_BITCODE=NO
