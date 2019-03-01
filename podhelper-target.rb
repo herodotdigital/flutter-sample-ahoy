@@ -46,7 +46,7 @@ if !File.exist?(engine_dir)
     FileUtils.cp(File.join(debug_framework_dir, 'Flutter.podspec'), engine_dir)
 end
 
-pod 'Flutter', :path => engine_dir
+pod 'Flutter', :path => engine_dir , :inhibit_warnings => true
 pod 'FlutterPluginRegistrant', :path => File.join(framework_dir, 'FlutterPluginRegistrant')
 
 symlinks_dir = File.join(framework_dir, '.symlinks')
