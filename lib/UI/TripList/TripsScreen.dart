@@ -84,6 +84,7 @@ class _TripsScreenState extends State<TripsScreen> {
           key: aKey,
           initialItemCount: anInteractor.count(),
           itemBuilder: anInteractor.buildRow,
+          padding: EdgeInsets.only(bottom: 60.0),
         ),
     );
   }
