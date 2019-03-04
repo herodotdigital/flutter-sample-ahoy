@@ -8,6 +8,7 @@ import 'TripsInteractor.dart';
 import 'TripsSectionBuilder.dart';
 import 'package:ahoy_sample/l10n/AhoyLocalizations.dart';
 import 'package:ahoy_sample/UI/Shared/AhoyBarButton.dart';
+import 'dart:math' as math;
 
 enum _Mode {
   me, everyone
@@ -34,6 +35,7 @@ class _TripsScreenState extends State<TripsScreen> {
   }
 
   @override Widget build(BuildContext context) {
+    final safeAreaBottom = MediaQuery.of(context).padding.bottom;
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: AhoyBarButton.close(
@@ -41,12 +43,13 @@ class _TripsScreenState extends State<TripsScreen> {
         ),
       ),
       child: SafeArea(
+        bottom: false,
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: <Widget>[
-            _listForCurrentMode(),
+            _listForCurrentMode(context),
             Positioned(
-              bottom: 13.0,
+              bottom: math.max(13.0, safeAreaBottom),
               width: 190.0,
               height: 40.0,
               child: AhoySegmentedControl(segments:[
@@ -66,7 +69,9 @@ class _TripsScreenState extends State<TripsScreen> {
     });
   }
 
-  Widget _listForCurrentMode() {
+  Widget _listForCurrentMode(BuildContext context) {
+    final safeAreaBottom = MediaQuery.of(context).padding.bottom;
+    final paddingBottom = 60.0 + safeAreaBottom;
     TripsInteractor anInteractor;
     GlobalKey aKey;
     switch (_mode) {
@@ -84,7 +89,7 @@ class _TripsScreenState extends State<TripsScreen> {
           key: aKey,
           initialItemCount: anInteractor.count(),
           itemBuilder: anInteractor.buildRow,
-          padding: EdgeInsets.only(bottom: 60.0),
+          padding: EdgeInsets.only(bottom: paddingBottom),
         ),
     );
   }
