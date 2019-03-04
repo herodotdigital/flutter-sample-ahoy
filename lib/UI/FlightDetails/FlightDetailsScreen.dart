@@ -40,16 +40,19 @@ class FlightDetails extends StatelessWidget {
   final FlightDetailsData data;
   final margin = 12.0;
   final verticalMargin = 28.5;
+  final iPhoneSeHeight = 568.0;
 
   FlightDetails(this.data);
 
   @override Widget build(BuildContext context) {
     final textBoarding = captions.showBoardingPass.toUpperCase();
+    final isSmallScreen = MediaQuery.of(context).size.height <= iPhoneSeHeight;
+    
     return Column(children: <Widget>[
 //      _navBar(context),
-      Container(height: 40.0,),
+      Container(height: isSmallScreen ? 35.0 : 40.0,),
       _referenceRow(),
-      Container(height: 20.0,),
+      Container(height: isSmallScreen ? 13.0 : 20.0,),
       AhoyWidgets.cellWithShadow(
         Container(padding: EdgeInsets.only(top: 7.0, bottom: 18.0,),
           child: _flightDetails(),

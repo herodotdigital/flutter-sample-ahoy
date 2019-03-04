@@ -67,7 +67,7 @@ class AhoyLocalizations {
   String get trips => Intl.message('Trips', desc: '');
 
   // Stub alert
-  String get stubBookingsText => Intl.message('Bookings are not implemented in this demo.');
+  String get stubBookingsText => Intl.message('Bookings are not implemented in this demo. Try Flight details.');
   String get stubBoardingPassText => Intl.message('Boarding pass is not implemented in this demo.');
   String get stubOk => Intl.message('Ok');
 }
